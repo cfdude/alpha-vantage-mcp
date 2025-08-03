@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Minimal AWS Lambda function with Streamable HTTP MCP Server
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+    
+Parameters:
+  Environment:
+    Type: String
+    Default: production
+    Description: Environment name
+
+Resources:
+  MCPLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+      Events:
+        MCPApiRoot:
+          Type: Api
+          Properties:
+            Path: /mcp
+            Method: any
+        MCPApi:
+          Type: Api
+          Properties:
+            Path: /mcp/{proxy+}
+            Method: any
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+          PYTHONPATH: /var/runtime
+
+Outputs:
+  MCPApi:
+    Description: "API Gateway endpoint URL for MCP function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mcp"
+  MCPLambdaFunction:
+    Description: "MCP Lambda Function ARN"
+    Value: !GetAtt MCPLambdaFunction.Arn
+  MCPLambdaFunctionIamRole:
+    Description: "Implicit IAM Role created for MCP function"
+    Value: !GetAtt MCPLambdaFunctionRole.Arn
