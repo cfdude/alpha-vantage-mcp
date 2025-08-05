@@ -1,6 +1,13 @@
 #!/bin/bash
 
 # AWS SAM deployment script for Streamable HTTP MCP Lambda function
+AWS_PROFILE=${AWS_PROFILE:-default}
+
+# Load environment variables from .env if it exists
+if [ -f ".env" ]; then
+    echo "🔧 Loading environment variables from .env..."
+    export $(grep -v '^#' .env | xargs)
+fi
 
 set -e
 
@@ -23,10 +30,25 @@ sam build
 echo "🚀 Deploying SAM application..."
 if [ -f "samconfig.toml" ]; then
     echo "📋 Using existing configuration..."
-    sam deploy
+    PARAM_OVERRIDES=""
+    if [ -n "$CERTIFICATE_ARN" ]; then
+        PARAM_OVERRIDES="CertificateArn=$CERTIFICATE_ARN"
+    fi
+    if [ -n "$DOMAIN_NAME" ]; then
+        if [ -n "$PARAM_OVERRIDES" ]; then
+            PARAM_OVERRIDES="$PARAM_OVERRIDES DomainName=$DOMAIN_NAME"
+        else
+            PARAM_OVERRIDES="DomainName=$DOMAIN_NAME"
+        fi
+    fi
+    if [ -n "$PARAM_OVERRIDES" ]; then
+        sam deploy --profile $AWS_PROFILE --parameter-overrides $PARAM_OVERRIDES
+    else
+        sam deploy --profile $AWS_PROFILE
+    fi
 else
     echo "📋 Running guided deployment (first time)..."
-    sam deploy --guided
+    sam deploy --guided --profile $AWS_PROFILE
 fi
 
 echo "✅ Deployment complete!"

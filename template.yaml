@@ -12,8 +12,28 @@ Parameters:
     Type: String
     Default: production
     Description: Environment name
+  DomainName:
+    Type: String
+    Description: Custom domain name for the API
+  CertificateArn:
+    Type: String
+    Description: ACM Certificate ARN for the custom domain (must be in us-east-1)
 
 Resources:
+  CustomDomain:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      DomainName: !Ref DomainName
+      CertificateArn: !Ref CertificateArn
+      SecurityPolicy: TLS_1_2
+
+  BasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref CustomDomain
+      RestApiId: !Ref ServerlessRestApi
+      Stage: Prod
+
   MCPLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -41,7 +61,13 @@ Resources:
 Outputs:
   MCPApi:
     Description: "API Gateway endpoint URL for MCP function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mcp"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  CustomDomainURL:
+    Description: "Custom domain URL for MCP function"
+    Value: !Sub "https://${DomainName}/"
+  CustomDomainTarget:
+    Description: "Custom domain target for DNS configuration"
+    Value: !GetAtt CustomDomain.DistributionDomainName
   MCPLambdaFunction:
     Description: "MCP Lambda Function ARN"
     Value: !GetAtt MCPLambdaFunction.Arn
