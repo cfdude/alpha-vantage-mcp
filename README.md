@@ -223,3 +223,7 @@ If no categories are specified, all tools will be available.
 |----------|------|-------------|
 | **ping** | `PING` | Health check tool that returns 'pong' |
 | **ping** | `ADD_TWO_NUMBERS` | Example tool for adding two numbers |
+
+## Deployment
+
+For detailed deployment instructions, see the [Deployment Guide](DEPLOYMENT.md).
