@@ -7,7 +7,7 @@ A comprehensive Alpha Vantage API MCP server that provides real-time and histori
 ### Connection URL
 Connect to the MCP server using:
 ```
-https://your-endpoint-url/mcp
+https://mcp.alphavantage.co/mcp
 ```
 
 ### API Key Configuration
