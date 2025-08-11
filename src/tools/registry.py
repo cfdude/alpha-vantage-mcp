@@ -48,11 +48,19 @@ def register_all_tools(mcp):
     for func in _all_tools_registry:
         mcp.tool()(func)
 
-def register_tools_by_categories(mcp, categories):
-    """Register tools from multiple categories"""
+def get_tools_by_categories(categories=None):
+    """Get tools filtered by categories, importing modules as needed"""
+    import importlib
+    
     if not categories:
-        register_all_tools(mcp)
-        return
+        # Import all modules and return all tools
+        for module_spec in TOOL_MODULES.values():
+            if isinstance(module_spec, list):
+                for module_name in module_spec:
+                    importlib.import_module(module_name)
+            else:
+                importlib.import_module(module_spec)
+        return _all_tools_registry
     
     # Validate all categories first
     invalid_categories = [cat for cat in categories if cat not in TOOL_MODULES]
@@ -60,7 +68,6 @@ def register_tools_by_categories(mcp, categories):
         raise ValueError(f"Unknown tool categories: {', '.join(invalid_categories)}")
     
     # Import specified category modules to trigger decoration
-    import importlib
     for category in categories:
         if category in TOOL_MODULES:
             module_spec = TOOL_MODULES[category]
@@ -70,8 +77,28 @@ def register_tools_by_categories(mcp, categories):
             else:
                 importlib.import_module(module_spec)
     
-    # Register tools from specified categories
+    # Collect tools from specified categories
+    filtered_tools = []
     for category in categories:
-        if category in _tool_registries:
-            for func in _tool_registries[category]:
-                mcp.tool()(func)
+        # Map category to module name(s) and get tools from registry
+        if category in TOOL_MODULES:
+            module_spec = TOOL_MODULES[category]
+            if isinstance(module_spec, list):
+                # For technical_indicators which has multiple modules
+                for module_path in module_spec:
+                    module_name = module_path.split('.')[-1]
+                    if module_name in _tool_registries:
+                        filtered_tools.extend(_tool_registries[module_name])
+            else:
+                # For single module categories
+                module_name = module_spec.split('.')[-1]
+                if module_name in _tool_registries:
+                    filtered_tools.extend(_tool_registries[module_name])
+    
+    return filtered_tools
+
+def register_tools_by_categories(mcp, categories):
+    """Register tools from multiple categories"""
+    tools = get_tools_by_categories(categories)
+    for func in tools:
+        mcp.tool()(func)
