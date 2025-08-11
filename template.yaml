@@ -43,15 +43,15 @@ Resources:
       Architectures:
         - x86_64
       Events:
-        MCPApiRoot:
+        RootApi:
           Type: Api
           Properties:
-            Path: /mcp
+            Path: /
             Method: any
-        MCPApi:
+        ProxyApi:
           Type: Api
           Properties:
-            Path: /mcp/{proxy+}
+            Path: /{proxy+}
             Method: any
       Environment:
         Variables:
