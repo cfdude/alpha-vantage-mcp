@@ -79,7 +79,7 @@ def generate_s3_key(data: str) -> str:
     timestamp = int(time.time())
     return f"alphavantage-responses/{timestamp}-{data_hash}.json"
 
-def upload_to_s3(data: str, bucket_name: str = None) -> str:
+def upload_to_s3(data: str, bucket_name: str = None) -> str | None:
     """Upload data to S3 and return a CloudFront URL.
     
     Args:
@@ -87,42 +87,46 @@ def upload_to_s3(data: str, bucket_name: str = None) -> str:
         bucket_name: S3 bucket name (uses environment variable if not provided)
         
     Returns:
-        Short URL using CloudFront distribution
+        Short URL using CloudFront distribution, or None if upload fails
     """
     import os
     try:
         import boto3
     except ImportError:
-        raise ImportError("boto3 is required for S3 uploads. Install with: pip install boto3")
+        return None
     
-    # Get bucket name from environment or use default
-    bucket = bucket_name or os.environ.get('RESPONSE_BUCKET', 'alphavantage-mcp-responses')
-    
-    # Get CloudFront domain from environment (should be your CloudFront distribution domain)
-    cloudfront_domain = os.environ.get('CLOUDFRONT_DOMAIN', 'https://data.alphavantage-mcp.com')
-    
-    # Initialize S3 client
-    s3_client = boto3.client('s3')
-    
-    # Generate unique key
-    key = generate_s3_key(data)
-    
-    # Upload to S3 (private, CloudFront will access via OAC)
-    s3_client.put_object(
-        Bucket=bucket,
-        Key=key,
-        Body=data,
-        ContentType='application/json',
-        CacheControl='public, max-age=3600',  # 1 hour cache
-        Metadata={
-            'created': str(int(time.time()))
-        }
-    )
-    
-    # Return CloudFront URL (CloudFront handles S3 access via OAC)
-    url = f"{cloudfront_domain}/{key}"
-    
-    return url
+    try:
+        # Get bucket name from environment or use default
+        bucket = bucket_name or os.environ.get('RESPONSE_BUCKET', 'alphavantage-mcp-responses')
+        
+        # Get CloudFront domain from environment (should be your CloudFront distribution domain)
+        cloudfront_domain = os.environ.get('CLOUDFRONT_DOMAIN', 'https://data.alphavantage-mcp.com')
+        
+        # Initialize S3 client
+        s3_client = boto3.client('s3')
+        
+        # Generate unique key
+        key = generate_s3_key(data)
+        
+        # Upload to S3 (private, CloudFront will access via OAC)
+        s3_client.put_object(
+            Bucket=bucket,
+            Key=key,
+            Body=data,
+            ContentType='application/json',
+            CacheControl='public, max-age=3600',  # 1 hour cache
+            Metadata={
+                'created': str(int(time.time()))
+            }
+        )
+        
+        # Return CloudFront URL (CloudFront handles S3 access via OAC)
+        url = f"{cloudfront_domain}/{key}"
+        
+        return url
+    except Exception:
+        # If any error occurs during upload, return None to trigger fallback
+        return None
 
 def create_response_preview(data: dict | list, max_items: int = 5) -> dict:
     """Create a preview of the response data.

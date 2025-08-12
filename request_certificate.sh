@@ -44,12 +44,6 @@ if [ ! -z "$EXISTING_CERT" ] && [ "$EXISTING_CERT" != "None" ]; then
         echo "Add this ARN to your template.yaml CertificateArn parameter:"
         echo "$EXISTING_CERT"
         
-        # Update .env file with the certificate ARN
-        if [ -f ".env" ]; then
-            sed -i.bak "/# Managed by request_certificate.sh/d" .env
-            sed -i.bak "s|CERTIFICATE_ARN=.*|# Managed by request_certificate.sh\nCERTIFICATE_ARN=$EXISTING_CERT|" .env
-            echo "Managed .env file with CERTIFICATE_ARN"
-        fi
         exit 0
     else
         echo "Certificate exists but is not issued (Status: $CERT_STATUS)"
@@ -87,12 +81,6 @@ aws acm describe-certificate $AWS_PROFILE_OPTION \
     --output table
 
 echo ""
-# Update .env file with the certificate ARN
-if [ -f ".env" ]; then
-    sed -i.bak "/# Managed by request_certificate.sh/d" .env
-    sed -i.bak "s|CERTIFICATE_ARN=.*|# Managed by request_certificate.sh\nCERTIFICATE_ARN=$CERT_ARN|" .env
-    echo "Managed .env file with CERTIFICATE_ARN"
-fi
 
 echo "Instructions:"
 echo "1. Copy the CNAME record above to your DNS provider"
