@@ -34,6 +34,79 @@ Resources:
       RestApiId: !Ref ServerlessRestApi
       Stage: Prod
 
+  ResponseBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'alphavantage-mcp-responses-${AWS::AccountId}'
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldResponses
+            Status: Enabled
+            ExpirationInDays: 1
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ['*']
+            AllowedMethods: [GET]
+            AllowedOrigins: ['*']
+            MaxAge: 3600
+
+  # Origin Access Control for CloudFront
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub '${AWS::StackName}-OAC'
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # CloudFront Distribution for S3 responses
+  ResponseCloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: AlphaVantage MCP Response Distribution
+        HttpVersion: http2and3
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt ResponseBucket.RegionalDomainName
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+            OriginAccessControlId: !GetAtt OriginAccessControl.Id
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD, OPTIONS]
+          CachedMethods: [GET, HEAD, OPTIONS]
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6  # Managed-CachingOptimized
+          ResponseHeadersPolicyId: 5cc3b908-e619-4b99-88e5-2cf7f45965bd  # CORS-With-Preflight
+        PriceClass: PriceClass_100  # North America and Europe only
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+
+  ResponseBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ResponseBucket
+      PolicyDocument:
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipal
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub '${ResponseBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${ResponseCloudFront}'
+
   MCPLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -42,6 +115,9 @@ Resources:
       Runtime: python3.13
       Architectures:
         - x86_64
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref ResponseBucket
       Events:
         RootApi:
           Type: Api
@@ -57,6 +133,9 @@ Resources:
         Variables:
           ENVIRONMENT: !Ref Environment
           PYTHONPATH: /var/runtime
+          RESPONSE_BUCKET: !Ref ResponseBucket
+          CLOUDFRONT_DOMAIN: !Sub 'https://${ResponseCloudFront.DomainName}'
+          MAX_RESPONSE_TOKENS: '10000'
 
 Outputs:
   MCPApi:
@@ -74,3 +153,12 @@ Outputs:
   MCPLambdaFunctionIamRole:
     Description: "Implicit IAM Role created for MCP function"
     Value: !GetAtt MCPLambdaFunctionRole.Arn
+  ResponseBucket:
+    Description: "S3 bucket for storing large responses"
+    Value: !Ref ResponseBucket
+  ResponseCloudFrontURL:
+    Description: "CloudFront distribution URL for response data"
+    Value: !Sub 'https://${ResponseCloudFront.DomainName}'
+  ResponseCloudFrontId:
+    Description: "CloudFront distribution ID"
+    Value: !Ref ResponseCloudFront

@@ -35,6 +35,20 @@ Available categories:
 
 If no categories are specified, all tools will be available.
 
+## OpenAI GPT Actions Integration
+
+You can easily import Alpha Vantage tools as GPT Actions in OpenAI's GPT builder:
+
+1. In the GPT Configure Actions create/edit actions tab, click "Import from URL"
+2. Use the following URL with category filtering:
+   ```
+   https://mcp.alphavantage.co/openai?categories=core_stock_apis,alpha_intelligence
+   ```
+3. The same Category Filtering logic applies as with the MCP server - you can specify any combination of categories
+4. In the GPT Configure Instructions part, tell GPT: Try using the demo API key first. If it's not valid, you'll need to input your own Alpha Vantage API key
+
+This will automatically set up the OpenAI Actions schema for the selected Alpha Vantage API categories.
+
 ## Tools Reference
 
 | Category | Tools |
