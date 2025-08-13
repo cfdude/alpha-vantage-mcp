@@ -4,6 +4,138 @@ A comprehensive Alpha Vantage API MCP server that provides real-time and histori
 
 ## Quick Usage
 
+This is the official hosted MCP server for Alpha Vantage. Add this server to your favorite apps like Claude, Claude Code, and VS Code to give them access to comprehensive financial data APIs.
+
+To use the server, [get your free Alpha Vantage API key](https://www.alphavantage.co/support/#api-key), copy it to your clipboard, then follow the instructions for your tool of choice below.
+
+### Table of Contents - Setup Instructions
+- [Claude.ai](#claudeai)
+- [Claude Desktop](#claude-desktop)
+- [Claude Code](#claude-code)
+- [Visual Studio Code](#visual-studio-code)
+- [Cursor](#cursor)
+- [Google Gemini CLI](#google-gemini-cli)
+- [Windsurf](#windsurf)
+
+### Claude.ai
+To connect Claude Web to this MCP server:
+
+**Query Param Option (Recommended):**
+1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
+2. Click "Add Custom Connector"
+3. Add the MCP server URL with your API key: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
+4. Click "Connect"
+
+**OAuth Option:**
+1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
+2. Click "Add Custom Connector"
+3. Add the MCP server URL: `https://mcp.alphavantage.co/mcp`
+4. Click "Connect"
+5. Enter your Alpha Vantage API token
+6. Click "Authorize Access"
+
+### Claude Desktop
+To connect Claude Desktop to this MCP server:
+
+**Query Param Option (Recommended):**
+1. Open Claude Desktop
+2. Go to Settings → Connectors
+3. Click "Add Custom Connector"
+4. Add the MCP server URL with your API key: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
+5. Click "Connect"
+6. Restart Claude Desktop to see the MCP server connection
+
+**OAuth Option:**
+1. Open Claude Desktop
+2. Go to Settings → Connectors
+3. Click "Add Custom Connector"
+4. Add the MCP server URL: `https://mcp.alphavantage.co/mcp`
+5. Click "Connect"
+6. Enter your Alpha Vantage API token
+7. Click "Authorize Access"
+8. Restart Claude Desktop to see the MCP server connection
+
+### Claude Code
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) is a command-line tool for coding with Claude.
+
+To install and configure (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+```bash
+npm install -g @anthropic-ai/claude-code
+claude mcp add alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY --transport http --scope user
+claude
+```
+
+Then connect with:
+```bash
+/mcp
+```
+
+### Visual Studio Code
+To connect VS Code with GitHub Copilot to this MCP server:
+
+1. Create a `.vscode/mcp.json` file in your workspace
+2. Add this configuration (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+
+```json
+{
+  "servers": {
+    "alphavantage": {
+      "type": "http",
+      "url": "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"
+    }
+  }
+}
+```
+
+3. Open the Chat view and select Agent mode
+
+### Cursor
+Configure Cursor by editing `~/.cursor/mcp.json` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+
+```json
+{
+  "mcpServers": {
+    "alphavantage": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"]
+    }
+  }
+}
+```
+
+### Google Gemini CLI
+To use Alpha Vantage's MCP server in Google Gemini CLI:
+
+1. Edit `~/.gemini/settings.json`
+2. Add this config (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+
+```json
+{
+  "mcpServers": {
+    "alphavantage": {
+      "url": "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"
+    }
+  }
+}
+```
+
+3. Run `gemini` in your terminal from your project directory
+
+### Windsurf
+1. Edit your Windsurf configuration file at `~/.codeium/windsurf/mcp_config.json`
+2. Add the following configuration (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+
+```json
+{
+  "mcpServers": {
+    "alphavantage": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"]
+    }
+  }
+}
+```
+
 ### Connection URL
 Connect to the MCP server using:
 ```
@@ -57,7 +189,7 @@ This will automatically set up the OpenAI Actions schema for the selected Alpha 
 | technical_indicators | `SMA`, `EMA`, `WMA`, `DEMA`, `TEMA`, `TRIMA`, `KAMA`, `MAMA`, `VWAP`, `T3`, `MACD`, `MACDEXT`, `STOCH`, `STOCHF`, `RSI`, `STOCHRSI`, `WILLR`, `ADX`, `ADXR`, `APO`, `PPO`, `MOM`, `BOP`, `CCI`, `CMO`, `ROC`, `ROCR`, `AROON`, `AROONOSC`, `MFI`, `TRIX`, `ULTOSC`, `DX`, `MINUS_DI`, `PLUS_DI`, `MINUS_DM`, `PLUS_DM`, `BBANDS`, `MIDPOINT`, `MIDPRICE`, `SAR`, `TRANGE`, `ATR`, `NATR`, `AD`, `ADOSC`, `OBV`, `HT_TRENDLINE`, `HT_SINE`, `HT_TRENDMODE`, `HT_DCPERIOD`, `HT_DCPHASE`, `HT_PHASOR` |
 | ping | `PING`, `ADD_TWO_NUMBERS` |
 
-### Table of Contents
+### Table of Contents - API Tools
 - [core_stock_apis](#core_stock_apis)
 - [options_data_apis](#options_data_apis)
 - [alpha_intelligence](#alpha_intelligence)

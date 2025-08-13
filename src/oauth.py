@@ -130,140 +130,35 @@ def handle_authorization_request(event: dict) -> dict:
 
 def show_authorization_form(query_params: dict) -> dict:
     """Show HTML form for API key input and authorization consent."""
-    
-    # Extract parameters to preserve in form
-    response_type = query_params.get('response_type', '')
-    client_id = query_params.get('client_id', '')
-    redirect_uri = query_params.get('redirect_uri', '')
-    state = query_params.get('state', '')
-    code_challenge = query_params.get('code_challenge', '')
-    code_challenge_method = query_params.get('code_challenge_method', 'S256')
+    import os
     
     # Build query string to preserve OAuth parameters
     oauth_params = {
-        'response_type': response_type,
-        'client_id': client_id,
-        'redirect_uri': redirect_uri,
-        'code_challenge': code_challenge,
-        'code_challenge_method': code_challenge_method
+        'response_type': query_params.get('response_type', ''),
+        'client_id': query_params.get('client_id', ''),
+        'redirect_uri': query_params.get('redirect_uri', ''),
+        'code_challenge': query_params.get('code_challenge', ''),
+        'code_challenge_method': query_params.get('code_challenge_method', 'S256')
     }
-    if state:
-        oauth_params['state'] = state
+    if query_params.get('state'):
+        oauth_params['state'] = query_params.get('state')
     
     query_string = urllib.parse.urlencode(oauth_params)
     
-    html_form = f'''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpha Vantage MCP - Authorization</title>
-    <style>
-        body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 500px;
-            margin: 100px auto;
-            padding: 20px;
-            background: #f5f5f5;
-        }}
-        .container {{
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }}
-        h1 {{
-            color: #333;
-            text-align: center;
-            margin-bottom: 10px;
-        }}
-        .subtitle {{
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }}
-        .form-group {{
-            margin-bottom: 20px;
-        }}
-        label {{
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }}
-        input[type="password"], input[type="text"] {{
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }}
-        input[type="password"]:focus, input[type="text"]:focus {{
-            outline: none;
-            border-color: #007AFF;
-        }}
-        .submit-btn {{
-            width: 100%;
-            background: #007AFF;
-            color: white;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }}
-        .submit-btn:hover {{
-            background: #0056CC;
-        }}
-        .info-box {{
-            background: #f0f8ff;
-            border: 1px solid #b3d9ff;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #333;
-        }}
-        .api-key-help {{
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }}
-        .api-key-help a {{
-            color: #007AFF;
-            text-decoration: none;
-        }}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Alpha Vantage MCP</h1>
-        <p class="subtitle">Authorization Required</p>
-        
-        <div class="info-box">
-            <strong>Client requesting access:</strong> {client_id}<br>
-            <strong>Permissions:</strong> Read access to Alpha Vantage financial data
-        </div>
-        
-        <form method="POST" action="/authorize?{query_string}">
-            <div class="form-group">
-                <label for="api_key">Alpha Vantage API Key</label>
-                <input type="password" id="api_key" name="api_key" required placeholder="Enter your Alpha Vantage API key">
-                <div class="api-key-help">
-                    Don't have an API key? <a href="https://www.alphavantage.co/support/#api-key" target="_blank">Get one free</a>
-                </div>
-            </div>
-            
-            <button type="submit" class="submit-btn">Authorize Access</button>
-        </form>
-    </div>
-</body>
-</html>
-    '''
+    # Read the external HTML file
+    html_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'authorization.html')
+    try:
+        with open(html_file_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+            # Replace placeholder with actual form action
+            html_content = html_content.replace('action="/authorize"', f'action="/authorize?{query_string}"')
+    except FileNotFoundError:
+        # Fallback to basic HTML if file not found
+        html_content = f'''<!DOCTYPE html>
+<html><head><title>Authorization</title></head>
+<body><h1>Authorization form not found</h1>
+<p>Please check that authorization.html exists in the project root.</p>
+</body></html>'''
     
     return {
         "statusCode": 200,
@@ -272,7 +167,7 @@ def show_authorization_form(query_params: dict) -> dict:
             "Cache-Control": "no-store, no-cache, must-revalidate",
             "Pragma": "no-cache"
         },
-        "body": html_form
+        "body": html_content
     }
 
 def handle_authorization_form_submission(event: dict, query_params: dict) -> dict:
@@ -344,153 +239,38 @@ def handle_authorization_form_submission(event: dict, query_params: dict) -> dic
 
 def show_authorization_form_with_error(query_params: dict, error_message: str) -> dict:
     """Show authorization form with error message."""
-    
-    # Extract parameters to preserve in form
-    response_type = query_params.get('response_type', '')
-    client_id = query_params.get('client_id', '')
-    redirect_uri = query_params.get('redirect_uri', '')
-    state = query_params.get('state', '')
-    code_challenge = query_params.get('code_challenge', '')
-    code_challenge_method = query_params.get('code_challenge_method', 'S256')
+    import os
     
     # Build query string to preserve OAuth parameters
     oauth_params = {
-        'response_type': response_type,
-        'client_id': client_id,
-        'redirect_uri': redirect_uri,
-        'code_challenge': code_challenge,
-        'code_challenge_method': code_challenge_method
+        'response_type': query_params.get('response_type', ''),
+        'client_id': query_params.get('client_id', ''),
+        'redirect_uri': query_params.get('redirect_uri', ''),
+        'code_challenge': query_params.get('code_challenge', ''),
+        'code_challenge_method': query_params.get('code_challenge_method', 'S256')
     }
-    if state:
-        oauth_params['state'] = state
+    if query_params.get('state'):
+        oauth_params['state'] = query_params.get('state')
     
     query_string = urllib.parse.urlencode(oauth_params)
     
-    html_form = f'''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpha Vantage MCP - Authorization</title>
-    <style>
-        body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 500px;
-            margin: 100px auto;
-            padding: 20px;
-            background: #f5f5f5;
-        }}
-        .container {{
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }}
-        h1 {{
-            color: #333;
-            text-align: center;
-            margin-bottom: 10px;
-        }}
-        .subtitle {{
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }}
-        .form-group {{
-            margin-bottom: 20px;
-        }}
-        label {{
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }}
-        input[type="password"], input[type="text"] {{
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }}
-        input[type="password"]:focus, input[type="text"]:focus {{
-            outline: none;
-            border-color: #007AFF;
-        }}
-        .submit-btn {{
-            width: 100%;
-            background: #007AFF;
-            color: white;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }}
-        .submit-btn:hover {{
-            background: #0056CC;
-        }}
-        .info-box {{
-            background: #f0f8ff;
-            border: 1px solid #b3d9ff;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #333;
-        }}
-        .error-box {{
-            background: #fff5f5;
-            border: 1px solid #fed7d7;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #c53030;
-        }}
-        .api-key-help {{
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }}
-        .api-key-help a {{
-            color: #007AFF;
-            text-decoration: none;
-        }}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Alpha Vantage MCP</h1>
-        <p class="subtitle">Authorization Required</p>
-        
-        <div class="error-box">
-            <strong>Error:</strong> {error_message}
-        </div>
-        
-        <div class="info-box">
-            <strong>Client requesting access:</strong> {client_id}<br>
-            <strong>Permissions:</strong> Read access to Alpha Vantage financial data
-        </div>
-        
-        <form method="POST" action="/authorize?{query_string}">
-            <div class="form-group">
-                <label for="api_key">Alpha Vantage API Key</label>
-                <input type="password" id="api_key" name="api_key" required placeholder="Enter your Alpha Vantage API key">
-                <div class="api-key-help">
-                    Don't have an API key? <a href="https://www.alphavantage.co/support/#api-key" target="_blank">Get one free</a>
-                </div>
-            </div>
-            
-            <button type="submit" class="submit-btn">Authorize Access</button>
-        </form>
-    </div>
-</body>
-</html>
-    '''
+    # Read the external HTML file
+    html_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'authorization.html')
+    try:
+        with open(html_file_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+            # Replace placeholder with actual form action and add error message
+            html_content = html_content.replace('action="/authorize"', f'action="/authorize?{query_string}"')
+            html_content = html_content.replace('error_message">', f'error_message">{error_message}')
+            html_content = html_content.replace('class="hidden"', 'class=""', 1)  # Show error box
+    except FileNotFoundError:
+        # Fallback to basic HTML if file not found
+        html_content = f'''<!DOCTYPE html>
+<html><head><title>Authorization Error</title></head>
+<body><h1>Authorization Error</h1>
+<p>{error_message}</p>
+<p>Please check that authorization.html exists in the project root.</p>
+</body></html>'''
     
     return {
         "statusCode": 200,
@@ -499,7 +279,7 @@ def show_authorization_form_with_error(query_params: dict, error_message: str) -
             "Cache-Control": "no-store, no-cache, must-revalidate",
             "Pragma": "no-cache"
         },
-        "body": html_form
+        "body": html_content
     }
 
 def handle_token_request(event: dict) -> dict:
