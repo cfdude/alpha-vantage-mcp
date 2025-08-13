@@ -10,13 +10,6 @@ Connect to the MCP server using:
 https://mcp.alphavantage.co/mcp
 ```
 
-### API Key Configuration
-Specify your Alpha Vantage API key using either:
-- **Query parameter**: `?apikey=YOUR_API_KEY`
-- **Authorization header**: `Authorization: Bearer YOUR_API_KEY`
-
-Query parameter takes priority if both are provided.
-
 ### Category Filtering
 Optionally filter available tools by category using:
 - **Query parameter**: `?categories=core_stock_apis,alpha_intelligence`
