@@ -4,7 +4,8 @@ from src.context import set_api_key
 from src.decorators import setup_custom_tool_decorator
 from src.tools.registry import register_all_tools, register_tools_by_categories
 from src.openai_actions import handle_openai_request
-from src.utils import parse_token_from_request, parse_tool_categories_from_request
+from src.utils import parse_token_from_request, parse_tool_categories_from_request, create_oauth_error_response
+from src.oauth import handle_metadata_discovery, handle_authorization_request, handle_token_request, handle_registration_request
 
 def create_mcp_handler_for_categories(categories: list[str] | None) -> MCPLambdaHandler:
     """Create and configure MCP handler for specific tool categories."""
@@ -31,12 +32,29 @@ def lambda_handler(event, context):
     """AWS Lambda handler function."""
     path = event.get("path", "/")
     
+    # Handle OAuth 2.1 endpoints first
+    if path == "/.well-known/oauth-authorization-server":
+        return handle_metadata_discovery(event)
+    elif path == "/authorize":
+        return handle_authorization_request(event)
+    elif path == "/token":
+        return handle_token_request(event)
+    elif path == "/register":
+        return handle_registration_request(event)
+    
     # Extract Bearer token from Authorization header
     token = parse_token_from_request(event)
     
+    # Validate token presence for MCP/API requests
+    if not token:
+        return create_oauth_error_response({
+            "error": "invalid_request",
+            "error_description": "Missing access token",
+            "error_uri": "https://tools.ietf.org/html/rfc6750#section-3.1"
+        }, 401)
+    
     # Set token in context for tools to access
-    if token:
-        set_api_key(token)
+    set_api_key(token)
     
     # Parse tool categories from request path or query parameters
     categories = parse_tool_categories_from_request(event)

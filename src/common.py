@@ -2,7 +2,7 @@ import httpx
 import json
 import os
 from src.context import get_api_key
-from src.utils import estimate_tokens, upload_to_s3, create_response_preview
+from src.utils import estimate_tokens, upload_to_r2, create_response_preview
 
 API_BASE_URL = "https://www.alphavantage.co/query"
 
@@ -32,12 +32,15 @@ def _make_api_request(function_name: str, params: dict, datatype: str = "json") 
         
         # If response is within limits, return normally
         if estimated_tokens <= MAX_RESPONSE_TOKENS:
-            return response_text if datatype == "csv" else response.json()
+            if datatype == "csv":
+                return response_text
+            else:
+                return json.loads(response_text) if datatype == "json" else response.json()
             
-        # For large responses, upload to S3 and return preview
+        # For large responses, upload to R2 and return preview
         try:
-            # Upload raw response to S3
-            data_url = upload_to_s3(response_text)
+            # Upload raw response to R2
+            data_url = upload_to_r2(response_text)
             
             # Create appropriate preview based on datatype
             if datatype == "csv":
@@ -79,7 +82,7 @@ def _make_api_request(function_name: str, params: dict, datatype: str = "json") 
             return preview
             
         except Exception as e:
-            # If S3 upload fails, return error with preview
+            # If R2 upload fails, return error with preview
             if datatype == "csv":
                 lines = response_text.split('\n')
                 preview = {
