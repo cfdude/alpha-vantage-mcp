@@ -10,7 +10,8 @@ def time_series_intraday(
     extended_hours: bool = True,
     month: Optional[str] = None,
     outputsize: str = "compact",
-    datatype: str = "json"
+    datatype: str = "json",
+    entitlement: Optional[str] = None
 ) -> dict | str:
     """
     Returns current and 20+ years of historical intraday OHLCV time series of the equity specified.
@@ -23,6 +24,7 @@ def time_series_intraday(
         month: Query specific month in YYYY-MM format. Example: 2009-01
         outputsize: "compact" (100 data points) or "full" (30 days or full month)
         datatype: "json" or "csv"
+        entitlement: "delayed" for 15-minute delayed data, "realtime" for realtime data
 
     Returns:
         Dict or string containing the time series data based on datatype parameter.
@@ -37,6 +39,8 @@ def time_series_intraday(
     }
     if month:
         params["month"] = month
+    if entitlement:
+        params["entitlement"] = entitlement
     
     return _make_api_request("TIME_SERIES_INTRADAY", params, datatype)
 
@@ -44,7 +48,8 @@ def time_series_intraday(
 def time_series_daily(
     symbol: str,
     outputsize: str = "compact",
-    datatype: str = "json"
+    datatype: str = "json",
+    entitlement: Optional[str] = None
 ) -> dict | str:
     """
     Returns raw daily time series (OHLCV) of the global equity specified, covering 20+ years of historical data.
@@ -53,6 +58,7 @@ def time_series_daily(
         symbol: The name of the equity. For example: symbol=IBM
         outputsize: "compact" (100 data points) or "full" (20+ years of historical data)
         datatype: "json" or "csv"
+        entitlement: "delayed" for 15-minute delayed data, "realtime" for realtime data
 
     Returns:
         Dict or string containing the daily time series data based on datatype parameter.
@@ -62,6 +68,8 @@ def time_series_daily(
         "outputsize": outputsize,
         "datatype": datatype,
     }
+    if entitlement:
+        params["entitlement"] = entitlement
     
     return _make_api_request("TIME_SERIES_DAILY", params, datatype)
 
@@ -69,7 +77,8 @@ def time_series_daily(
 def time_series_daily_adjusted(
     symbol: str,
     outputsize: str = "compact",
-    datatype: str = "json"
+    datatype: str = "json",
+    entitlement: Optional[str] = None
 ) -> dict | str:
     """
     Returns raw daily OHLCV values, adjusted close values, and historical split/dividend events.
@@ -78,6 +87,7 @@ def time_series_daily_adjusted(
         symbol: The name of the equity. For example: symbol=IBM
         outputsize: "compact" (100 data points) or "full" (20+ years of historical data)
         datatype: "json" or "csv"
+        entitlement: "delayed" for 15-minute delayed data, "realtime" for realtime data
 
     Returns:
         Dict or string containing the daily adjusted time series data based on datatype parameter.
@@ -87,6 +97,8 @@ def time_series_daily_adjusted(
         "outputsize": outputsize,
         "datatype": datatype,
     }
+    if entitlement:
+        params["entitlement"] = entitlement
     
     return _make_api_request("TIME_SERIES_DAILY_ADJUSTED", params, datatype)
 
@@ -179,13 +191,14 @@ def time_series_monthly_adjusted(
     return _make_api_request("TIME_SERIES_MONTHLY_ADJUSTED", params, datatype)
 
 @tool
-def global_quote(symbol: str, datatype: str = "json") -> dict | str:
+def global_quote(symbol: str, datatype: str = "json", entitlement: Optional[str] = None) -> dict | str:
     """
     Returns the latest price and volume information for a ticker.
 
     Args:
         symbol: The symbol of the global ticker. For example: symbol=IBM
         datatype: "json" or "csv"
+        entitlement: "delayed" for 15-minute delayed data, "realtime" for realtime data
 
     Returns:
         Dict or string containing the latest quote information based on datatype parameter.
@@ -194,12 +207,15 @@ def global_quote(symbol: str, datatype: str = "json") -> dict | str:
         "symbol": symbol,
         "datatype": datatype,
     }
+    if entitlement:
+        params["entitlement"] = entitlement
     return _make_api_request("GLOBAL_QUOTE", params, datatype)
 
 @tool
 def realtime_bulk_quotes(
     symbol: str,
-    datatype: str = "json"
+    datatype: str = "json",
+    entitlement: Optional[str] = None
 ) -> dict | str:
     """
     Returns realtime quotes for US-traded symbols in bulk, accepting up to 100 symbols per request.
@@ -207,6 +223,7 @@ def realtime_bulk_quotes(
     Args:
         symbol: Up to 100 symbols separated by comma. Example: MSFT,AAPL,IBM
         datatype: "json" or "csv"
+        entitlement: "delayed" for 15-minute delayed data, "realtime" for realtime data
 
     Returns:
         Dict or string containing realtime bulk quotes based on datatype parameter.
@@ -215,6 +232,8 @@ def realtime_bulk_quotes(
         "symbol": symbol,
         "datatype": datatype,
     }
+    if entitlement:
+        params["entitlement"] = entitlement
     
     return _make_api_request("REALTIME_BULK_QUOTES", params, datatype)
 
