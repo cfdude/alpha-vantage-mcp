@@ -18,6 +18,23 @@ Parameters:
   CertificateArn:
     Type: String
     Description: ACM Certificate ARN for the custom domain (must be in us-east-1)
+  R2Bucket:
+    Type: String
+    Default: alphavantage-mcp-responses
+    Description: Cloudflare R2 bucket name
+  R2PublicDomain:
+    Type: String
+    Description: R2 public domain for CDN access
+  R2EndpointUrl:
+    Type: String
+    Description: R2 endpoint URL
+  R2AccessKeyId:
+    Type: String
+    Description: R2 access key ID
+  R2SecretAccessKey:
+    Type: String
+    NoEcho: true
+    Description: R2 secret access key
 
 Resources:
   CustomDomain:
@@ -59,6 +76,11 @@ Resources:
           ENVIRONMENT: !Ref Environment
           PYTHONPATH: /var/runtime
           MAX_RESPONSE_TOKENS: '10000'
+          R2_BUCKET: !Ref R2Bucket
+          R2_PUBLIC_DOMAIN: !Ref R2PublicDomain
+          R2_ENDPOINT_URL: !Ref R2EndpointUrl
+          R2_ACCESS_KEY_ID: !Ref R2AccessKeyId
+          R2_SECRET_ACCESS_KEY: !Ref R2SecretAccessKey
 
 Outputs:
   MCPApi:

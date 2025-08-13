@@ -3,7 +3,7 @@
 
 import os
 import json
-from src.utils import estimate_tokens, create_response_preview
+from src.utils import estimate_tokens
 
 def test_token_estimation():
     """Test token estimation function."""
@@ -25,43 +25,6 @@ def test_token_estimation():
     print(f"  List with 1000 items => ~{tokens} tokens")
     print()
 
-def test_response_preview():
-    """Test response preview creation."""
-    print("Testing response preview creation...")
-    
-    # Test dict preview
-    dict_data = {
-        "Meta Data": {
-            "1. Symbol": "IBM",
-            "2. Last Refreshed": "2024-01-01"
-        },
-        "Time Series (Daily)": {
-            f"2024-01-{i:02d}": {
-                "1. open": 100 + i,
-                "2. high": 105 + i,
-                "3. low": 95 + i,
-                "4. close": 102 + i,
-                "5. volume": 1000000 + i * 1000
-            }
-            for i in range(1, 31)
-        }
-    }
-    
-    preview = create_response_preview(dict_data, max_items=3)
-    print("  Dict preview:")
-    print(json.dumps(preview, indent=2))
-    print()
-    
-    # Test list preview
-    list_data = [
-        {"date": f"2024-01-{i:02d}", "value": 100 + i}
-        for i in range(1, 101)
-    ]
-    
-    preview = create_response_preview(list_data, max_items=3)
-    print("  List preview:")
-    print(json.dumps(preview, indent=2))
-    print()
 
 def test_csv_preview():
     """Test CSV preview generation."""
@@ -121,10 +84,7 @@ def test_large_response_handling():
     MAX_TOKENS = 10000
     if tokens > MAX_TOKENS:
         print(f"  Would trigger large response handling (>{MAX_TOKENS} tokens)")
-        preview = create_response_preview(large_data)
-        preview["message"] = f"Response too large ({tokens} tokens > {MAX_TOKENS})"
-        preview["data_url"] = "https://s3.amazonaws.com/bucket/example-url"
-        print("  Preview generated with", len(json.dumps(preview)), "chars")
+        print("  Would generate preview with first 50 lines of response")
     else:
         print(f"  Would return normally (<={MAX_TOKENS} tokens)")
     print()
@@ -136,7 +96,6 @@ if __name__ == "__main__":
     print()
     
     test_token_estimation()
-    test_response_preview()
     test_csv_preview()
     test_large_response_handling()
     

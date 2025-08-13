@@ -27,20 +27,32 @@ fi
 echo "🏗️  Building SAM application..."
 sam build
 
+# Function to add parameter overrides
+add_param() {
+    local param_name="$1"
+    local env_var="$2"
+    if [ -n "${!env_var}" ]; then
+        if [ -n "$PARAM_OVERRIDES" ]; then
+            PARAM_OVERRIDES="$PARAM_OVERRIDES $param_name=${!env_var}"
+        else
+            PARAM_OVERRIDES="$param_name=${!env_var}"
+        fi
+    fi
+}
+
 echo "🚀 Deploying SAM application..."
 if [ -f "samconfig.toml" ]; then
     echo "📋 Using existing configuration..."
     PARAM_OVERRIDES=""
-    if [ -n "$CERTIFICATE_ARN" ]; then
-        PARAM_OVERRIDES="CertificateArn=$CERTIFICATE_ARN"
-    fi
-    if [ -n "$DOMAIN_NAME" ]; then
-        if [ -n "$PARAM_OVERRIDES" ]; then
-            PARAM_OVERRIDES="$PARAM_OVERRIDES DomainName=$DOMAIN_NAME"
-        else
-            PARAM_OVERRIDES="DomainName=$DOMAIN_NAME"
-        fi
-    fi
+    
+    # Add parameters if environment variables are set
+    add_param "CertificateArn" "CERTIFICATE_ARN"
+    add_param "DomainName" "DOMAIN_NAME"
+    add_param "R2Bucket" "R2_BUCKET"
+    add_param "R2PublicDomain" "R2_PUBLIC_DOMAIN"
+    add_param "R2EndpointUrl" "R2_ENDPOINT_URL"
+    add_param "R2AccessKeyId" "R2_ACCESS_KEY_ID"
+    add_param "R2SecretAccessKey" "R2_SECRET_ACCESS_KEY"
     if [ -n "$PARAM_OVERRIDES" ]; then
         sam deploy --profile $AWS_PROFILE --parameter-overrides $PARAM_OVERRIDES
     else
