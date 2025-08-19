@@ -63,7 +63,11 @@ def setup_custom_tool_decorator(mcp):
                 if param_name in arg_descriptions:
                     param_schema['description'] = arg_descriptions[param_name]
                 else:
-                    param_schema['description'] = f"Parameter {param_name}"
+                    # Special case for entitlement parameter
+                    if param_name == 'entitlement':
+                        param_schema['description'] = '"delayed" for 15-minute delayed data, "realtime" for realtime data'
+                    else:
+                        param_schema['description'] = f"Parameter {param_name}"
                 
                 properties[param_name] = param_schema
                 
