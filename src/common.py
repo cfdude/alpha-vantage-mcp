@@ -53,13 +53,25 @@ def _make_api_request(function_name: str, params: dict, datatype: str = "json") 
     For large responses exceeding MAX_RESPONSE_TOKENS, returns a preview
     with a URL to the full data stored in temporary storage.
     """
-    params.update({
+    # Create a copy of params to avoid modifying the original
+    api_params = params.copy()
+    api_params.update({
         "function": function_name,
         "apikey": get_api_key()
     })
     
+    # Handle entitlement parameter if present in params or global variable
+    current_entitlement = globals().get('_current_entitlement')
+    entitlement = api_params.get("entitlement") or current_entitlement
+    
+    if entitlement:
+        api_params["entitlement"] = entitlement
+    elif "entitlement" in api_params:
+        # Remove entitlement if it's None or empty
+        api_params.pop("entitlement", None)
+    
     with httpx.Client() as client:
-        response = client.get(API_BASE_URL, params=params)
+        response = client.get(API_BASE_URL, params=api_params)
         response.raise_for_status()
         
         response_text = response.text

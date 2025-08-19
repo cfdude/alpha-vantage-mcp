@@ -17,14 +17,109 @@ TOOL_MODULES = {
     "ping": "src.tools.ping"
 }
 
+# Categories that should have entitlement parameter added
+ENTITLEMENT_CATEGORIES = {"core_stock_apis", "options_data_apis", "technical_indicators"}
+
 # Registry for decorated tools by category
 _tool_registries = {}
 _all_tools_registry = []
+
+import inspect
+import functools
+from typing import get_type_hints
+
+def add_entitlement_parameter(func):
+    """Decorator that adds entitlement parameter to a function"""
+    
+    # Get existing signature and type hints
+    sig = inspect.signature(func)
+    type_hints = get_type_hints(func)
+    
+    # Create new parameter for entitlement
+    entitlement_param = inspect.Parameter(
+        'entitlement',
+        inspect.Parameter.KEYWORD_ONLY,
+        default=None,
+        annotation='str | None'
+    )
+    
+    # Add entitlement parameter to the signature
+    params = list(sig.parameters.values())
+    params.append(entitlement_param)
+    new_sig = sig.replace(parameters=params)
+    
+    # Update docstring to include entitlement parameter
+    docstring = func.__doc__ or ""
+    if "Args:" in docstring and "entitlement" not in docstring:
+        # Find the Args section and add entitlement parameter
+        lines = docstring.split('\n')
+        args_idx = None
+        returns_idx = None
+        
+        for i, line in enumerate(lines):
+            if "Args:" in line:
+                args_idx = i
+            elif "Returns:" in line and args_idx is not None:
+                returns_idx = i
+                break
+        
+        if args_idx is not None:
+            entitlement_doc = '        entitlement: "delayed" for 15-minute delayed data, "realtime" for realtime data'
+            if returns_idx is not None:
+                lines.insert(returns_idx, entitlement_doc)
+                lines.insert(returns_idx, "")
+            else:
+                lines.append(entitlement_doc)
+            
+            func.__doc__ = '\n'.join(lines)
+    
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        # Extract entitlement if provided - it will be passed through params to _make_api_request
+        entitlement = kwargs.pop('entitlement', None)
+        
+        # Call the original function, passing entitlement through a global variable
+        if entitlement:
+            # Set global variable that _make_api_request can check
+            import src.common
+            src.common._current_entitlement = entitlement
+            try:
+                result = func(*args, **kwargs)
+            finally:
+                src.common._current_entitlement = None
+            return result
+        
+        return func(*args, **kwargs)
+    
+    # Apply the new signature to the wrapper
+    wrapper.__signature__ = new_sig
+    wrapper.__annotations__ = {**type_hints, 'entitlement': 'str | None'}
+    
+    return wrapper
 
 def tool(func):
     """Decorator to mark functions as MCP tools"""
     # Determine which module/category this function belongs to
     module_name = func.__module__.split('.')[-1]  # Get last part of module name
+    
+    # Determine the category from the module name
+    category = None
+    for cat, module_spec in TOOL_MODULES.items():
+        if isinstance(module_spec, list):
+            # For technical_indicators which has multiple modules
+            for mod_path in module_spec:
+                if mod_path.split('.')[-1] == module_name:
+                    category = cat
+                    break
+        else:
+            # For single module categories
+            if module_spec.split('.')[-1] == module_name:
+                category = cat
+                break
+    
+    # Apply entitlement decorator if this category needs it
+    if category in ENTITLEMENT_CATEGORIES:
+        func = add_entitlement_parameter(func)
     
     if module_name not in _tool_registries:
         _tool_registries[module_name] = []
