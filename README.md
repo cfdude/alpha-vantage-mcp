@@ -4,7 +4,7 @@ A comprehensive Alpha Vantage API MCP server that provides real-time and histori
 
 ## Quick Usage
 
-This is the official hosted MCP server for Alpha Vantage. Add this server to your favorite apps like Claude, Claude Code, and VS Code to give them access to comprehensive financial data APIs.
+This is the **official hosted MCP server** for Alpha Vantage. Add this server to your favorite apps like Claude, Claude Code, and VS Code to give them access to comprehensive financial data APIs.
 
 To use the server, [get your free Alpha Vantage API key](https://www.alphavantage.co/support/#api-key), copy it to your clipboard, then follow the instructions for your tool of choice below.
 
