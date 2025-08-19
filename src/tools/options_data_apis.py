@@ -6,8 +6,7 @@ def realtime_options(
     symbol: str,
     require_greeks: bool = False,
     contract: str = None,
-    datatype: str = "json",
-    entitlement: str = None
+    datatype: str = "json"
 ) -> dict[str, str] | str:
     """Returns realtime US options data with full market coverage.
     
@@ -22,7 +21,6 @@ def realtime_options(
                  is not set and the entire option chain for a given symbol will be returned.
         datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
                  json returns the options data in JSON format; csv returns the data as a CSV (comma separated value) file.
-        entitlement: "delayed" for 15-minute delayed data, "realtime" for realtime data
 
     Returns:
         Realtime options data in JSON format or CSV string based on datatype parameter.
@@ -36,8 +34,6 @@ def realtime_options(
         params["require_greeks"] = "true"
     if contract:
         params["contract"] = contract
-    if entitlement:
-        params["entitlement"] = entitlement
     
     return _make_api_request("REALTIME_OPTIONS", params, datatype)
 
@@ -46,8 +42,7 @@ def realtime_options(
 def historical_options(
     symbol: str, 
     date: str = None, 
-    datatype: str = "json",
-    entitlement: str = None
+    datatype: str = "json"
 ) -> dict[str, str] | str:
     """Returns the full historical options chain for a specific symbol on a specific date.
     
@@ -61,7 +56,6 @@ def historical_options(
               Any date later than 2008-01-01 is accepted. For example, date=2017-11-15.
         datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
                   json returns the options data in JSON format; csv returns the data as a CSV (comma separated value) file.
-        entitlement: "delayed" for 15-minute delayed data, "realtime" for realtime data
 
     Returns:
         Historical options data in JSON format or CSV string based on datatype parameter.
@@ -73,8 +67,6 @@ def historical_options(
     }
     if date:
         params["date"] = date
-    if entitlement:
-        params["entitlement"] = entitlement
     
     return _make_api_request("HISTORICAL_OPTIONS", params, datatype)
 
