@@ -10,6 +10,14 @@ if [ -f ".env" ]; then
     export $(grep -v '^#' .env | xargs)
 fi
 
+# Build the web application
+echo "🔨 Building web application..."
+cd web && npm run build && cd ..
+if [ $? -ne 0 ]; then
+    echo "❌ Build failed"
+    exit 1
+fi
+
 if [ -z "$1" ]; then
     BUCKET_NAME="alphavantage-mcp-static-files"
     echo "Using default bucket: $BUCKET_NAME"
