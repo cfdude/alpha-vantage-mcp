@@ -1,0 +1,200 @@
+'use client';
+
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import { Components } from 'react-markdown';
+import { generateSlug } from '@/lib/toc';
+
+interface MarkdownProps {
+  content: string;
+  className?: string;
+}
+
+// Custom components for ReactMarkdown
+const markdownComponents: Components = {
+  h1: () => {
+    return <div></div>
+  },
+  h2: ({ children }) => {
+    const text = children?.toString() || '';
+    const id = generateSlug(text);
+    return (
+      <h2 
+        id={id}
+className="text-3xl font-light mb-8" style={{ color: '#4ade80' }}
+      >
+        {children}
+      </h2>
+    );
+  },
+  h3: ({ children }) => {
+    const text = children?.toString() || '';
+    const id = generateSlug(text);
+    return (
+      <h3 
+        id={id}
+        className="text-2xl font-light mb-6" style={{ color: '#4ade80' }}
+      >
+        {children}
+      </h3>
+    );
+  },
+  h4: ({ children }) => (
+    <h4 className="text-xl font-semibold mb-4" style={{ color: '#4ade80' }}>
+      {children}
+    </h4>
+  ),
+  h5: ({ children }) => (
+    <h5 className="text-base sm:text-lg font-bold mt-3 mb-1" style={{ color: 'white' }}>
+      {children}
+    </h5>
+  ),
+  h6: ({ children }) => (
+    <h6 className="text-sm sm:text-base font-bold mt-3 mb-1" style={{ color: 'white' }}>
+      {children}
+    </h6>
+  ),
+  p: ({ children }) => (
+    <p className="mb-4" style={{ color: '#d1d5db' }}>
+      {children}
+    </p>
+  ),
+  ul: ({ children }) => (
+    <ul className="list-disc pl-6 space-y-2 mb-4">
+      {children}
+    </ul>
+  ),
+  ol: ({ children }) => (
+    <ol className="list-decimal pl-6 space-y-2 mb-4">
+      {children}
+    </ol>
+  ),
+  li: ({ children }) => (
+    <li style={{ color: '#d1d5db' }}>
+      {children}
+    </li>
+  ),
+  blockquote: ({ children }) => (
+    <blockquote className="border-l-4 pl-4 py-2 mb-4 rounded-r-md" style={{ borderLeftColor: 'rgba(74, 222, 128, 0.3)', backgroundColor: '#1f1f1f' }}>
+      <div className="italic" style={{ color: '#9ca3af' }}>
+        {children}
+      </div>
+    </blockquote>
+  ),
+  a: ({ href, children, ...props }) => {
+    const isExternal = href && (href.startsWith('http') || href.startsWith('https'));
+    return (
+      <a
+        href={href}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
+className="hover:underline" style={{ color: '#4ade80' }}
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  },
+  strong: ({ children }) => (
+    <strong style={{ color: '#4ade80' }}>
+      {children}
+    </strong>
+  ),
+  em: ({ children }) => (
+    <em className="italic" style={{ color: '#9ca3af' }}>
+      {children}
+    </em>
+  ),
+  code: ({ children, ...props }) => {
+    const content = children?.toString().trim() || '';
+    
+    // If it's an empty code block, don't render anything
+    if (content.length === 0) {
+      return null;
+    }
+
+    return (
+      <code 
+  className="px-2 py-1 rounded text-sm" style={{ backgroundColor: '#1f1f1f', color: '#4ade80', border: '1px solid rgba(74, 222, 128, 0.3)' }} 
+        {...props}
+      >
+        {children}
+      </code>
+    );
+  },
+  pre: ({ children, ...props }) => (
+    <pre 
+className="p-4 rounded text-sm overflow-x-auto my-4" style={{ backgroundColor: '#1f1f1f', color: '#4ade80', border: '1px solid rgba(74, 222, 128, 0.3)' }} 
+      {...props}
+    >
+      {children}
+    </pre>
+  ),
+  hr: () => (
+    <hr className="my-8 border-t" style={{ borderColor: 'rgba(74, 222, 128, 0.3)' }} />
+  ),
+  table: ({ children }) => (
+    <div className="overflow-x-auto my-6">
+      <table className="w-full border-collapse">
+        {children}
+      </table>
+    </div>
+  ),
+  th: ({ children }) => (
+    <th className="px-4 py-2" style={{ border: '1px solid rgba(74, 222, 128, 0.3)', color: '#4ade80', backgroundColor: '#1f1f1f' }}>
+      {children}
+    </th>
+  ),
+  td: ({ children }) => (
+    <td className="px-4 py-2" style={{ border: '1px solid rgba(74, 222, 128, 0.3)', color: '#d1d5db' }}>
+      {children}
+    </td>
+  ),
+  div: ({ className, ...props }) => {
+    // Regular div
+    return <div className={className} {...props} />;
+  },
+};
+
+// Function to parse Hugo shortcodes and convert YouTube links
+function parseShortcodes(content: string): string {
+  let processedContent = content;
+  
+  // Replace {{< rawhtml >}} shortcodes with the HTML content inside
+  const rawhtmlRegex = /\{\{<\s*rawhtml\s*>\}\}([\s\S]*?)\{\{<\s*\/rawhtml\s*>\}\}/g;
+  processedContent = processedContent.replace(rawhtmlRegex, (_, htmlContent) => {
+    // Return the HTML content with proper spacing
+    return htmlContent.trim();
+  });
+  
+  // Convert YouTube image links to iframe embeds
+  const youtubePattern = /\[!\[([^\]]*)\]\(https:\/\/img\.youtube\.com\/vi\/([^\/]+)\/[^)]+\)\]\(https:\/\/www\.youtube\.com\/watch\?v=([^)]+)\)/g;
+  processedContent = processedContent.replace(youtubePattern, '<div class="youtube-embed mb-6 text-center"><iframe width="560" height="315" src="https://www.youtube.com/embed/$3" frameborder="0" allowfullscreen class="w-full max-w-2xl mx-auto rounded-lg"></iframe></div>');
+  
+  return processedContent;
+}
+
+export default function Markdown({ content, className = '' }: MarkdownProps) {
+  // Preprocess content to handle Hugo shortcodes
+  const processedContent = parseShortcodes(content);
+
+  // Add error boundary and validation for content
+  if (!processedContent || typeof processedContent !== 'string') {
+    console.error('Invalid markdown content:', processedContent);
+    return <div className="text-red-500">Error: Invalid content</div>;
+  }
+
+  return (
+    <div className={`prose max-w-none ${className}`}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
+        components={markdownComponents}
+      >
+        {processedContent}
+      </ReactMarkdown>
+    </div>
+  );
+}

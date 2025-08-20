@@ -18,6 +18,10 @@ Parameters:
   CertificateArn:
     Type: String
     Description: ACM Certificate ARN for the custom domain (must be in us-east-1)
+  StaticFilesBucket:
+    Type: String
+    Default: alphavantage-mcp-static-files
+    Description: S3 bucket name for static files (web assets)
   R2Bucket:
     Type: String
     Default: alphavantage-mcp-responses
@@ -37,24 +41,143 @@ Parameters:
     Description: R2 secret access key
 
 Resources:
-  CustomDomain:
-    Type: AWS::ApiGateway::DomainName
+  # S3 bucket for static files
+  StaticFilesBucketResource:
+    Type: AWS::S3::Bucket
     Properties:
-      DomainName: !Ref DomainName
-      CertificateArn: !Ref CertificateArn
-      SecurityPolicy: TLS_1_2
+      BucketName: !Ref StaticFilesBucket
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
 
-  BasePathMapping:
-    Type: AWS::ApiGateway::BasePathMapping
+
+  # CloudFront Origin Access Control for S3
+  CloudFrontOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
     Properties:
-      DomainName: !Ref CustomDomain
-      RestApiId: !Ref ServerlessRestApi
-      Stage: Prod
+      OriginAccessControlConfig:
+        Name: !Sub '${AWS::StackName}-S3-OAC'
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # CloudFront distribution
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref DomainName
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6  # Managed-CachingOptimized
+          OriginRequestPolicyId: 88a5eaf4-2fd4-4709-b370-b4c650ea3fcf  # Managed-CORS-S3Origin
+        CacheBehaviors:
+          # API routes
+          - PathPattern: /mcp*
+            TargetOriginId: APIOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # Managed-AllViewerExceptHostHeader
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - PATCH
+              - POST
+              - DELETE
+          - PathPattern: /openai*
+            TargetOriginId: APIOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # Managed-AllViewerExceptHostHeader
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - PATCH
+              - POST
+              - DELETE
+          - PathPattern: /.well-known*
+            TargetOriginId: APIOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # Managed-AllViewerExceptHostHeader
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+          - PathPattern: /authorize*
+            TargetOriginId: APIOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # Managed-AllViewerExceptHostHeader
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - PATCH
+              - POST
+              - DELETE
+          - PathPattern: /token*
+            TargetOriginId: APIOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # Managed-AllViewerExceptHostHeader
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - PATCH
+              - POST
+              - DELETE
+          - PathPattern: /register*
+            TargetOriginId: APIOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # Managed-AllViewerExceptHostHeader
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - PATCH
+              - POST
+              - DELETE
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt StaticFilesBucketResource.RegionalDomainName
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+            OriginAccessControlId: !Ref CloudFrontOriginAccessControl
+          - Id: APIOrigin
+            DomainName: !Sub '${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com'
+            CustomOriginConfig:
+              HTTPPort: 443
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+            OriginPath: /Prod
+        Enabled: true
+        DefaultRootObject: index.html
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CertificateArn
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
 
   MCPLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./
+      CodeUri: server
       Handler: lambda_function.lambda_handler
       Runtime: python3.13
       Architectures:
@@ -87,11 +210,14 @@ Outputs:
     Description: "API Gateway endpoint URL for MCP function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
   CustomDomainURL:
-    Description: "Custom domain URL for MCP function"
+    Description: "Custom domain URL (served via CloudFront)"
     Value: !Sub "https://${DomainName}/"
-  CustomDomainTarget:
-    Description: "Custom domain target for DNS configuration"
-    Value: !GetAtt CustomDomain.DistributionDomainName
+  CloudFrontDomainName:
+    Description: "CloudFront distribution domain name for DNS configuration"
+    Value: !GetAtt CloudFrontDistribution.DomainName
+  StaticFilesBucket:
+    Description: "S3 bucket for static files"
+    Value: !Ref StaticFilesBucketResource
   MCPLambdaFunction:
     Description: "MCP Lambda Function ARN"
     Value: !GetAtt MCPLambdaFunction.Arn

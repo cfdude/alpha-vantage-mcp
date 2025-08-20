@@ -1,20 +1,6 @@
 dev_docs
 .env.bak
 .env
-requirements.txt
-
-# Python-generated files
-__pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
-
-# Virtual environments
-.venv
-
-.DS_Store
 
 # AWS SAM build artifacts
 .aws-sam/
