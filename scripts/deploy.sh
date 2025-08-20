@@ -17,7 +17,7 @@ echo "🚀 Starting deployment of MCP Lambda function..."
 if command -v uv &> /dev/null; then
     echo "📦 Using uv for package management..."
     # Export without the editable package for Lambda deployment
-    uv export --format=requirements-txt --no-hashes | grep -v "^-e \." > requirements.txt
+    cd server && uv export --format=requirements-txt --no-hashes | grep -v "^-e \." > requirements.txt && cd ..
 else
     echo "❌ Error: uv is required for deployment but not found in PATH"
     echo "Please install uv: https://github.com/astral-sh/uv"

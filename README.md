@@ -26,6 +26,10 @@ To connect Claude Web to this MCP server:
 3. Add the MCP server URL with your API key: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
 4. Click "Connect"
 
+**📺 Watch the setup tutorial** - Click the image below to watch a step-by-step video guide:
+
+[![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/YbTIjBsuZiE/maxresdefault.jpg)](https://www.youtube.com/watch?v=YbTIjBsuZiE)
+
 **OAuth Option:**
 1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
 2. Click "Add Custom Connector"
@@ -362,7 +366,3 @@ This will automatically set up the OpenAI Actions schema for the selected Alpha 
 |----------|------|-------------|
 | ping | `PING` | Health check tool that returns 'pong' |
 | ping | `ADD_TWO_NUMBERS` | Example tool for adding two numbers |
-
-## Deployment
-
-For detailed deployment instructions, see the [Deployment Guide](DEPLOYMENT.md).
