@@ -48,7 +48,7 @@ To connect Claude Web to this MCP server:
 
 **📺 Watch the setup tutorial** - Click the image below to watch a step-by-step video guide:
 
-[![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/YbTIjBsuZiE/maxresdefault.jpg)](https://www.youtube.com/watch?v=YbTIjBsuZiE)
+[![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/SLXiyKfNVNQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=SLXiyKfNVNQ)
 
 **OAuth Option:**
 1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
