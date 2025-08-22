@@ -1,0 +1,64 @@
+name: Deploy Static Files
+
+on:
+  push:
+    branches:
+      - test
+      - main
+    paths:
+      - 'web/**'
+      - 'scripts/deploy-static.sh'
+      - 'README.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: web/package-lock.json
+        
+    - name: Configure AWS credentials for test
+      if: github.ref == 'refs/heads/test'
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_TEST }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_TEST }}
+        aws-region: ${{ secrets.AWS_REGION_TEST }}
+        
+    - name: Configure AWS credentials for production
+      if: github.ref == 'refs/heads/main'
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+        aws-region: ${{ secrets.AWS_REGION_PROD }}
+        
+    - name: Set environment variables for test
+      if: github.ref == 'refs/heads/test'
+      run: |
+        echo "BUCKET_NAME=${{ secrets.S3_BUCKET_NAME_TEST }}" >> $GITHUB_ENV
+        echo "CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_TEST }}" >> $GITHUB_ENV
+        
+    - name: Set environment variables for production
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "BUCKET_NAME=${{ secrets.S3_BUCKET_NAME_PROD }}" >> $GITHUB_ENV
+        echo "CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_PROD }}" >> $GITHUB_ENV
+        
+    - name: Make deploy script executable
+      run: chmod +x scripts/deploy-static.sh
+      
+    - name: Deploy to S3
+      run: ./scripts/deploy-static.sh ${{ env.BUCKET_NAME }}
+      env:
+        CLOUDFRONT_DISTRIBUTION_ID: ${{ env.CLOUDFRONT_DISTRIBUTION_ID }}
