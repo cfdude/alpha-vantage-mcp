@@ -62,7 +62,7 @@ aws cloudformation deploy \
 Use the deployment script to upload static files:
 
 ```bash
-./deploy-static.sh alphavantage-mcp-static-files
+./deploy-web.sh alphavantage-mcp-static-files
 ```
 
 Or manually with AWS CLI:
@@ -113,7 +113,7 @@ To update the frontend:
 
 1. Make changes in the `web/` directory
 2. Run `npm run build`
-3. Run `./deploy-static.sh <bucket-name>`
+3. Run `./deploy-web.sh <bucket-name>`
 4. (Optional) Invalidate CloudFront cache for immediate updates:
 
 ```bash

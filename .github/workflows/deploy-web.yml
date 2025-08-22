@@ -5,11 +5,6 @@ on:
     branches:
       - test
       - main
-    paths:
-      - 'web/**'
-      - 'scripts/deploy-static.sh'
-      - 'README.md'
-      - 'docs/**'
   workflow_dispatch:
 
 jobs:
@@ -26,6 +21,9 @@ jobs:
         node-version: '22'
         cache: 'npm'
         cache-dependency-path: web/package-lock.json
+        
+    - name: Install dependencies
+      run: cd web && npm ci
         
     - name: Configure AWS credentials for test
       if: github.ref == 'refs/heads/test'
@@ -56,9 +54,9 @@ jobs:
         echo "CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_PROD }}" >> $GITHUB_ENV
         
     - name: Make deploy script executable
-      run: chmod +x scripts/deploy-static.sh
+      run: chmod +x scripts/deploy-web.sh
       
     - name: Deploy to S3
-      run: ./scripts/deploy-static.sh ${{ env.BUCKET_NAME }}
+      run: ./scripts/deploy-web.sh ${{ env.BUCKET_NAME }}
       env:
         CLOUDFRONT_DISTRIBUTION_ID: ${{ env.CLOUDFRONT_DISTRIBUTION_ID }}

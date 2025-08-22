@@ -1,8 +1,12 @@
 #!/bin/bash
 
 # Deploy static files to S3 bucket
-# Usage: ./deploy-static.sh <bucket-name>
-AWS_PROFILE=${AWS_PROFILE:-default}
+# Usage: ./deploy-web.sh <bucket-name>
+AWS_PROFILE=${AWS_PROFILE:-}
+PROFILE_FLAG=""
+if [ -n "$AWS_PROFILE" ]; then
+    PROFILE_FLAG="--profile $AWS_PROFILE"
+fi
 
 # Load environment variables from .env if it exists
 if [ -f ".env" ]; then
@@ -36,7 +40,7 @@ echo "Deploying static files to S3 bucket: $BUCKET_NAME"
 
 # Sync files to S3 with appropriate cache headers
 aws s3 sync "$STATIC_DIR" "s3://$BUCKET_NAME" \
-    --profile $AWS_PROFILE \
+    $PROFILE_FLAG \
     --delete \
     --cache-control "public, max-age=31536000" \
     --exclude "*.html" \
@@ -45,7 +49,7 @@ aws s3 sync "$STATIC_DIR" "s3://$BUCKET_NAME" \
 
 # Upload HTML files with shorter cache duration
 aws s3 sync "$STATIC_DIR" "s3://$BUCKET_NAME" \
-    --profile $AWS_PROFILE \
+    $PROFILE_FLAG \
     --delete \
     --cache-control "public, max-age=3600" \
     --include "*.html" \
@@ -58,7 +62,7 @@ echo "Static files deployed successfully!"
 if [ -n "$CLOUDFRONT_DISTRIBUTION_ID" ]; then
     echo "🔄 Invalidating CloudFront cache..."
     aws cloudfront create-invalidation \
-        --profile $AWS_PROFILE \
+        $PROFILE_FLAG \
         --distribution-id $CLOUDFRONT_DISTRIBUTION_ID \
         --paths "/*" \
         --no-cli-pager
