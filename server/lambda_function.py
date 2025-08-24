@@ -31,7 +31,17 @@ def create_mcp_handler_for_categories(categories: list[str] | None) -> MCPLambda
 
 def lambda_handler(event, context):
     """AWS Lambda handler function."""
+    # Log incoming request details
+    method = event.get("httpMethod", "UNKNOWN")
     path = event.get("path", "/")
+    headers = event.get("headers", {})
+    body = event.get("body", "")
+    query_params = event.get("queryStringParameters", {})
+    
+    logger.info(f"Incoming request: {method} {path}")
+    logger.info(f"Headers: {headers}")
+    logger.info(f"Query parameters: {query_params}")
+    logger.info(f"Body: {body}")
     
     # Handle OAuth 2.1 endpoints first (before token validation)
     if path == "/.well-known/oauth-authorization-server":
