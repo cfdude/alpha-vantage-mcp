@@ -39,29 +39,37 @@ def handle_metadata_discovery(event: dict) -> dict:
     
     Returns metadata document according to RFC 8414.
     """
-    # Extract base URL from the request
-    headers = event.get('headers', {})
-    host = headers.get('Host') or headers.get('host')
+    import os
     
-    if not host:
-        return {
-            "statusCode": 400,
-            "body": json.dumps({"error": "missing_host_header"})
-        }
+    # Use domain name from environment variable, fallback to request host
+    domain_name = os.environ.get('DOMAIN_NAME')
     
-    # Enforce HTTPS for OAuth endpoints (required by OAuth 2.1)
-    scheme = "https"  # Always use HTTPS for OAuth endpoints
-    base_url = f"{scheme}://{host}"
-    
-    # Validate that we're using HTTPS (except for localhost in development)
-    if not host.startswith('localhost') and not headers.get('X-Forwarded-Proto') == 'https':
-        return {
-            "statusCode": 400,
-            "body": json.dumps({
-                "error": "invalid_request", 
-                "error_description": "OAuth endpoints require HTTPS"
-            })
-        }
+    if domain_name:
+        base_url = f"https://{domain_name}"
+    else:
+        # Fallback to extracting from request headers
+        headers = event.get('headers', {})
+        host = headers.get('Host') or headers.get('host')
+        
+        if not host:
+            return {
+                "statusCode": 400,
+                "body": json.dumps({"error": "missing_host_header"})
+            }
+        
+        # Validate that we're using HTTPS (except for localhost in development)
+        if not host.startswith('localhost') and not headers.get('X-Forwarded-Proto') == 'https':
+            return {
+                "statusCode": 400,
+                "body": json.dumps({
+                    "error": "invalid_request", 
+                    "error_description": "OAuth endpoints require HTTPS"
+                })
+            }
+        
+        # Enforce HTTPS for OAuth endpoints (required by OAuth 2.1)
+        scheme = "https"  # Always use HTTPS for OAuth endpoints
+        base_url = f"{scheme}://{host}"
     
     metadata = {
         "issuer": base_url,

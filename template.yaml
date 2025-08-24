@@ -199,6 +199,7 @@ Resources:
           ENVIRONMENT: !Ref Environment
           PYTHONPATH: /var/runtime
           MAX_RESPONSE_TOKENS: '10000'
+          DOMAIN_NAME: !Ref DomainName
           R2_BUCKET: !Ref R2Bucket
           R2_PUBLIC_DOMAIN: !Ref R2PublicDomain
           R2_ENDPOINT_URL: !Ref R2EndpointUrl

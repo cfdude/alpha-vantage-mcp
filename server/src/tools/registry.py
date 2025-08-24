@@ -14,7 +14,8 @@ TOOL_MODULES = {
         "src.tools.technical_indicators_part3",
         "src.tools.technical_indicators_part4"
     ],
-    "ping": "src.tools.ping"
+    "ping": "src.tools.ping",
+    "openai": "src.tools.openai"
 }
 
 # Categories that should have entitlement parameter added
