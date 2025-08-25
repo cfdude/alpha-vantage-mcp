@@ -32,13 +32,13 @@ To connect Claude Web to this MCP server:
 
 📺 Watch the **setup tutorial** - Click the image below to watch a step-by-step video guide:
 
-[![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/Iaqu3bA3IsM/maxresdefault.jpg)](https://www.youtube.com/watch?v=W69x2qJcYmI)
+[![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/W69x2qJcYmI/maxresdefault.jpg)](https://www.youtube.com/watch?v=W69x2qJcYmI)
 
 &nbsp;
 
 📺 Already have your Alpha Vantage MCP server set up? Below are a few examples of Claude performing various stock analysis & charting tasks:
 
-[![Alpha Vantage MCP Example Prompts](https://img.youtube.com/vi/Iaqu3bA3IsM/maxresdefault.jpg)](https://www.youtube.com/watch?v=tyl9E7fddvU)
+[![Alpha Vantage MCP Example Prompts](https://img.youtube.com/vi/tyl9E7fddvU/maxresdefault.jpg)](https://www.youtube.com/watch?v=tyl9E7fddvU)
 
 **Query Param Option (Recommended):**
 1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
