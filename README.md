@@ -4,11 +4,13 @@ A comprehensive Alpha Vantage API MCP server that provides real-time and histori
 
 ## Quickstart
 
-This is the **official hosted MCP server** for Alpha Vantage. Add this server to your favorite apps like Claude, Claude Code, and VS Code to give them access to comprehensive financial data APIs.
+This is the official hosted MCP server for Alpha Vantage. Add this server to your favorite apps like Claude, Claude Code, and VS Code to give them access to comprehensive financial data APIs.
 
 To use the server, [get your free Alpha Vantage API key](https://www.alphavantage.co/support/#api-key), copy it to your clipboard, then follow the instructions for your tool of choice below.
 
 💡 Currently, ChatGPT's MCP connector is (1) not fully interoperable with Anthropic's MCP framework, and (2) limited to ChatGPT Pro ($200/month) only. We are closely monitoring the situation and will add ChatGPT-based tutorials as soon as the above constraints are removed.  
+
+👉 Any questions? Please contact support@alphavantage.co
 
 ### Table of Contents - Setup Instructions
 - [Claude.ai](#claudeai)
@@ -19,18 +21,20 @@ To use the server, [get your free Alpha Vantage API key](https://www.alphavantag
 - [Google Gemini CLI](#google-gemini-cli)
 - [Windsurf](#windsurf)
 
+&nbsp;
+
 ### Claude.ai
 To connect Claude Web to this MCP server:
+
+📺 Watch the **setup tutorial** - Click the image below to watch a step-by-step video guide:
+
+[![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/Iaqu3bA3IsM/maxresdefault.jpg)](https://www.youtube.com/watch?v=Iaqu3bA3IsM)
 
 **Query Param Option (Recommended):**
 1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
 2. Click "Add Custom Connector"
 3. Add the MCP server URL with your API key: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
 4. Click "Connect"
-
-📺 Watch the **setup tutorial** - Click the image below to watch a step-by-step video guide:
-
-[![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/Iaqu3bA3IsM/maxresdefault.jpg)](https://www.youtube.com/watch?v=Iaqu3bA3IsM)
 
 **OAuth Option:**
 1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
@@ -39,6 +43,8 @@ To connect Claude Web to this MCP server:
 4. Click "Connect"
 5. Enter your Alpha Vantage API token
 6. Click "Authorize Access"
+
+&nbsp;
 
 ### Claude Desktop
 To connect Claude Desktop to this MCP server:
@@ -61,6 +67,8 @@ To connect Claude Desktop to this MCP server:
 7. Click "Authorize Access"
 8. Restart Claude Desktop to see the MCP server connection
 
+&nbsp;
+
 ### Claude Code
 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) is a command-line tool for coding with Claude.
 
@@ -75,6 +83,8 @@ Then connect with:
 ```bash
 /mcp
 ```
+
+&nbsp;
 
 ### Visual Studio Code
 To connect VS Code with GitHub Copilot to this MCP server:
@@ -95,6 +105,8 @@ To connect VS Code with GitHub Copilot to this MCP server:
 
 3. Open the Chat view and select Agent mode
 
+&nbsp;
+
 ### Cursor
 Configure Cursor by editing `~/.cursor/mcp.json` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
 
@@ -108,6 +120,8 @@ Configure Cursor by editing `~/.cursor/mcp.json` (replace `YOUR_API_KEY` with yo
   }
 }
 ```
+
+&nbsp;
 
 ### Google Gemini CLI
 To use Alpha Vantage's MCP server in Google Gemini CLI:
@@ -127,6 +141,8 @@ To use Alpha Vantage's MCP server in Google Gemini CLI:
 
 3. Run `gemini` in your terminal from your project directory
 
+&nbsp;
+
 ### Windsurf
 1. Edit your Windsurf configuration file at `~/.codeium/windsurf/mcp_config.json`
 2. Add the following configuration (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
@@ -142,11 +158,15 @@ To use Alpha Vantage's MCP server in Google Gemini CLI:
 }
 ```
 
+&nbsp;
+
 ### Connection URL
 Connect to the MCP server using:
 ```
 https://mcp.alphavantage.co/mcp
 ```
+
+&nbsp;
 
 ### Category Filtering
 Optionally filter available tools by category using:
@@ -166,6 +186,7 @@ Available categories:
 
 If no categories are specified, all tools will be available.
 
+&nbsp;
 
 ## Tools Reference
 
