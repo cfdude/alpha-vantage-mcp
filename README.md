@@ -34,7 +34,7 @@ To connect Claude Web to this MCP server:
 
 [![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/Iaqu3bA3IsM/maxresdefault.jpg)](https://www.youtube.com/watch?v=W69x2qJcYmI)
 
-📺 Already have your Alpha Vantage MCP server set up? Below are a few examples of Claude pulling market data and performing analysis & charting:
+📺 Already have your Alpha Vantage MCP server set up? Below are a few examples of Claude performing various stock analysis tasks:
 
 [![Alpha Vantage MCP Example Prompts](https://img.youtube.com/vi/Iaqu3bA3IsM/maxresdefault.jpg)](https://www.youtube.com/watch?v=tyl9E7fddvU)
 
