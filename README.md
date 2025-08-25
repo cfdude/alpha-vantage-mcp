@@ -46,7 +46,7 @@ To connect Claude Web to this MCP server:
 3. Add the MCP server URL with your API key: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
 4. Click "Connect"
 
-📺 Watch the setup tutorial - Click the image below to watch a step-by-step video guide:
+📺 Watch the **setup tutorial** - Click the image below to watch a step-by-step video guide:
 
 [![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/Iaqu3bA3IsM/maxresdefault.jpg)](https://www.youtube.com/watch?v=Iaqu3bA3IsM)
 
