@@ -2,11 +2,13 @@
 
 A comprehensive Alpha Vantage API MCP server that provides real-time and historical financial data through the Model Context Protocol.
 
-## Quick Usage
+## Quickstart
 
 This is the **official hosted MCP server** for Alpha Vantage. Add this server to your favorite apps like Claude, Claude Code, and VS Code to give them access to comprehensive financial data APIs.
 
 To use the server, [get your free Alpha Vantage API key](https://www.alphavantage.co/support/#api-key), copy it to your clipboard, then follow the instructions for your tool of choice below.
+
+💡 Currently, ChatGPT's MCP connector is (1) not fully interoperable with Anthropic's MCP framework, and (2) limited to ChatGPT Pro ($200/month) only. We are closely monitoring the situation and will add ChatGPT-based tutorials as soon as the above constraints are removed.  
 
 ### Table of Contents - Setup Instructions
 - [Claude.ai](#claudeai)
