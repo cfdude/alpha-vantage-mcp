@@ -12,6 +12,8 @@ To use the server, [get your free Alpha Vantage API key](https://www.alphavantag
 
 👉 Any questions? Please contact support@alphavantage.co
 
+⭐ View MCP source code on [Github](https://github.com/alphavantage/alpha_vantage_mcp)
+
 &nbsp;
 
 ### Setup Instructions by Platform
@@ -28,9 +30,13 @@ To use the server, [get your free Alpha Vantage API key](https://www.alphavantag
 ### Claude.ai
 To connect Claude Web to this MCP server:
 
-📺 Watch the **setup tutorial** - Click the image below to watch a step-by-step video guide:
+📺 Watch the setup tutorial - Click the image below to watch a step-by-step video guide:
 
 [![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/Iaqu3bA3IsM/maxresdefault.jpg)](https://www.youtube.com/watch?v=W69x2qJcYmI)
+
+📺 Already have your Alpha Vantage MCP server set up? Below are a few examples of Claude pulling market data and performing analysis & charting:
+
+[![Alpha Vantage MCP Example Prompts](https://img.youtube.com/vi/Iaqu3bA3IsM/maxresdefault.jpg)](https://www.youtube.com/watch?v=tyl9E7fddvU)
 
 **Query Param Option (Recommended):**
 1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
