@@ -20,7 +20,7 @@ Parameters:
     Description: ACM Certificate ARN for the custom domain (must be in us-east-1)
   StaticFilesBucket:
     Type: String
-    Default: alphavantage-mcp-static-files
+    Default: alphavantage-mcp-web
     Description: S3 bucket name for static files (web assets)
   R2Bucket:
     Type: String

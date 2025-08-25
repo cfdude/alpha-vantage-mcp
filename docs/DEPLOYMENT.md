@@ -34,7 +34,7 @@ This guide covers deploying the Alpha Vantage MCP Server to AWS Lambda using AWS
 
 3. **Request SSL certificate:**
    ```bash
-   ./request_certificate.sh
+   ./request-certificate.sh
    ```
    The script will output the certificate ARN. If the certificate is not yet issued, it will also display DNS validation records that you must add to your DNS provider before the certificate can be issued. Follow the instructions provided by the script to add the required DNS records.
    

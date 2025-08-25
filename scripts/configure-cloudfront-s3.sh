@@ -19,7 +19,7 @@ if [ -z "$CLOUDFRONT_DISTRIBUTION_ID" ]; then
     exit 1
 fi
 
-STATIC_FILES_BUCKET=${STATIC_FILES_BUCKET:-alphavantage-mcp-static-files}
+STATIC_FILES_BUCKET=${STATIC_FILES_BUCKET:-alphavantage-mcp-web}
 echo "🪣 Using S3 bucket: $STATIC_FILES_BUCKET"
 
 # Get AWS account ID
