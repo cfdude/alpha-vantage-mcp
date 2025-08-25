@@ -23,7 +23,7 @@ if [ $? -ne 0 ]; then
 fi
 
 if [ -z "$1" ]; then
-    BUCKET_NAME="alphavantage-mcp-static-files"
+    BUCKET_NAME="alphavantage-mcp-web"
     echo "Using default bucket: $BUCKET_NAME"
 else
     BUCKET_NAME=$1

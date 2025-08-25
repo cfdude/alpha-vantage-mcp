@@ -48,7 +48,7 @@ aws cloudformation deploy \
     Environment=production \
     DomainName=mcp.alphavantage.co \
     CertificateArn=arn:aws:acm:us-east-1:123456789012:certificate/your-cert-id \
-    StaticFilesBucket=alphavantage-mcp-static-files \
+    StaticFilesBucket=alphavantage-mcp-web \
     R2Bucket=alphavantage-mcp-responses \
     R2PublicDomain=https://data.alphavantage-mcp.com \
     R2EndpointUrl=https://your-account-id.r2.cloudflarestorage.com \
@@ -62,13 +62,13 @@ aws cloudformation deploy \
 Use the deployment script to upload static files:
 
 ```bash
-./deploy-web.sh alphavantage-mcp-static-files
+./deploy-web.sh alphavantage-mcp-web
 ```
 
 Or manually with AWS CLI:
 
 ```bash
-aws s3 sync web/out s3://alphavantage-mcp-static-files --delete
+aws s3 sync web/out s3://alphavantage-mcp-web --delete
 ```
 
 ### 4. Configure DNS
