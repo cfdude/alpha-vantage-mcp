@@ -14,8 +14,8 @@ To use the server, [get your free Alpha Vantage API key](https://www.alphavantag
 
 &nbsp;
 
-### Table of Contents - Setup Instructions
-- [Claude.ai](#claudeai)
+### Setup Instructions by Platform
+- [Claude.ai (Claude Web)](#claudeai)
 - [Claude Desktop](#claude-desktop)
 - [Claude Code](#claude-code)
 - [Visual Studio Code](#visual-studio-code)
