@@ -9,7 +9,6 @@ This is the **official hosted MCP server** for Alpha Vantage. Add this server to
 To use the server, [get your free Alpha Vantage API key](https://www.alphavantage.co/support/#api-key), copy it to your clipboard, then follow the instructions for your tool of choice below.
 
 ### Table of Contents - Setup Instructions
-- [ChatGPT](#chatgpt)
 - [Claude.ai](#claudeai)
 - [Claude Desktop](#claude-desktop)
 - [Claude Code](#claude-code)
@@ -17,25 +16,6 @@ To use the server, [get your free Alpha Vantage API key](https://www.alphavantag
 - [Cursor](#cursor)
 - [Google Gemini CLI](#google-gemini-cli)
 - [Windsurf](#windsurf)
-
-### ChatGPT
-To connect ChatGPT to this MCP server using custom connectors:
-
-**Requirements:** ChatGPT Pro, Team, Enterprise, or Edu plan, see [Connectors in ChatGPT](https://help.openai.com/en/articles/11487775-connectors-in-chatgpt)
-
-**Query Param Option (Recommended):**
-1. Go to [ChatGPT Settings → Connectors](https://chatgpt.com/#settings/Connectors)
-2. Click "Add Custom Connector"  
-3. Add the MCP server URL with your API key: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
-4. Click "Connect"
-
-**OAuth Option:**
-1. Go to [ChatGPT Settings → Connectors](https://chatgpt.com/#settings/Connectors)
-2. Click "Add Custom Connector"
-3. Add the MCP server URL: `https://mcp.alphavantage.co/mcp`
-4. Click "Connect"
-5. Enter your Alpha Vantage API token when prompted
-6. Click "Authorize Access"
 
 ### Claude.ai
 To connect Claude Web to this MCP server:
