@@ -42,7 +42,7 @@ export default function TOCMobile({ tocItems }: TOCMobileProps) {
       <div className="fixed bottom-4 right-2 z-50" ref={containerRef}>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-className="rounded-full w-12 h-12 p-0 backdrop-blur-sm border-2 shadow-lg transition-colors" style={{ backgroundColor: 'rgba(31, 31, 31, 0.9)', borderColor: 'rgba(74, 222, 128, 0.3)', color: 'white' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1f1f1f'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(31, 31, 31, 0.9)'}
+className="rounded-full w-12 h-12 p-0 backdrop-blur-sm border-2 shadow-lg transition-colors flex items-center justify-center" style={{ backgroundColor: 'rgba(31, 31, 31, 0.9)', borderColor: 'rgba(74, 222, 128, 0.3)', color: 'white' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1f1f1f'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(31, 31, 31, 0.9)'}
         >
           <List className="w-5 h-5" />
         </button>
