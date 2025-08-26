@@ -8,8 +8,6 @@ This is the official hosted MCP server for Alpha Vantage. Add this server to you
 
 To use the server, [get your free Alpha Vantage API key](https://www.alphavantage.co/support/#api-key), copy it to your clipboard, then follow the instructions for your tool of choice below.
 
-💡 Currently, ChatGPT's MCP connector is (1) not fully interoperable with Anthropic's MCP framework, and (2) limited to ChatGPT Pro ($200/month) only. We are closely monitoring the situation and will add ChatGPT-based tutorials as soon as the above constraints are removed.  
-
 👉 Any questions? Please contact support@alphavantage.co
 
 ⭐ View MCP source code on [Github](https://github.com/alphavantage/alpha_vantage_mcp)
@@ -20,6 +18,7 @@ To use the server, [get your free Alpha Vantage API key](https://www.alphavantag
 - [Claude.ai (Claude Web)](#claudeai)
 - [Claude Desktop](#claude-desktop)
 - [Claude Code](#claude-code)
+- [ChatGPT](#chatgpt)
 - [Visual Studio Code](#visual-studio-code)
 - [Cursor](#cursor)
 - [Google Gemini CLI](#google-gemini-cli)
@@ -93,6 +92,11 @@ Then connect with:
 ```bash
 /mcp
 ```
+
+&nbsp;
+
+### ChatGPT
+💡 Currently, ChatGPT's MCP connector is (1) not fully interoperable with Anthropic's MCP framework, and (2) limited to ChatGPT Pro ($200/month) only. We are closely monitoring the situation and will add ChatGPT-based tutorials as soon as the above constraints are removed.  
 
 &nbsp;
 
