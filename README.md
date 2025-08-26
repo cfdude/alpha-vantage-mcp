@@ -1,6 +1,6 @@
 # Alpha Vantage MCP Server
 
-A comprehensive Alpha Vantage API MCP server that enables LLMs and agentic workflows to seamlessly interact with real-time and historical financial data through the Model Context Protocol.
+The Official Alpha Vantage API MCP server that enables LLMs and agentic workflows to seamlessly interact with real-time and historical stock market data through the Model Context Protocol (MCP).
 
 ## Quickstart
 
