@@ -28,11 +28,19 @@ Error loading README.md content.`;
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'rgb(45, 45, 45)' }}>
         {/* Header */}
-        <header className="w-full py-4 px-8">
+        <header className="w-full pt-8 pb-4 px-8">
           <div className="max-w-6xl mx-auto flex justify-between items-center">
-            <a href="https://www.alphavantage.co/" className="text-white text-xl font-bold tracking-wider hover:text-green-400 transition-colors">
-              ALPHA VANTAGE
+            <a href="https://www.alphavantage.co/" className="text-white text-xl tracking-wider hover:text-green-400 transition-colors">
+              ALPHA <span className="font-light">VANTAGE</span>
             </a>
+            <div className="flex space-x-6">
+              <a href="https://www.alphavantage.co/" className="text-green-400 hover:text-green-300 transition-colors">
+                Alpha Vantage Home
+              </a>
+              <a href="https://www.alphavantage.co/documentation/" className="text-green-400 hover:text-green-300 transition-colors">
+                API Documentation
+              </a>
+            </div>
           </div>
         </header>
         {/* Mobile TOC */}
