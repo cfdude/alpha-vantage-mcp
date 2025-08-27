@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Alpha Vantage MCP',
-  description: 'Alpha Vantage MCP Web Interface',
+  title: 'Alpha Vantage MCP for Stock Market Data',
+  description: 'Alpha Vantage MCP for Stock Market Data',
 }
 
 export default function RootLayout({
