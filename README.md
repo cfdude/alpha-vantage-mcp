@@ -229,7 +229,7 @@ If no categories are specified, all tools will be available.
 - [technical_indicators](#technical_indicators)
 - [ping](#ping)
 
-💡 Each of these MCP tools maps to the corresponding Alpha Vantage API endpoint. If you are interested in the full API specs, please refer to https://www.alphavantage.co/documentation/.  
+💡 Each of these MCP tools maps to a corresponding Alpha Vantage API endpoint. If you are interested in the full API specs (in addition to the brief tool descriptions below), please refer to the Alpha Vantage [API documentation](https://www.alphavantage.co/documentation/).  
 
 ### CORE_STOCK_APIS
 
