@@ -231,6 +231,8 @@ If no categories are specified, all tools will be available.
 
 💡 Each of these MCP tools maps to a corresponding Alpha Vantage API endpoint. If you are interested in the full API specs (in addition to the brief tool descriptions below), please refer to the Alpha Vantage [API documentation](https://www.alphavantage.co/documentation/).  
 
+&nbsp;
+
 ### CORE_STOCK_APIS
 
 | Category | Tool | Description |
