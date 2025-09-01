@@ -31,14 +31,14 @@ Error loading README.md content.`;
         <header className="w-full pt-8 pb-4 px-4 sm:px-8">
           <div className="flex justify-center">
             <div className="w-full sm:w-[50%] 2xl:w-[40%] max-w-[100%] flex justify-between items-center">
-            <a href="https://www.alphavantage.co/" className="text-white text-xl tracking-wider hover:text-green-400 transition-colors">
+            <a href="https://www.alphavantage.co/" className="text-white text-xl tracking-wider transition-colors">
               ALPHA <span className="font-light">VANTAGE</span>
             </a>
             <div className="flex space-x-6">
-              <a href="https://www.alphavantage.co/" className="text-green-400 hover:text-green-300 transition-colors">
+              <a href="https://www.alphavantage.co/" className="hover:text-green-300 transition-colors" style={{ color: '#42DCA3' }}>
                 Alpha Vantage Home
               </a>
-              <a href="https://www.alphavantage.co/documentation/" className="text-green-400 hover:text-green-300 transition-colors">
+              <a href="https://www.alphavantage.co/documentation/" className="hover:text-green-300 transition-colors" style={{ color: '#42DCA3' }}>
                 API Documentation
               </a>
             </div>
@@ -76,7 +76,7 @@ Error loading README.md content.`;
           <div className="text-center text-gray-400 text-sm">
             <p>
               Made with love at
-              <a href="https://www.alphavantage.co/" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline"> Alpha Vantage</a>. Happy hacking!
+              <a href="https://www.alphavantage.co/" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: '#42DCA3' }}> Alpha Vantage</a>. Happy hacking!
             </p>
           </div>
         </footer>

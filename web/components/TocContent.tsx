@@ -47,7 +47,7 @@ export default function TocContent({ tocItems, activeId, onItemClick }: TocConte
             className="flex items-center justify-between w-full text-left py-2 text-sm font-medium rounded-md transition-colors cursor-pointer"
             style={{
               backgroundColor: activeId === h2.id ? 'rgba(74, 222, 128, 0.2)' : 'transparent',
-              color: activeId === h2.id ? '#4ade80' : '#d1d5db',
+              color: activeId === h2.id ? '#42DCA3' : '#d1d5db',
               paddingLeft: '0.75rem',
               paddingRight: '0.75rem'
             }}
@@ -82,7 +82,7 @@ export default function TocContent({ tocItems, activeId, onItemClick }: TocConte
                   className="block w-full text-left py-2 text-sm rounded-md transition-colors cursor-pointer"
                   style={{
                     backgroundColor: activeId === h3Item.id ? 'rgba(74, 222, 128, 0.2)' : 'transparent',
-                    color: activeId === h3Item.id ? '#4ade80' : '#9ca3af',
+                    color: activeId === h3Item.id ? '#42DCA3' : '#9ca3af',
                     paddingLeft: '0.75rem',
                     paddingRight: '0.75rem'
                   }}
