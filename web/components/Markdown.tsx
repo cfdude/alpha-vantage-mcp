@@ -23,7 +23,7 @@ const markdownComponents: Components = {
     return (
       <h2 
         id={id}
-className="text-3xl font-light mb-8" style={{ color: '#4ade80' }}
+className="text-3xl font-light mb-8" style={{ color: '#42DCA3' }}
       >
         {children}
       </h2>
@@ -35,14 +35,14 @@ className="text-3xl font-light mb-8" style={{ color: '#4ade80' }}
     return (
       <h3 
         id={id}
-        className="text-2xl font-light mb-6" style={{ color: '#4ade80' }}
+        className="text-2xl font-light mb-6" style={{ color: '#42DCA3' }}
       >
         {children}
       </h3>
     );
   },
   h4: ({ children }) => (
-    <h4 className="text-xl font-semibold mb-4" style={{ color: '#4ade80' }}>
+    <h4 className="text-xl font-semibold mb-4" style={{ color: '#42DCA3' }}>
       {children}
     </h4>
   ),
@@ -90,7 +90,7 @@ className="text-3xl font-light mb-8" style={{ color: '#4ade80' }}
         href={href}
         target={isExternal ? '_blank' : undefined}
         rel={isExternal ? 'noopener noreferrer' : undefined}
-className="hover:underline" style={{ color: '#4ade80' }}
+className="hover:underline" style={{ color: '#42DCA3' }}
         {...props}
       >
         {children}
@@ -98,7 +98,7 @@ className="hover:underline" style={{ color: '#4ade80' }}
     );
   },
   strong: ({ children }) => (
-    <strong style={{ color: '#4ade80' }}>
+    <strong style={{ color: '#42DCA3' }}>
       {children}
     </strong>
   ),
@@ -117,7 +117,7 @@ className="hover:underline" style={{ color: '#4ade80' }}
 
     return (
       <code 
-  className="px-2 py-1 rounded text-sm" style={{ backgroundColor: '#1f1f1f', color: '#4ade80', border: '1px solid rgba(74, 222, 128, 0.3)' }} 
+  className="px-2 py-1 rounded text-sm" style={{ backgroundColor: '#1f1f1f', color: '#42DCA3', border: '1px solid rgba(74, 222, 128, 0.3)' }} 
         {...props}
       >
         {children}
@@ -126,7 +126,7 @@ className="hover:underline" style={{ color: '#4ade80' }}
   },
   pre: ({ children, ...props }) => (
     <pre 
-className="p-4 rounded text-sm overflow-x-auto my-4" style={{ backgroundColor: '#1f1f1f', color: '#4ade80', border: '1px solid rgba(74, 222, 128, 0.3)' }} 
+className="p-4 rounded text-sm overflow-x-auto my-4" style={{ backgroundColor: '#1f1f1f', color: '#42DCA3', border: '1px solid rgba(74, 222, 128, 0.3)' }} 
       {...props}
     >
       {children}
@@ -143,7 +143,7 @@ className="p-4 rounded text-sm overflow-x-auto my-4" style={{ backgroundColor: '
     </div>
   ),
   th: ({ children }) => (
-    <th className="px-4 py-2" style={{ border: '1px solid rgba(74, 222, 128, 0.3)', color: '#4ade80', backgroundColor: '#1f1f1f' }}>
+    <th className="px-4 py-2" style={{ border: '1px solid rgba(74, 222, 128, 0.3)', color: '#42DCA3', backgroundColor: '#1f1f1f' }}>
       {children}
     </th>
   ),
