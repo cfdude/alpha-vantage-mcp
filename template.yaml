@@ -55,17 +55,6 @@ Resources:
         IndexDocument: index.html
         ErrorDocument: index.html
 
-
-  # CloudFront Origin Access Control for S3
-  CloudFrontOriginAccessControl:
-    Type: AWS::CloudFront::OriginAccessControl
-    Properties:
-      OriginAccessControlConfig:
-        Name: !Sub '${AWS::StackName}-S3-OAC'
-        OriginAccessControlOriginType: s3
-        SigningBehavior: always
-        SigningProtocol: sigv4
-
   # CloudFront distribution
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -156,10 +145,11 @@ Resources:
               - DELETE
         Origins:
           - Id: S3Origin
-            DomainName: !GetAtt StaticFilesBucketResource.RegionalDomainName
-            S3OriginConfig:
-              OriginAccessIdentity: ''
-            OriginAccessControlId: !Ref CloudFrontOriginAccessControl
+            DomainName: !Sub '${StaticFilesBucket}.s3-website-${AWS::Region}.amazonaws.com'
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
           - Id: APIOrigin
             DomainName: !Sub '${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com'
             CustomOriginConfig:
