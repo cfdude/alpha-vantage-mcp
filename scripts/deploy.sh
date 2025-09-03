@@ -53,6 +53,7 @@ if [ -f "samconfig.toml" ]; then
     add_param "R2EndpointUrl" "R2_ENDPOINT_URL"
     add_param "R2AccessKeyId" "R2_ACCESS_KEY_ID"
     add_param "R2SecretAccessKey" "R2_SECRET_ACCESS_KEY"
+    add_param "StaticFilesBucket" "STATIC_FILES_BUCKET"
     if [ -n "$PARAM_OVERRIDES" ]; then
         sam deploy --profile $AWS_PROFILE --parameter-overrides $PARAM_OVERRIDES
     else
