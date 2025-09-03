@@ -559,19 +559,23 @@ export default MyComponent;`;
   }, []);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen" style={{ backgroundColor: 'rgb(45, 45, 45)' }}>
       {/* Header with toggle buttons */}
-      <div className="h-12 border-b border-gray-200 flex items-center justify-between px-4 bg-white shadow-sm">
+      <div className="h-12 border-b flex items-center justify-between px-4 shadow-sm" style={{ backgroundColor: '#1f1f1f', borderColor: 'rgba(66, 220, 163, 0.3)' }}>
         <div className="flex items-center gap-3">
           {/* Toggle Button Group */}
-          <div className="flex bg-gray-100 rounded-lg p-1">
+          <div className="flex rounded-lg p-1" style={{ backgroundColor: 'rgba(66, 220, 163, 0.1)' }}>
             <button
               onClick={() => setViewMode('code')}
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                 viewMode === 'code'
-                  ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
+                  ? 'shadow-sm'
+                  : 'hover:bg-opacity-20'
               }`}
+              style={{
+                backgroundColor: viewMode === 'code' ? '#42DCA3' : 'transparent',
+                color: viewMode === 'code' ? '#1f1f1f' : '#42DCA3'
+              }}
             >
               <span className="flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -584,9 +588,13 @@ export default MyComponent;`;
               onClick={() => setViewMode('split')}
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                 viewMode === 'split'
-                  ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
+                  ? 'shadow-sm'
+                  : 'hover:bg-opacity-20'
               }`}
+              style={{
+                backgroundColor: viewMode === 'split' ? '#42DCA3' : 'transparent',
+                color: viewMode === 'split' ? '#1f1f1f' : '#42DCA3'
+              }}
             >
               <span className="flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -600,9 +608,13 @@ export default MyComponent;`;
               onClick={() => setViewMode('preview')}
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                 viewMode === 'preview'
-                  ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
+                  ? 'shadow-sm'
+                  : 'hover:bg-opacity-20'
               }`}
+              style={{
+                backgroundColor: viewMode === 'preview' ? '#42DCA3' : 'transparent',
+                color: viewMode === 'preview' ? '#1f1f1f' : '#42DCA3'
+              }}
             >
               <span className="flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -619,13 +631,19 @@ export default MyComponent;`;
             <>
               <button
                 onClick={handleUploadClick}
-                className="px-3 py-1.5 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                className="px-3 py-1.5 text-sm rounded-md transition-colors"
+                style={{ backgroundColor: '#42DCA3', color: '#1f1f1f' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(66, 220, 163, 0.9)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#42DCA3'}
               >
                 Upload File
               </button>
               <button
                 onClick={handleResetToDefault}
-                className="px-3 py-1.5 text-sm bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+                className="px-3 py-1.5 text-sm rounded-md transition-colors"
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', color: '#42DCA3', border: '1px solid #42DCA3' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(66, 220, 163, 0.1)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
               >
                 Reset to Default
               </button>
@@ -642,14 +660,14 @@ export default MyComponent;`;
         
         <div className="flex items-center gap-3">
           {error && (viewMode === 'preview' || viewMode === 'split') && (
-            <span className="text-xs text-red-600 font-medium">Error in code</span>
+            <span className="text-xs font-medium" style={{ color: '#ff6b6b' }}>Error in code</span>
           )}
-          <div className="text-xs text-gray-500">
+          <div className="text-xs" style={{ color: '#42DCA3' }}>
             {viewMode === 'code' ? `${codeType === 'html' ? 'HTML' : 'JSX'} • Auto-saved` : 
              viewMode === 'split' ? `Split View • ${codeType === 'html' ? 'HTML' : 'JSX'}` : 
              'Live Preview'}
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
             Press ⌘E to cycle views
           </div>
         </div>
