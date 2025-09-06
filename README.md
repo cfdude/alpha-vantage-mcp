@@ -12,20 +12,27 @@ To use the server, [get your free Alpha Vantage API key](https://www.alphavantag
 
 &nbsp;
 
-### Setup Instructions by Platform
-- [Claude.ai (Claude Web)](#claudeai)
-- [Claude Desktop](#claude-desktop)
-- [Claude Code](#claude-code)
-- [ChatGPT](#chatgpt)
-- [Visual Studio Code](#visual-studio-code)
-- [Cursor](#cursor)
-- [Google Gemini CLI](#google-gemini-cli)
-- [Windsurf](#windsurf)
+### Connection URL
+Connect to the MCP server using:
+```
+https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
+```
 
 &nbsp;
 
-### Claude.ai
-To connect Claude Web to this MCP server:
+### Setup Instructions by Platform
+- [Claude (Web & Desktop)](#claude)
+- [ChatGPT](#chatgpt)
+- [Visual Studio Code](#visual-studio-code)
+- [Cursor](#cursor)
+- [Claude Code](#claude-code)
+- [Codex](#codex)
+- [Gemini CLI](#gemini-cli)
+
+&nbsp;
+
+### Claude
+To connect Claude (Web or Desktop) to this MCP server:
 
 📺 Watch the **setup tutorial** - Click the image below to watch a step-by-step video guide:
 
@@ -38,13 +45,13 @@ To connect Claude Web to this MCP server:
 [![Alpha Vantage MCP Example Prompts](https://img.youtube.com/vi/tyl9E7fddvU/maxresdefault.jpg)](https://www.youtube.com/watch?v=tyl9E7fddvU)
 
 **Query Param Option (Recommended):**
-1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
+1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors) (Web) or Settings → Connectors (Desktop)
 2. Click "Add Custom Connector"
 3. Add the MCP server URL with your API key: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
 4. Click "Connect"
 
 **OAuth Option:**
-1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors)
+1. Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors) (Web) or Settings → Connectors (Desktop)
 2. Click "Add Custom Connector"
 3. Add the MCP server URL: `https://mcp.alphavantage.co/mcp`
 4. Click "Connect"
@@ -53,48 +60,8 @@ To connect Claude Web to this MCP server:
 
 &nbsp;
 
-### Claude Desktop
-To connect Claude Desktop to this MCP server:
-
-**Query Param Option (Recommended):**
-1. Open Claude Desktop
-2. Go to Settings → Connectors
-3. Click "Add Custom Connector"
-4. Add the MCP server URL with your API key: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
-5. Click "Connect"
-6. Restart Claude Desktop to see the MCP server connection
-
-**OAuth Option:**
-1. Open Claude Desktop
-2. Go to Settings → Connectors
-3. Click "Add Custom Connector"
-4. Add the MCP server URL: `https://mcp.alphavantage.co/mcp`
-5. Click "Connect"
-6. Enter your Alpha Vantage API token
-7. Click "Authorize Access"
-8. Restart Claude Desktop to see the MCP server connection
-
-&nbsp;
-
-### Claude Code
-[Claude Code](https://docs.anthropic.com/en/docs/claude-code) is a command-line tool for coding with Claude.
-
-To install and configure (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
-```bash
-npm install -g @anthropic-ai/claude-code
-claude mcp add alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY --transport http --scope user
-claude
-```
-
-Then connect with:
-```bash
-/mcp
-```
-
-&nbsp;
-
 ### ChatGPT
-💡 Currently, ChatGPT's MCP connector is (1) not fully interoperable with Anthropic's MCP framework, and (2) limited to ChatGPT Pro ($200/month) only. We are closely monitoring the situation and will add ChatGPT-based tutorials as soon as the above constraints are removed.  
+💡 Currently, ChatGPT's MCP connector is (1) not fully interoperable with Anthropic's MCP framework, and (2) limited to ChatGPT Pro ($200/month) only. We are closely monitoring the situation and will add ChatGPT-based tutorials as soon as the above constraints are removed.
 
 &nbsp;
 
@@ -115,31 +82,12 @@ To connect VS Code with GitHub Copilot to this MCP server:
 }
 ```
 
-3. Open the Chat view and select Agent mode
+Open the Chat view and select Agent mode
 
 &nbsp;
 
 ### Cursor
 Configure Cursor by editing `~/.cursor/mcp.json` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
-
-```json
-{
-  "mcpServers": {
-    "alphavantage": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote@latest", "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"]
-    }
-  }
-}
-```
-
-&nbsp;
-
-### Google Gemini CLI
-To use Alpha Vantage's MCP server in Google Gemini CLI:
-
-1. Edit `~/.gemini/settings.json`
-2. Add this config (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
 
 ```json
 {
@@ -151,31 +99,73 @@ To use Alpha Vantage's MCP server in Google Gemini CLI:
 }
 ```
 
-3. Run `gemini` in your terminal from your project directory
+&nbsp;
+
+### Claude Code
+
+To install and configure (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+```bash
+claude mcp add -t http alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
+```
+
+Then connect with:
+```
+/mcp
+```
 
 &nbsp;
 
-### Windsurf
-1. Edit your Windsurf configuration file at `~/.codeium/windsurf/mcp_config.json`
-2. Add the following configuration (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+### Codex
+To connect Codex CLI to this MCP server:
+
+Install mcp-proxy (required because our server supports streamable HTTP only while Codex only supports stdio - mcp-proxy bridges this gap). See [installation methods](https://github.com/sparfenyuk/mcp-proxy?tab=readme-ov-file#installation):
+```bash
+uv tool install mcp-proxy
+```
+
+Configure Codex by editing `~/.codex/config.toml` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+```toml
+[mcp_servers.alphavantage]
+command = "mcp-proxy"
+args = ["--transport", "streamablehttp", "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"]
+```
+
+Then connect with:
+```
+/mcp
+```
+
+&nbsp;
+
+### Gemini CLI
+To use Alpha Vantage's MCP server in Gemini CLI:
+
+**CLI Command (Recommended):**
+```bash
+gemini mcp add -t http alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
+```
+
+**Manual Configuration:**
+1. Edit `~/.gemini/settings.json`
+2. Add this config (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
 
 ```json
 {
   "mcpServers": {
     "alphavantage": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote@latest", "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"]
+      "httpUrl": "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"
     }
   }
 }
 ```
 
-&nbsp;
+Then (for both methods):
 
-### Connection URL
-Connect to the MCP server using:
+Run `gemini` in your terminal from your project directory
+
+Then connect with:
 ```
-https://mcp.alphavantage.co/mcp
+/mcp
 ```
 
 &nbsp;

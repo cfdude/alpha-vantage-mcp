@@ -117,7 +117,7 @@ className="hover:underline" style={{ color: '#42DCA3' }}
 
     return (
       <code 
-  className="px-2 py-1 rounded text-sm" style={{ backgroundColor: '#1f1f1f', color: '#42DCA3', border: '1px solid rgba(74, 222, 128, 0.3)' }} 
+  className="px-2 py-1 rounded text-sm" style={{ backgroundColor: '#1f1f1f', color: '#42DCA3' }} 
         {...props}
       >
         {children}
