@@ -108,6 +108,8 @@ To install and configure (replace `YOUR_API_KEY` with your actual Alpha Vantage 
 claude mcp add -t http alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
 ```
 
+Run `claude` in your terminal from your project directory
+
 Then connect with:
 ```
 /mcp
@@ -129,6 +131,8 @@ Configure Codex by editing `~/.codex/config.toml` (replace `YOUR_API_KEY` with y
 command = "mcp-proxy"
 args = ["--transport", "streamablehttp", "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"]
 ```
+
+Run `codex` in your terminal from your project directory
 
 Then connect with:
 ```
