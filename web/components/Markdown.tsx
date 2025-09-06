@@ -107,7 +107,7 @@ className="hover:underline" style={{ color: '#42DCA3' }}
       {children}
     </em>
   ),
-  code: ({ children, ...props }) => {
+  code: ({ children, className, ...props }) => {
     const content = children?.toString().trim() || '';
     
     // If it's an empty code block, don't render anything
@@ -117,21 +117,75 @@ className="hover:underline" style={{ color: '#42DCA3' }}
 
     return (
       <code 
-  className="px-2 py-1 rounded text-sm" style={{ backgroundColor: '#1f1f1f', color: '#42DCA3' }} 
+        className={`px-2 py-1 rounded text-sm ${className || ''}`}
+        style={{ 
+          backgroundColor: '#1f1f1f', 
+          color: '#42DCA3', 
+          border: '1px solid rgba(74, 222, 128, 0.3)' 
+        }} 
         {...props}
       >
         {children}
       </code>
     );
   },
-  pre: ({ children, ...props }) => (
-    <pre 
-className="p-4 rounded text-sm overflow-x-auto my-4" style={{ backgroundColor: '#1f1f1f', color: '#42DCA3', border: '1px solid rgba(74, 222, 128, 0.3)' }} 
-      {...props}
-    >
-      {children}
-    </pre>
-  ),
+  pre: ({ children, ...props }) => {
+    const [copied, setCopied] = React.useState(false);
+    
+    const handleCopy = () => {
+      // Extract text content from children
+      const extractText = (node: any): string => {
+        if (typeof node === 'string') return node;
+        if (Array.isArray(node)) return node.map(extractText).join('');
+        if (node?.props?.children) return extractText(node.props.children);
+        return node?.toString() || '';
+      };
+      
+      const textContent = extractText(children);
+      navigator.clipboard.writeText(textContent).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    };
+
+    return (
+      <div className="relative group">
+        <button
+          onClick={handleCopy}
+          className="absolute top-2 right-2 p-1 rounded opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-105 cursor-pointer"
+          style={{ 
+            backgroundColor: 'rgba(66, 220, 163, 0.1)', 
+            color: '#42DCA3',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(66, 220, 163, 0.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(66, 220, 163, 0.1)';
+          }}
+          title="Copy to clipboard"
+        >
+          {copied ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </svg>
+          )}
+        </button>
+        <pre 
+          className="p-4 rounded text-sm overflow-x-auto my-4" 
+          style={{ backgroundColor: '#1f1f1f', color: '#42DCA3', border: '1px solid rgba(74, 222, 163, 0.3)' }} 
+          {...props}
+        >
+          {children}
+        </pre>
+      </div>
+    );
+  },
   hr: () => (
     <hr className="my-8 border-t" style={{ borderColor: 'rgba(74, 222, 128, 0.3)' }} />
   ),
@@ -188,6 +242,29 @@ export default function Markdown({ content, className = '' }: MarkdownProps) {
 
   return (
     <div className={`prose max-w-none ${className}`}>
+      <style jsx global>{`
+        pre code {
+          border: none !important;
+          padding: 0 !important;
+        }
+        
+        pre::-webkit-scrollbar {
+          height: 8px;
+        }
+        
+        pre::-webkit-scrollbar-track {
+          background: #1f1f1f;
+        }
+        
+        pre::-webkit-scrollbar-thumb {
+          background: rgba(66, 220, 163, 0.3);
+          border-radius: 4px;
+        }
+        
+        pre::-webkit-scrollbar-thumb:hover {
+          background: rgba(66, 220, 163, 0.5);
+        }
+      `}</style>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
