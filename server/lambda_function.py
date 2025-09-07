@@ -4,7 +4,7 @@ from src.context import set_api_key
 from src.decorators import setup_custom_tool_decorator
 from src.tools.registry import register_all_tools, register_tools_by_categories
 from src.openai_actions import handle_openai_request
-from src.utils import parse_token_from_request, parse_tool_categories_from_request, create_oauth_error_response
+from src.utils import parse_token_from_request, parse_tool_categories_from_request, create_oauth_error_response, extract_client_platform, parse_and_log_mcp_analytics
 from src.oauth import handle_metadata_discovery, handle_authorization_request, handle_token_request, handle_registration_request
 
 
@@ -66,6 +66,14 @@ def lambda_handler(event, context):
     
     # Set token in context for tools to access
     set_api_key(token)
+    
+    # Parse and log MCP method and params for analytics (after token parsing)
+    if method == "POST":
+        # Extract client platform information
+        platform = extract_client_platform(event)
+    
+        # Log MCP analytics
+        parse_and_log_mcp_analytics(body, token, platform)
     
     # Parse tool categories from request path or query parameters
     categories = parse_tool_categories_from_request(event)

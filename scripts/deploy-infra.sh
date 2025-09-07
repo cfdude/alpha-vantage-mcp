@@ -17,7 +17,7 @@ echo "🚀 Starting deployment of MCP Lambda function..."
 if command -v uv &> /dev/null; then
     echo "📦 Using uv for package management..."
     # Export without the editable package for Lambda deployment
-    cd server && uv export --format=requirements-txt --no-hashes | grep -v "^-e \." > requirements.txt && cd ..
+    uv export --format=requirements-txt --no-hashes | grep -v "^-e \." > requirements.txt
 else
     echo "❌ Error: uv is required for deployment but not found in PATH"
     echo "Please install uv: https://github.com/astral-sh/uv"
@@ -25,7 +25,7 @@ else
 fi
 
 echo "🏗️  Building SAM application..."
-sam build
+sam build --template infra/infra.yaml
 
 # Function to add parameter overrides
 add_param() {
@@ -41,29 +41,27 @@ add_param() {
 }
 
 echo "🚀 Deploying SAM application..."
-if [ -f "samconfig.toml" ]; then
-    echo "📋 Using existing configuration..."
+if [ -f "infra/samconfig-infra.toml" ]; then
+    echo "📋 Using infrastructure-specific configuration..."
     PARAM_OVERRIDES=""
     
     # Add parameters if environment variables are set
-    add_param "CertificateArn" "CERTIFICATE_ARN"
-    add_param "DomainName" "DOMAIN_NAME"
-    add_param "R2Bucket" "R2_BUCKET"
-    add_param "R2PublicDomain" "R2_PUBLIC_DOMAIN"
-    add_param "R2EndpointUrl" "R2_ENDPOINT_URL"
-    add_param "R2AccessKeyId" "R2_ACCESS_KEY_ID"
-    add_param "R2SecretAccessKey" "R2_SECRET_ACCESS_KEY"
-    add_param "StaticFilesBucket" "STATIC_FILES_BUCKET"
-    add_param "SubnetIds" "SUBNET_IDS"
-    add_param "LambdaSecurityGroupId" "LAMBDA_SECURITY_GROUP_ID"
+    add_param "StackName" "STACK_NAME"
+    
+    # If STACK_NAME not set, use the default from samconfig
+    if [ -z "$STACK_NAME" ]; then
+        STACK_NAME="alphavantage-mcp-server-infra"
+        add_param "StackName" "STACK_NAME"
+    fi
+    
     if [ -n "$PARAM_OVERRIDES" ]; then
-        sam deploy --profile $AWS_PROFILE --parameter-overrides $PARAM_OVERRIDES
+        sam deploy --template infra/infra.yaml --config-file $(pwd)/infra/samconfig-infra.toml --profile $AWS_PROFILE --parameter-overrides $PARAM_OVERRIDES
     else
-        sam deploy --profile $AWS_PROFILE
+        sam deploy --template infra/infra.yaml --config-file $(pwd)/infra/samconfig-infra.toml --profile $AWS_PROFILE
     fi
 else
     echo "📋 Running guided deployment (first time)..."
-    sam deploy --guided --profile $AWS_PROFILE
+    sam deploy --template infra/infra.yaml --guided --profile $AWS_PROFILE
 fi
 
 echo "✅ Deployment complete!"
