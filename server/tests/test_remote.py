@@ -2,6 +2,9 @@
 MCP Client test for deployed MCP server using streamable HTTP transport
 Run from the repository root:
     uv run tests/test_remote.py
+    
+Add --rate-limit-test flag to test with 30 API calls (for rate limit testing):
+    uv run tests/test_remote.py --rate-limit-test
 """
 
 import asyncio
@@ -14,19 +17,26 @@ from mcp.client.streamable_http import streamablehttp_client
 import os
 
 import dotenv
+from loguru import logger
 
 dotenv.load_dotenv()
 
+# Set test API key if not already set
+if not os.getenv("ALPHAVANTAGE_API_KEY"):
+    os.environ["ALPHAVANTAGE_API_KEY"] = "test"
 
 # MCP endpoint from deployment
+api_key = os.getenv("ALPHAVANTAGE_API_KEY", "test")
 domain_name = os.getenv("DOMAIN_NAME")
 if domain_name:
-    MCP_SERVER_ENDPOINT = f"https://{domain_name}/mcp"
+    MCP_SERVER_ENDPOINT = f"https://{domain_name}/mcp?apikey={api_key}"
 else:
-    MCP_SERVER_ENDPOINT = os.getenv("MCP_SERVER_ENDPOINT")
+    base_endpoint = os.getenv("MCP_SERVER_ENDPOINT")
+    if base_endpoint:
+        MCP_SERVER_ENDPOINT = f"{base_endpoint}?apikey={api_key}" if "?" not in base_endpoint else f"{base_endpoint}&apikey={api_key}"
 
 
-async def test_mcp_server():
+async def test_mcp_server(rate_limit_test=False):
     """Test the deployed MCP server using real MCP client"""
     print("🚀 Testing deployed MCP server")
     print(f"📡 Connecting to: {MCP_SERVER_ENDPOINT}")
@@ -71,6 +81,20 @@ async def test_mcp_server():
                     print(f"✅ Add two numbers response: {add_result.content}")
                     print("   5 + 3 = 8")
                 
+                # Test GLOBAL_QUOTE tool with AAPL
+                if any(tool.name == "GLOBAL_QUOTE" for tool in tools):
+                    num_calls = 30 if rate_limit_test else 1
+                    call_desc = f"({num_calls} times)" if rate_limit_test else ""
+                    print(f"\n📈 Testing GLOBAL_QUOTE tool with AAPL {call_desc}...")
+                    for i in range(1, num_calls + 1):
+                        try:
+                            logger.info(f"Making GLOBAL_QUOTE call #{i}/{num_calls}")
+                            quote_result = await session.call_tool("GLOBAL_QUOTE", {"symbol": "AAPL"})
+                            logger.success(f"Call #{i} - GLOBAL_QUOTE AAPL response: {quote_result.content}")
+                        except Exception as quote_error:
+                            logger.error(f"Call #{i} - GLOBAL_QUOTE test failed: {quote_error}")
+                    print(f"✅ Completed {num_calls} GLOBAL_QUOTE call{'s' if num_calls > 1 else ''}")
+                
                 print(f"\n🎉 All tests completed successfully!")
                 print("Your MCP server is working with real MCP clients!")
                 
@@ -84,12 +108,16 @@ async def test_mcp_server():
 
 async def main():
     """Main entry point"""
+    rate_limit_test = "--rate-limit-test" in sys.argv
+    if rate_limit_test:
+        sys.argv.remove("--rate-limit-test")
+    
     if len(sys.argv) > 1:
         global MCP_SERVER_ENDPOINT
         MCP_SERVER_ENDPOINT = sys.argv[1]
         print(f"Using custom endpoint: {MCP_SERVER_ENDPOINT}")
     
-    success = await test_mcp_server()
+    success = await test_mcp_server(rate_limit_test=rate_limit_test)
     
     if success:
         print("\n✅ MCP server test PASSED")

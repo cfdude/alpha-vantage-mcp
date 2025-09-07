@@ -58,6 +58,46 @@ def parse_tool_categories_from_request(event: dict) -> list[str] | None:
     
     return None
 
+def extract_client_platform(event: dict) -> str:
+    """Extract client platform information from request headers."""
+    headers = event.get("headers", {})
+    
+    # Check User-Agent header (case-insensitive)
+    user_agent = headers.get("User-Agent") or headers.get("user-agent") or ""
+    
+    # Map common patterns to platform names based on actual headers
+    # TODO: we just get example of claude and claude_code, others pattern need to be set based on real data
+    platform_patterns = {
+        "claude": ["claude-user"],
+        "claude_code": ["claude-code"],
+        "vscode": ["vscode", "visual studio code"],
+        "cursor": ["cursor"],
+        "windsurf": ["windsurf", "codeium"],
+        "chatgpt": ["chatgpt", "openai"],
+        "gemini": ["gemini", "google"],
+        "python": ["python", "requests", "urllib"],
+        "javascript": ["node", "axios", "fetch"],
+        "postman": ["postman"],
+        "curl": ["curl"],
+        "browser": ["mozilla", "webkit", "chrome", "firefox", "safari", "edge"]
+    }
+    
+    user_agent_lower = user_agent.lower()
+    
+    for platform, patterns in platform_patterns.items():
+        if any(pattern in user_agent_lower for pattern in patterns):
+            return platform
+    
+    # Check other headers that might indicate platform
+    if headers.get("X-Client-Name"):
+        return headers.get("X-Client-Name").lower()
+    
+    # Fallback based on User-Agent content
+    if user_agent_lower:
+        return user_agent_lower
+    else:
+        return "no_user_agent"
+
 def estimate_tokens(data: Any) -> int:
     """Estimate the number of tokens in a data structure.
     
@@ -133,6 +173,27 @@ def upload_to_r2(data: str, bucket_name: str = None) -> str | None:
     except Exception:
         # If any error occurs during upload, return None to trigger fallback
         return None
+
+def parse_and_log_mcp_analytics(body: str, token: str, platform: str) -> None:
+    """Parse and log MCP method and params for analytics."""
+    if not body:
+        return
+        
+    try:
+        import json
+        from loguru import logger
+        
+        parsed_body = json.loads(body)
+        if "method" in parsed_body:
+            mcp_method = parsed_body.get("method")
+            mcp_params = parsed_body.get("params", {})
+            
+            tool_name = mcp_params.get("name", "unknown")
+            tool_args = mcp_params.get("arguments", {})
+            logger.info(f"MCP_ANALYTICS: method={mcp_method}, api_key={token}, platform={platform}, tool_name={tool_name}, arguments={json.dumps(tool_args)}")
+    except (json.JSONDecodeError, Exception) as e:
+        from loguru import logger
+        logger.debug(f"Could not parse body for MCP analytics: {e}")
 
 def create_oauth_error_response(error_dict: dict, status_code: int = 401) -> dict:
     """Create Lambda-compatible OAuth 2.1 error response.

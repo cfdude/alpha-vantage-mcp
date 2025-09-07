@@ -1,3 +1,5 @@
+.gemini
+.vscode
 *.DS_Store
 .venv
 dev_docs
