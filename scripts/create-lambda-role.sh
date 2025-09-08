@@ -70,15 +70,21 @@ TRUST_POLICY='{
   ]
 }'
 
-# Create role
-ROLE_ARN=$(aws iam create-role $AWS_PROFILE_OPTION \
+# Create role (ignore if it already exists)
+if ROLE_ARN=$(aws iam create-role $AWS_PROFILE_OPTION \
     --role-name "$ROLE_NAME" \
     --assume-role-policy-document "$TRUST_POLICY" \
     --query "Role.Arn" \
-    --output text)
-
-echo "Role created successfully!"
-echo "Role ARN: $ROLE_ARN"
+    --output text 2>/dev/null); then
+    echo "Role created successfully!"
+    echo "Role ARN: $ROLE_ARN"
+else
+    echo "Role already exists, continuing with policy attachment..."
+    # Construct the expected ARN format
+    AWS_ACCOUNT_ID=$(aws sts get-caller-identity $AWS_PROFILE_OPTION --query "Account" --output text)
+    ROLE_ARN="arn:aws:iam::${AWS_ACCOUNT_ID}:role/${ROLE_NAME}"
+    echo "Using role ARN: $ROLE_ARN"
+fi
 echo ""
 
 # Attach policies

@@ -16,7 +16,11 @@ fi
 
 # Build the web application
 echo "🔨 Building web application..."
-cd web && npm run build && cd ..
+if [ -n "$NEXT_PUBLIC_GA_MEASUREMENT_ID" ]; then
+    cd web && NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID npm run build && cd ..
+else
+    cd web && npm run build && cd ..
+fi
 if [ $? -ne 0 ]; then
     echo "❌ Build failed"
     exit 1

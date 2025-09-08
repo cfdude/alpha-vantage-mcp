@@ -54,6 +54,7 @@ if [ -f "samconfig.toml" ]; then
     add_param "R2AccessKeyId" "R2_ACCESS_KEY_ID"
     add_param "R2SecretAccessKey" "R2_SECRET_ACCESS_KEY"
     add_param "StaticFilesBucket" "STATIC_FILES_BUCKET"
+    add_param "AnalyticsLogsBucket" "ANALYTICS_LOGS_BUCKET"
     add_param "SubnetIds" "SUBNET_IDS"
     add_param "LambdaSecurityGroupId" "LAMBDA_SECURITY_GROUP_ID"
     if [ -n "$PARAM_OVERRIDES" ]; then

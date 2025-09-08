@@ -1,7 +1,7 @@
 [project]
 name = "alpha-vantage-mcp"
 version = "0.1.0"
-description = "AWS Lambda function with MCP CLI support"
+description = "Alpha Vantage MCP Server - Financial data APIs via Model Context Protocol"
 requires-python = ">=3.13"
 license = {file = "../LICENSE"}
 dependencies = [
