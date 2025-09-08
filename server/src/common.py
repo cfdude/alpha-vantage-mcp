@@ -57,7 +57,8 @@ def _make_api_request(function_name: str, params: dict, datatype: str = "json") 
     api_params = params.copy()
     api_params.update({
         "function": function_name,
-        "apikey": get_api_key()
+        "apikey": get_api_key(),
+        "source": "alphavangtagemcp"
     })
     
     # Handle entitlement parameter if present in params or global variable
