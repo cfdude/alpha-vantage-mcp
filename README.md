@@ -4,7 +4,7 @@ The official Alpha Vantage API MCP server enables LLMs and agentic workflows to 
 
 ## Quickstart
 
-To use the server, [get your free Alpha Vantage API key](https://www.alphavantage.co/support/#api-key), copy it to your clipboard, then follow the instructions below for the agentic tool/platform of your interest.
+To use the server, <a href="https://www.alphavantage.co/support/#api-key" onclick="gtag('event', 'mcp_getKey')">get your free Alpha Vantage API key</a>, copy it to your clipboard, then follow the instructions below for the agentic tool/platform of your interest.
 
 👉 Any questions? Please contact support@alphavantage.co
 

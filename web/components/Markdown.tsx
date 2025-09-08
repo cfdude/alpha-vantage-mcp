@@ -83,14 +83,28 @@ className="text-3xl font-light mb-8" style={{ color: '#42DCA3' }}
       </div>
     </blockquote>
   ),
-  a: ({ href, children, ...props }) => {
+  a: ({ href, children, onClick, ...props }) => {
     const isExternal = href && (href.startsWith('http') || href.startsWith('https'));
+
+    // Handle onclick string conversion
+    const handleClick = onClick && typeof onClick === 'string'
+      ? () => {
+          try {
+            // Execute the onclick string as code (for gtag calls etc.)
+            eval(onClick);
+          } catch (error) {
+            console.error('Error executing onclick:', error);
+          }
+        }
+      : onClick;
+
     return (
       <a
         href={href}
         target={isExternal ? '_blank' : undefined}
         rel={isExternal ? 'noopener noreferrer' : undefined}
-className="hover:underline" style={{ color: '#42DCA3' }}
+        className="hover:underline" style={{ color: '#42DCA3' }}
+        onClick={handleClick}
         {...props}
       >
         {children}
