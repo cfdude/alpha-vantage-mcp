@@ -77,6 +77,22 @@ def get_sessions_list():
     return sessions_list
 
 
+def find_session_by_prefix(session_prefix: str) -> str:
+    """Find first session that starts with the given prefix.
+    
+    Args:
+        session_prefix: The prefix to match against session IDs
+        
+    Returns:
+        str: The full session ID if found, None otherwise
+    """
+    sessions = get_sessions_list()
+    for session in sessions:
+        if session['session_id'].startswith(session_prefix):
+            return session['session_id']
+    return None
+
+
 def list_sessions():
     """List all previous agent sessions."""
     from agent_display_manager import AgentDisplayManager
