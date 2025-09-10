@@ -2,6 +2,8 @@
 
 A financial analysis agent that demonstrates how to use the OpenAI Agents SDK with the Alpha Vantage MCP server. This interactive CLI agent can answer questions about stocks, forex, and financial markets using real Alpha Vantage data.
 
+![Demo](https://github.com/user-attachments/assets/3a6164ec-8d10-4ef5-b5ab-e45e0c76f105)
+
 ## Features
 
 - Interactive chat interface with rich formatting
