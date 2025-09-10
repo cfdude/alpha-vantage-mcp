@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from loguru import logger
 from input_manager import InputManager
 from agent_display_manager import AgentDisplayManager
-from session_manager import get_session_database_path, generate_session_id
+from session_manager import get_session_database_path, generate_session_id, find_session_by_prefix
 from slash_commands import process_slash_command
 from mcp_server_manager import MCPServerManager
 
@@ -49,12 +49,22 @@ async def handle_stream_events(result_streaming, display_manager: AgentDisplayMa
                     if hasattr(item, 'raw_item') and hasattr(item.raw_item, 'content'):
                         display_manager.display_agent_response(item.raw_item.content)
 
-async def main_agent(session_id=None, model='gpt-4.1-mini', verbose=False):
+async def main_agent(original_session_id=None, model='gpt-4.1-mini', verbose=False):
     """Run an interactive financial query session using the Alpha Vantage MCP server."""
     
     # Generate session ID if not provided
-    if not session_id:
+    if not original_session_id:
         session_id = generate_session_id()
+    else:
+        # If session_id was provided, try to match it as a prefix (like /resume command)
+        matching_session = find_session_by_prefix(original_session_id)
+        
+        if matching_session:
+            session_id = matching_session
+            # We'll show the match info later in display logic
+        else:
+            # If no match found, keep the original session_id (might be a new session with that ID)
+            session_id = original_session_id
     
     # Configure logger based on verbose flag
     if not verbose:
@@ -82,8 +92,24 @@ async def main_agent(session_id=None, model='gpt-4.1-mini', verbose=False):
             mcp_servers=servers
         )
         
-        # Welcome message
-        display_manager.display_welcome(session_id)
+        # Welcome message (only for new sessions)
+        if not original_session_id:
+            display_manager.display_welcome(session_id)
+        else:
+            # Show prefix match info if session ID was matched
+            if original_session_id != session_id:
+                display_manager.display_info(f"🔍 Found session: {session_id}")
+            
+            # Load and display conversation history for resumed session
+            try:
+                items = await session.get_items()
+                if items:
+                    display_manager.display_session_items(items)
+                else:
+                    display_manager.display_welcome(session_id)  # No history, show welcome
+            except Exception as e:
+                display_manager.display_error(f"Failed to load session history: {str(e)}")
+                display_manager.display_welcome(session_id)  # Fallback to welcome
         
         # Interactive loop
         while True:
@@ -127,7 +153,7 @@ async def main_agent(session_id=None, model='gpt-4.1-mini', verbose=False):
 @click.option('--verbose', '-v', is_flag=True, help='Enable verbose logging')
 def main_cli(session_id, model, verbose):
     """Alpha Vantage Financial Agent with Alpha Vantage MCP server."""
-    asyncio.run(main_agent(session_id, model, verbose))
+    asyncio.run(main_agent(original_session_id=session_id, model=model, verbose=verbose))
 
 if __name__ == "__main__":
     main_cli()

@@ -5,7 +5,7 @@ This module contains all slash command functionality separated from the main app
 
 from agents import SQLiteSession
 from agent_display_manager import AgentDisplayManager
-from session_manager import list_sessions, get_session_database_path, generate_session_id, get_sessions_list
+from session_manager import list_sessions, get_session_database_path, generate_session_id, find_session_by_prefix
 
 
 def handle_slash_command(command: str, display_manager: AgentDisplayManager) -> str:
@@ -35,13 +35,7 @@ def handle_slash_command(command: str, display_manager: AgentDisplayManager) -> 
             return 'handled'
         elif len(parts) == 2:
             session_prefix = parts[1]
-            # Find first session that starts with the prefix
-            sessions = get_sessions_list()
-            matching_session = None
-            for session in sessions:
-                if session['session_id'].startswith(session_prefix):
-                    matching_session = session['session_id']
-                    break
+            matching_session = find_session_by_prefix(session_prefix)
             
             if matching_session:
                 display_manager.display_info(f"🔍 Found session: {matching_session}")
