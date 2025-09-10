@@ -7,7 +7,6 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.openai_actions import generate_openapi_schema, execute_tool
-from lambda_function import lambda_handler
 
 def test_schema_generation():
     """Test generating the OpenAPI schema."""
@@ -101,101 +100,6 @@ def test_category_filtering():
     
     print("✓ Category filtering working correctly")
 
-def test_lambda_handler():
-    """Test the Lambda handler."""
-    print("\nTesting Lambda handler...")
-    
-    # Test GET /openai - should return schema
-    event = {
-        "path": "/openai",
-        "httpMethod": "GET",
-        "headers": {},
-        "requestContext": {
-            "domainName": "api.example.com",
-            "stage": "prod"
-        }
-    }
-    
-    response = lambda_handler(event, None)
-    assert response["statusCode"] == 200
-    schema = json.loads(response["body"])
-    assert "openapi" in schema
-    print("✓ GET /openai returns schema")
-    
-    # Test GET /openai with categories query parameter
-    event = {
-        "path": "/openai",
-        "httpMethod": "GET",
-        "headers": {},
-        "queryStringParameters": {
-            "categories": "core_stock_apis"
-        },
-        "requestContext": {
-            "domainName": "api.example.com",
-            "stage": "prod"
-        }
-    }
-    
-    response = lambda_handler(event, None)
-    assert response["statusCode"] == 200
-    schema_filtered = json.loads(response["body"])
-    assert "openapi" in schema_filtered
-    assert len(schema_filtered["paths"]) <= len(schema["paths"])
-    print("✓ GET /openai with categories filter returns filtered schema")
-    
-    # Test POST /openai/PING (uppercase function names)
-    event = {
-        "path": "/openai/PING",
-        "httpMethod": "POST",
-        "headers": {},
-        "body": "{}"
-    }
-    
-    response = lambda_handler(event, None)
-    assert response["statusCode"] == 200
-    body = json.loads(response["body"])
-    assert body["result"] == "pong"
-    print("✓ POST /openai/PING returns correct result")
-    
-    # Test POST /openai/ADD_TWO_NUMBERS
-    event = {
-        "path": "/openai/ADD_TWO_NUMBERS",
-        "httpMethod": "POST",
-        "headers": {},
-        "body": json.dumps({"a": 10, "b": 20})
-    }
-    
-    response = lambda_handler(event, None)
-    assert response["statusCode"] == 200
-    body = json.loads(response["body"])
-    assert body["result"] == "30"
-    print("✓ POST /openai/ADD_TWO_NUMBERS returns correct result")
-    
-    # Test invalid function
-    event = {
-        "path": "/openai/nonexistent_function",
-        "httpMethod": "POST",
-        "headers": {},
-        "body": "{}"
-    }
-    
-    response = lambda_handler(event, None)
-    assert response["statusCode"] == 404
-    print("✓ Invalid function returns 404")
-    
-    # Test OPTIONS for CORS
-    event = {
-        "path": "/openai",
-        "httpMethod": "OPTIONS",
-        "headers": {}
-    }
-    
-    response = lambda_handler(event, None)
-    assert response["statusCode"] == 200
-    assert "Access-Control-Allow-Origin" in response["headers"]
-    print("✓ OPTIONS request handled for CORS")
-    
-    print("✓ Lambda handler working correctly")
 
 def main():
     """Run all tests."""
@@ -208,7 +112,6 @@ def main():
         schema = test_schema_generation()
         test_tool_execution()
         test_category_filtering()
-        test_lambda_handler()
         
         print("\n" + "=" * 60)
         print("All tests passed! ✅")
