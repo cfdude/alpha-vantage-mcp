@@ -27,7 +27,7 @@ _all_tools_registry = []
 
 import inspect
 import functools
-from typing import get_type_hints
+from typing import get_type_hints, Union
 
 def add_entitlement_parameter(func):
     """Decorator that adds entitlement parameter to a function"""
@@ -198,3 +198,93 @@ def register_tools_by_categories(mcp, categories):
     tools = get_tools_by_categories(categories)
     for func in tools:
         mcp.tool()(func)
+
+def get_all_tools(categories=None):
+    """Get all tools with their MCP tool definitions
+    
+    Args:
+        categories: Optional list of categories to filter by
+        
+    Returns:
+        List of tuples containing (tool_definition, tool_function)
+    """
+    import mcp.types as types
+    import inspect
+    from typing import get_type_hints
+    
+    # Get the tools from specified categories
+    tools = get_tools_by_categories(categories)
+    
+    result = []
+    for func in tools:
+        # Create MCP tool definition from function
+        sig = inspect.signature(func)
+        type_hints = get_type_hints(func)
+        
+        # Build parameters schema
+        properties = {}
+        required = []
+        
+        for param_name, param in sig.parameters.items():
+            param_type = type_hints.get(param_name, str)
+            
+            # Convert Python types to JSON schema types
+            if param_type == str or param_type == 'str':
+                schema_type = "string"
+            elif param_type == int or param_type == 'int':
+                schema_type = "integer"
+            elif param_type == float or param_type == 'float':
+                schema_type = "number"
+            elif param_type == bool or param_type == 'bool':
+                schema_type = "boolean"
+            elif hasattr(param_type, '__origin__') and param_type.__origin__ is Union:
+                # Handle Optional types (Union with None)
+                args = param_type.__args__
+                if len(args) == 2 and type(None) in args:
+                    non_none_type = args[0] if args[1] is type(None) else args[1]
+                    if non_none_type == str:
+                        schema_type = "string"
+                    elif non_none_type == int:
+                        schema_type = "integer"
+                    elif non_none_type == float:
+                        schema_type = "number"
+                    elif non_none_type == bool:
+                        schema_type = "boolean"
+                    else:
+                        schema_type = "string"
+                else:
+                    schema_type = "string"
+            else:
+                schema_type = "string"
+            
+            properties[param_name] = {"type": schema_type}
+            
+            # Add description from docstring if available
+            if func.__doc__:
+                # Try to extract parameter description from docstring
+                lines = func.__doc__.split('\n')
+                for line in lines:
+                    if param_name in line and ':' in line:
+                        desc = line.split(':', 1)[1].strip()
+                        if desc:
+                            properties[param_name]["description"] = desc
+                        break
+            
+            # Mark as required if no default value
+            if param.default == inspect.Parameter.empty:
+                required.append(param_name)
+        
+        # Create the tool definition
+        tool_def = types.Tool(
+            name=func.__name__.upper(),
+            description=func.__doc__ or f"Execute {func.__name__}",
+            inputSchema={
+                "type": "object",
+                "properties": properties,
+                "required": required
+            }
+        )
+        
+        result.append((tool_def, func))
+    
+    return result
