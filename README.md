@@ -62,7 +62,17 @@ To connect Claude (Web or Desktop) to this MCP server:
 &nbsp;
 
 ### ChatGPT
-💡 Currently, ChatGPT's MCP connector is (1) not fully interoperable with Anthropic's MCP framework, and (2) limited to ChatGPT Pro ($200/month) only. We are closely monitoring the situation and will add ChatGPT-based tutorials as soon as the above constraints are removed.
+To connect ChatGPT to this MCP server using ChatGPT Developer mode:
+
+**Requirements:**
+- ChatGPT Pro or Plus account
+- Developer mode enabled (beta feature)
+
+**Setup:**
+1. Go to [ChatGPT Settings → Connectors](https://chatgpt.com/#settings/Connectors)
+2. Enable **Advanced → Developer mode**
+3. Add a remote MCP server with URL: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
+4. In conversations, choose **Developer mode** from the Plus menu and select the Alpha Vantage connector
 
 &nbsp;
 
