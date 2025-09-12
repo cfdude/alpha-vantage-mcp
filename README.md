@@ -66,13 +66,15 @@ To connect ChatGPT to this MCP server using ChatGPT Developer mode:
 
 **Requirements:**
 - ChatGPT Pro or Plus account
-- Developer mode enabled (beta feature)
+- Developer mode enabled (beta feature) - see [OpenAI's Developer Mode documentation](https://platform.openai.com/docs/guides/developer-mode)
 
 **Setup:**
 1. Go to [ChatGPT Settings → Connectors](https://chatgpt.com/#settings/Connectors)
 2. Enable **Advanced → Developer mode**
 3. Add a remote MCP server with URL: `https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key)
 4. In conversations, choose **Developer mode** from the Plus menu and select the Alpha Vantage connector
+
+**Note:** While Developer mode is available for both Pro and Plus accounts, MCP tool execution is currently most reliable with Pro accounts. We're monitoring Plus plan functionality and will update this guide as improvements are made.
 
 &nbsp;
 
