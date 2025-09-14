@@ -20,7 +20,7 @@ def company_overview(
         "symbol": symbol,
     }
     
-    return _make_api_request("OVERVIEW", params, "json")
+    return _make_api_request("OVERVIEW", params)
 
 
 @tool
@@ -42,19 +42,19 @@ def etf_profile(
         "symbol": symbol,
     }
     
-    return _make_api_request("ETF_PROFILE", params, "json")
+    return _make_api_request("ETF_PROFILE", params)
 
 
 @tool
 def dividends(
     symbol: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns historical and future (declared) dividend distributions.
 
     Args:
         symbol: The symbol of the ticker of your choice. For example: symbol=IBM.
-        datatype: By default, datatype=json. Strings json and csv are accepted.
+        datatype: By default, datatype=csv. Strings json and csv are accepted.
                  json returns the data in JSON format; csv returns as CSV file.
 
     Returns:
@@ -66,19 +66,19 @@ def dividends(
         "datatype": datatype,
     }
     
-    return _make_api_request("DIVIDENDS", params, datatype)
+    return _make_api_request("DIVIDENDS", params)
 
 
 @tool
 def splits(
     symbol: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns historical split events.
 
     Args:
         symbol: The symbol of the ticker of your choice. For example: symbol=IBM.
-        datatype: By default, datatype=json. Strings json and csv are accepted.
+        datatype: By default, datatype=csv. Strings json and csv are accepted.
                  json returns the data in JSON format; csv returns as CSV file.
 
     Returns:
@@ -90,7 +90,7 @@ def splits(
         "datatype": datatype,
     }
     
-    return _make_api_request("SPLITS", params, datatype)
+    return _make_api_request("SPLITS", params)
 
 
 @tool
@@ -113,7 +113,7 @@ def income_statement(
         "symbol": symbol,
     }
     
-    return _make_api_request("INCOME_STATEMENT", params, "json")
+    return _make_api_request("INCOME_STATEMENT", params)
 
 
 @tool
@@ -136,7 +136,7 @@ def balance_sheet(
         "symbol": symbol,
     }
     
-    return _make_api_request("BALANCE_SHEET", params, "json")
+    return _make_api_request("BALANCE_SHEET", params)
 
 
 @tool
@@ -159,7 +159,7 @@ def cash_flow(
         "symbol": symbol,
     }
     
-    return _make_api_request("CASH_FLOW", params, "json")
+    return _make_api_request("CASH_FLOW", params)
 
 
 @tool
@@ -181,7 +181,7 @@ def earnings(
         "symbol": symbol,
     }
     
-    return _make_api_request("EARNINGS", params, "json")
+    return _make_api_request("EARNINGS", params)
 
 
 @tool
@@ -203,7 +203,7 @@ def earnings_estimates(
         "symbol": symbol,
     }
     
-    return _make_api_request("EARNINGS_ESTIMATES", params, "json")
+    return _make_api_request("EARNINGS_ESTIMATES", params)
 
 
 @tool
@@ -233,7 +233,7 @@ def listing_status(
     if date:
         params["date"] = date
     
-    return _make_api_request("LISTING_STATUS", params, "csv")
+    return _make_api_request("LISTING_STATUS", params)
 
 
 @tool
@@ -259,7 +259,7 @@ def earnings_calendar(
     if symbol:
         params["symbol"] = symbol
     
-    return _make_api_request("EARNINGS_CALENDAR", params, "csv")
+    return _make_api_request("EARNINGS_CALENDAR", params)
 
 
 @tool
@@ -272,4 +272,4 @@ def ipo_calendar() -> dict[str, str] | str:
 
     params = {}
     
-    return _make_api_request("IPO_CALENDAR", params, "csv")
+    return _make_api_request("IPO_CALENDAR", params)

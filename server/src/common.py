@@ -7,7 +7,7 @@ from src.utils import estimate_tokens, upload_to_r2
 API_BASE_URL = "https://www.alphavantage.co/query"
 
 # Maximum token size for responses (configurable via environment variable)
-MAX_RESPONSE_TOKENS = int(os.environ.get('MAX_RESPONSE_TOKENS', '10000'))
+MAX_RESPONSE_TOKENS = int(os.environ.get('MAX_RESPONSE_TOKENS', '50000'))
 
 
 def _create_preview(response_text: str, datatype: str, estimated_tokens: int, error: str = None) -> dict:
@@ -47,7 +47,7 @@ def _create_preview(response_text: str, datatype: str, estimated_tokens: int, er
     return preview
 
 
-def _make_api_request(function_name: str, params: dict, datatype: str = "json") -> dict | str:
+def _make_api_request(function_name: str, params: dict) -> dict | str:
     """Helper function to make API requests and handle responses.
     
     For large responses exceeding MAX_RESPONSE_TOKENS, returns a preview
@@ -77,15 +77,21 @@ def _make_api_request(function_name: str, params: dict, datatype: str = "json") 
         
         response_text = response.text
         
+        # Determine datatype from params (default to csv if not specified)
+        datatype = api_params.get("datatype", "csv")
+        
         # Check response size (works for both JSON and CSV)
         estimated_tokens = estimate_tokens(response_text)
         
         # If response is within limits, return normally
         if estimated_tokens <= MAX_RESPONSE_TOKENS:
-            if datatype == "csv":
-                return response_text
+            if datatype == "json":
+                try:
+                    return json.loads(response_text)
+                except json.JSONDecodeError:
+                    return response_text
             else:
-                return json.loads(response_text) if datatype == "json" else response.json()
+                return response_text
             
         # For large responses, upload to R2 and return preview
         try:

@@ -10,7 +10,7 @@ def time_series_intraday(
     extended_hours: bool = True,
     month: Optional[str] = None,
     outputsize: str = "compact",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict | str:
     """
     Returns current and 20+ years of historical intraday OHLCV time series of the equity specified.
@@ -22,7 +22,8 @@ def time_series_intraday(
         extended_hours: By default True. Set False for regular trading hours only
         month: Query specific month in YYYY-MM format. Example: 2009-01
         outputsize: "compact" (100 data points) or "full" (30 days or full month)
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing the time series data based on datatype parameter.
@@ -38,13 +39,13 @@ def time_series_intraday(
     if month:
         params["month"] = month
     
-    return _make_api_request("TIME_SERIES_INTRADAY", params, datatype)
+    return _make_api_request("TIME_SERIES_INTRADAY", params)
 
 @tool
 def time_series_daily(
     symbol: str,
     outputsize: str = "compact",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict | str:
     """
     Returns raw daily time series (OHLCV) of the global equity specified, covering 20+ years of historical data.
@@ -52,7 +53,8 @@ def time_series_daily(
     Args:
         symbol: The name of the equity. For example: symbol=IBM
         outputsize: "compact" (100 data points) or "full" (20+ years of historical data)
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing the daily time series data based on datatype parameter.
@@ -63,13 +65,13 @@ def time_series_daily(
         "datatype": datatype,
     }
     
-    return _make_api_request("TIME_SERIES_DAILY", params, datatype)
+    return _make_api_request("TIME_SERIES_DAILY", params)
 
 @tool
 def time_series_daily_adjusted(
     symbol: str,
     outputsize: str = "compact",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict | str:
     """
     Returns raw daily OHLCV values, adjusted close values, and historical split/dividend events.
@@ -77,7 +79,8 @@ def time_series_daily_adjusted(
     Args:
         symbol: The name of the equity. For example: symbol=IBM
         outputsize: "compact" (100 data points) or "full" (20+ years of historical data)
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing the daily adjusted time series data based on datatype parameter.
@@ -88,19 +91,20 @@ def time_series_daily_adjusted(
         "datatype": datatype,
     }
     
-    return _make_api_request("TIME_SERIES_DAILY_ADJUSTED", params, datatype)
+    return _make_api_request("TIME_SERIES_DAILY_ADJUSTED", params)
 
 @tool
 def time_series_weekly(
     symbol: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict | str:
     """
     Returns weekly time series (last trading day of each week, OHLCV) covering 20+ years of historical data.
 
     Args:
         symbol: The name of the equity. For example: symbol=IBM
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing the weekly time series data based on datatype parameter.
@@ -110,19 +114,20 @@ def time_series_weekly(
         "datatype": datatype,
     }
     
-    return _make_api_request("TIME_SERIES_WEEKLY", params, datatype)
+    return _make_api_request("TIME_SERIES_WEEKLY", params)
 
 @tool
 def time_series_weekly_adjusted(
     symbol: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict | str:
     """
     Returns weekly adjusted time series (OHLCV, adjusted close, volume, dividend) covering 20+ years.
 
     Args:
         symbol: The name of the equity. For example: symbol=IBM
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing the weekly adjusted time series data based on datatype parameter.
@@ -132,19 +137,20 @@ def time_series_weekly_adjusted(
         "datatype": datatype,
     }
     
-    return _make_api_request("TIME_SERIES_WEEKLY_ADJUSTED", params, datatype)
+    return _make_api_request("TIME_SERIES_WEEKLY_ADJUSTED", params)
 
 @tool
 def time_series_monthly(
     symbol: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict | str:
     """
     Returns monthly time series (last trading day of each month, OHLCV) covering 20+ years.
 
     Args:
         symbol: The name of the equity. For example: symbol=IBM
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing the monthly time series data based on datatype parameter.
@@ -154,19 +160,20 @@ def time_series_monthly(
         "datatype": datatype,
     }
     
-    return _make_api_request("TIME_SERIES_MONTHLY", params, datatype)
+    return _make_api_request("TIME_SERIES_MONTHLY", params)
 
 @tool
 def time_series_monthly_adjusted(
     symbol: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict | str:
     """
     Returns monthly adjusted time series (OHLCV, adjusted close, volume, dividend) covering 20+ years.
 
     Args:
         symbol: The name of the equity. For example: symbol=IBM
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing the monthly adjusted time series data based on datatype parameter.
@@ -176,16 +183,17 @@ def time_series_monthly_adjusted(
         "datatype": datatype,
     }
     
-    return _make_api_request("TIME_SERIES_MONTHLY_ADJUSTED", params, datatype)
+    return _make_api_request("TIME_SERIES_MONTHLY_ADJUSTED", params)
 
 @tool
-def global_quote(symbol: str, datatype: str = "json") -> dict | str:
+def global_quote(symbol: str, datatype: str = "csv") -> dict | str:
     """
     Returns the latest price and volume information for a ticker.
 
     Args:
         symbol: The symbol of the global ticker. For example: symbol=IBM
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing the latest quote information based on datatype parameter.
@@ -194,19 +202,20 @@ def global_quote(symbol: str, datatype: str = "json") -> dict | str:
         "symbol": symbol,
         "datatype": datatype,
     }
-    return _make_api_request("GLOBAL_QUOTE", params, datatype)
+    return _make_api_request("GLOBAL_QUOTE", params)
 
 @tool
 def realtime_bulk_quotes(
     symbol: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict | str:
     """
     Returns realtime quotes for US-traded symbols in bulk, accepting up to 100 symbols per request.
 
     Args:
         symbol: Up to 100 symbols separated by comma. Example: MSFT,AAPL,IBM
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing realtime bulk quotes based on datatype parameter.
@@ -216,19 +225,20 @@ def realtime_bulk_quotes(
         "datatype": datatype,
     }
     
-    return _make_api_request("REALTIME_BULK_QUOTES", params, datatype)
+    return _make_api_request("REALTIME_BULK_QUOTES", params)
 
 @tool
 def symbol_search(
     keywords: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict | str:
     """
     Returns best-matching symbols and market information based on keywords.
 
     Args:
         keywords: A text string of your choice. Example: microsoft
-        datatype: "json" or "csv"
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
+                 json returns the data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
         Dict or string containing symbol search results based on datatype parameter.
@@ -238,7 +248,7 @@ def symbol_search(
         "datatype": datatype,
     }
     
-    return _make_api_request("SYMBOL_SEARCH", params, datatype)
+    return _make_api_request("SYMBOL_SEARCH", params)
 
 @tool
 def market_status() -> dict:

@@ -4,14 +4,14 @@ from src.tools.registry import tool
 @tool
 def wti(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the West Texas Intermediate (WTI) crude oil prices in daily, weekly, and monthly horizons.
 
     Args:
         interval: By default, monthly. Strings daily, weekly, and monthly are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -23,20 +23,20 @@ def wti(
         "datatype": datatype,
     }
     
-    return _make_api_request("WTI", params, datatype)
+    return _make_api_request("WTI", params)
 
 
 @tool
 def brent(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the Brent (Europe) crude oil prices in daily, weekly, and monthly horizons.
 
     Args:
         interval: By default, monthly. Strings daily, weekly, and monthly are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -48,20 +48,20 @@ def brent(
         "datatype": datatype,
     }
     
-    return _make_api_request("BRENT", params, datatype)
+    return _make_api_request("BRENT", params)
 
 
 @tool
 def natural_gas(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the Henry Hub natural gas spot prices in daily, weekly, and monthly horizons.
 
     Args:
         interval: By default, monthly. Strings daily, weekly, and monthly are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -73,20 +73,20 @@ def natural_gas(
         "datatype": datatype,
     }
     
-    return _make_api_request("NATURAL_GAS", params, datatype)
+    return _make_api_request("NATURAL_GAS", params)
 
 
 @tool
 def copper(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the global price of copper in monthly, quarterly, and annual horizons.
 
     Args:
         interval: By default, monthly. Strings monthly, quarterly, and annual are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -98,20 +98,20 @@ def copper(
         "datatype": datatype,
     }
     
-    return _make_api_request("COPPER", params, datatype)
+    return _make_api_request("COPPER", params)
 
 
 @tool
 def aluminum(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the global price of aluminum in monthly, quarterly, and annual horizons.
 
     Args:
         interval: By default, monthly. Strings monthly, quarterly, and annual are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -123,20 +123,20 @@ def aluminum(
         "datatype": datatype,
     }
     
-    return _make_api_request("ALUMINUM", params, datatype)
+    return _make_api_request("ALUMINUM", params)
 
 
 @tool
 def wheat(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the global price of wheat in monthly, quarterly, and annual horizons.
 
     Args:
         interval: By default, monthly. Strings monthly, quarterly, and annual are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -148,20 +148,20 @@ def wheat(
         "datatype": datatype,
     }
     
-    return _make_api_request("WHEAT", params, datatype)
+    return _make_api_request("WHEAT", params)
 
 
 @tool
 def corn(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the global price of corn in monthly, quarterly, and annual horizons.
 
     Args:
         interval: By default, monthly. Strings monthly, quarterly, and annual are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -173,20 +173,20 @@ def corn(
         "datatype": datatype,
     }
     
-    return _make_api_request("CORN", params, datatype)
+    return _make_api_request("CORN", params)
 
 
 @tool
 def cotton(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the global price of cotton in monthly, quarterly, and annual horizons.
 
     Args:
         interval: By default, monthly. Strings monthly, quarterly, and annual are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -198,20 +198,20 @@ def cotton(
         "datatype": datatype,
     }
     
-    return _make_api_request("COTTON", params, datatype)
+    return _make_api_request("COTTON", params)
 
 
 @tool
 def sugar(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the global price of sugar in monthly, quarterly, and annual horizons.
 
     Args:
         interval: By default, monthly. Strings monthly, quarterly, and annual are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -223,20 +223,20 @@ def sugar(
         "datatype": datatype,
     }
     
-    return _make_api_request("SUGAR", params, datatype)
+    return _make_api_request("SUGAR", params)
 
 
 @tool
 def coffee(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the global price of coffee in monthly, quarterly, and annual horizons.
 
     Args:
         interval: By default, monthly. Strings monthly, quarterly, and annual are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -248,20 +248,20 @@ def coffee(
         "datatype": datatype,
     }
     
-    return _make_api_request("COFFEE", params, datatype)
+    return _make_api_request("COFFEE", params)
 
 
 @tool
 def all_commodities(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the global price index of all commodities in monthly, quarterly, and annual temporal dimensions.
 
     Args:
         interval: By default, monthly. Strings monthly, quarterly, and annual are accepted.
-        datatype: By default, json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, csv. Strings json and csv are accepted with the following specifications:
                  json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -273,4 +273,4 @@ def all_commodities(
         "datatype": datatype,
     }
     
-    return _make_api_request("ALL_COMMODITIES", params, datatype)
+    return _make_api_request("ALL_COMMODITIES", params)

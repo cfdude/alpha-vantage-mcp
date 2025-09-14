@@ -4,14 +4,14 @@ from src.tools.registry import tool
 @tool
 def real_gdp(
     interval: str = "annual",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the annual and quarterly Real GDP of the United States.
 
     Args:
         interval: By default, interval=annual. Strings quarterly and annual are accepted.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -23,18 +23,18 @@ def real_gdp(
         "datatype": datatype,
     }
     
-    return _make_api_request("REAL_GDP", params, datatype)
+    return _make_api_request("REAL_GDP", params)
 
 
 @tool
 def real_gdp_per_capita(
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the quarterly Real GDP per Capita data of the United States.
 
     Args:
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -45,14 +45,14 @@ def real_gdp_per_capita(
         "datatype": datatype,
     }
     
-    return _make_api_request("REAL_GDP_PER_CAPITA", params, datatype)
+    return _make_api_request("REAL_GDP_PER_CAPITA", params)
 
 
 @tool
 def treasury_yield(
     interval: str = "monthly",
     maturity: str = "10year",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the daily, weekly, and monthly US treasury yield of a given maturity timeline (e.g., 5 year, 30 year, etc).
@@ -60,7 +60,7 @@ def treasury_yield(
     Args:
         interval: By default, interval=monthly. Strings daily, weekly, and monthly are accepted.
         maturity: By default, maturity=10year. Strings 3month, 2year, 5year, 7year, 10year, and 30year are accepted.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -73,20 +73,20 @@ def treasury_yield(
         "datatype": datatype,
     }
     
-    return _make_api_request("TREASURY_YIELD", params, datatype)
+    return _make_api_request("TREASURY_YIELD", params)
 
 
 @tool
 def federal_funds_rate(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the daily, weekly, and monthly federal funds rate (interest rate) of the United States.
 
     Args:
         interval: By default, interval=monthly. Strings daily, weekly, and monthly are accepted.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -98,13 +98,13 @@ def federal_funds_rate(
         "datatype": datatype,
     }
     
-    return _make_api_request("FEDERAL_FUNDS_RATE", params, datatype)
+    return _make_api_request("FEDERAL_FUNDS_RATE", params)
 
 
 @tool
 def cpi(
     interval: str = "monthly",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the monthly and semiannual consumer price index (CPI) of the United States. 
@@ -112,7 +112,7 @@ def cpi(
 
     Args:
         interval: By default, interval=monthly. Strings monthly and semiannual are accepted.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -124,18 +124,18 @@ def cpi(
         "datatype": datatype,
     }
     
-    return _make_api_request("CPI", params, datatype)
+    return _make_api_request("CPI", params)
 
 
 @tool
 def inflation(
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the annual inflation rates (consumer prices) of the United States.
 
     Args:
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -146,18 +146,18 @@ def inflation(
         "datatype": datatype,
     }
     
-    return _make_api_request("INFLATION", params, datatype)
+    return _make_api_request("INFLATION", params)
 
 
 @tool
 def retail_sales(
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the monthly Advance Retail Sales: Retail Trade data of the United States.
 
     Args:
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -168,18 +168,18 @@ def retail_sales(
         "datatype": datatype,
     }
     
-    return _make_api_request("RETAIL_SALES", params, datatype)
+    return _make_api_request("RETAIL_SALES", params)
 
 
 @tool
 def durables(
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the monthly manufacturers' new orders of durable goods in the United States.
 
     Args:
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -190,12 +190,12 @@ def durables(
         "datatype": datatype,
     }
     
-    return _make_api_request("DURABLES", params, datatype)
+    return _make_api_request("DURABLES", params)
 
 
 @tool
 def unemployment(
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the monthly unemployment data of the United States. The unemployment rate represents the number of 
@@ -204,7 +204,7 @@ def unemployment(
     (e.g., penal and mental facilities, homes for the aged), and who are not on active duty in the Armed Forces.
 
     Args:
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -215,12 +215,12 @@ def unemployment(
         "datatype": datatype,
     }
     
-    return _make_api_request("UNEMPLOYMENT", params, datatype)
+    return _make_api_request("UNEMPLOYMENT", params)
 
 
 @tool
 def nonfarm_payroll(
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the monthly US All Employees: Total Nonfarm (commonly known as Total Nonfarm Payroll), 
@@ -228,7 +228,7 @@ def nonfarm_payroll(
     unpaid volunteers, farm employees, and the unincorporated self-employed.
 
     Args:
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -239,4 +239,4 @@ def nonfarm_payroll(
         "datatype": datatype,
     }
     
-    return _make_api_request("NONFARM_PAYROLL", params, datatype)
+    return _make_api_request("NONFARM_PAYROLL", params)
