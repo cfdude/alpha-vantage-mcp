@@ -24,7 +24,7 @@ def currency_exchange_rate(
         "to_currency": to_currency,
     }
     
-    return _make_api_request("CURRENCY_EXCHANGE_RATE", params, "json")
+    return _make_api_request("CURRENCY_EXCHANGE_RATE", params)
 
 
 @tool
@@ -33,7 +33,7 @@ def fx_intraday(
     to_symbol: str,
     interval: str,
     outputsize: str = "compact",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns intraday time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime.
@@ -45,7 +45,7 @@ def fx_intraday(
         outputsize: By default, outputsize=compact. Strings compact and full are accepted with the following specifications: 
                    compact returns only the latest 100 data points in the intraday time series; 
                    full returns the full-length intraday time series. The "compact" option is recommended if you would like to reduce the data size of each API call.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                  json returns the intraday time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -60,7 +60,7 @@ def fx_intraday(
         "datatype": datatype,
     }
     
-    return _make_api_request("FX_INTRADAY", params, datatype)
+    return _make_api_request("FX_INTRADAY", params)
 
 
 @tool
@@ -68,7 +68,7 @@ def fx_daily(
     from_symbol: str,
     to_symbol: str,
     outputsize: str = "compact",
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the daily time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime.
@@ -79,7 +79,7 @@ def fx_daily(
         outputsize: By default, outputsize=compact. Strings compact and full are accepted with the following specifications: 
                    compact returns only the latest 100 data points in the daily time series; 
                    full returns the full-length daily time series. The "compact" option is recommended if you would like to reduce the data size of each API call.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                  json returns the daily time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -93,14 +93,14 @@ def fx_daily(
         "datatype": datatype,
     }
     
-    return _make_api_request("FX_DAILY", params, datatype)
+    return _make_api_request("FX_DAILY", params)
 
 
 @tool
 def fx_weekly(
     from_symbol: str,
     to_symbol: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the weekly time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime.
@@ -109,7 +109,7 @@ def fx_weekly(
     Args:
         from_symbol: A three-letter symbol from the forex currency list. For example: from_symbol=EUR
         to_symbol: A three-letter symbol from the forex currency list. For example: to_symbol=USD
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                  json returns the weekly time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -122,14 +122,14 @@ def fx_weekly(
         "datatype": datatype,
     }
     
-    return _make_api_request("FX_WEEKLY", params, datatype)
+    return _make_api_request("FX_WEEKLY", params)
 
 
 @tool
 def fx_monthly(
     from_symbol: str,
     to_symbol: str,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     This API returns the monthly time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime.
@@ -138,7 +138,7 @@ def fx_monthly(
     Args:
         from_symbol: A three-letter symbol from the forex currency list. For example: from_symbol=EUR
         to_symbol: A three-letter symbol from the forex currency list. For example: to_symbol=USD
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                  json returns the monthly time series in JSON format; csv returns the time series as a CSV (comma separated value) file.
 
     Returns:
@@ -151,4 +151,4 @@ def fx_monthly(
         "datatype": datatype,
     }
     
-    return _make_api_request("FX_MONTHLY", params, datatype)
+    return _make_api_request("FX_MONTHLY", params)

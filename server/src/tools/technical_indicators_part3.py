@@ -7,7 +7,7 @@ def mfi(
     interval: str,
     time_period: int,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the money flow index (MFI) values.
     
@@ -21,7 +21,7 @@ def mfi(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -37,7 +37,7 @@ def mfi(
     if month:
         params["month"] = month
     
-    return _make_api_request("MFI", params, datatype)
+    return _make_api_request("MFI", params)
 
 
 @tool
@@ -47,7 +47,7 @@ def trix(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the 1-day rate of change of a triple smooth exponential moving average (TRIX) values.
     
@@ -62,7 +62,7 @@ def trix(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -79,7 +79,7 @@ def trix(
     if month:
         params["month"] = month
     
-    return _make_api_request("TRIX", params, datatype)
+    return _make_api_request("TRIX", params)
 
 
 @tool
@@ -90,7 +90,7 @@ def ultosc(
     timeperiod2: int = 14,
     timeperiod3: int = 28,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the ultimate oscillator (ULTOSC) values.
     
@@ -106,7 +106,7 @@ def ultosc(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -124,7 +124,7 @@ def ultosc(
     if month:
         params["month"] = month
     
-    return _make_api_request("ULTOSC", params, datatype)
+    return _make_api_request("ULTOSC", params)
 
 
 @tool
@@ -133,7 +133,7 @@ def dx(
     interval: str,
     time_period: int,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the directional movement index (DX) values.
     
@@ -147,7 +147,7 @@ def dx(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -163,7 +163,7 @@ def dx(
     if month:
         params["month"] = month
     
-    return _make_api_request("DX", params, datatype)
+    return _make_api_request("DX", params)
 
 
 @tool
@@ -172,7 +172,7 @@ def minus_di(
     interval: str,
     time_period: int,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the minus directional indicator (MINUS_DI) values.
     
@@ -186,7 +186,7 @@ def minus_di(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -202,7 +202,7 @@ def minus_di(
     if month:
         params["month"] = month
     
-    return _make_api_request("MINUS_DI", params, datatype)
+    return _make_api_request("MINUS_DI", params)
 
 
 @tool
@@ -211,7 +211,7 @@ def plus_di(
     interval: str,
     time_period: int,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the plus directional indicator (PLUS_DI) values.
     
@@ -225,7 +225,7 @@ def plus_di(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -241,7 +241,7 @@ def plus_di(
     if month:
         params["month"] = month
     
-    return _make_api_request("PLUS_DI", params, datatype)
+    return _make_api_request("PLUS_DI", params)
 
 
 @tool
@@ -250,7 +250,7 @@ def minus_dm(
     interval: str,
     time_period: int,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the minus directional movement (MINUS_DM) values.
     
@@ -264,7 +264,7 @@ def minus_dm(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -280,7 +280,7 @@ def minus_dm(
     if month:
         params["month"] = month
     
-    return _make_api_request("MINUS_DM", params, datatype)
+    return _make_api_request("MINUS_DM", params)
 
 
 @tool
@@ -289,7 +289,7 @@ def plus_dm(
     interval: str,
     time_period: int,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the plus directional movement (PLUS_DM) values.
     
@@ -303,7 +303,7 @@ def plus_dm(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -319,7 +319,7 @@ def plus_dm(
     if month:
         params["month"] = month
     
-    return _make_api_request("PLUS_DM", params, datatype)
+    return _make_api_request("PLUS_DM", params)
 
 
 @tool
@@ -332,7 +332,7 @@ def bbands(
     nbdevdn: int = 2,
     matype: int = 0,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the Bollinger bands (BBANDS) values.
     
@@ -354,7 +354,7 @@ def bbands(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -374,7 +374,7 @@ def bbands(
     if month:
         params["month"] = month
     
-    return _make_api_request("BBANDS", params, datatype)
+    return _make_api_request("BBANDS", params)
 
 
 @tool
@@ -384,7 +384,7 @@ def midpoint(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the midpoint (MIDPOINT) values. MIDPOINT = (highest value + lowest value)/2.
     
@@ -399,7 +399,7 @@ def midpoint(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -416,7 +416,7 @@ def midpoint(
     if month:
         params["month"] = month
     
-    return _make_api_request("MIDPOINT", params, datatype)
+    return _make_api_request("MIDPOINT", params)
 
 
 @tool
@@ -425,7 +425,7 @@ def midprice(
     interval: str,
     time_period: int,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the midpoint price (MIDPRICE) values. MIDPRICE = (highest high + lowest low)/2.
     
@@ -439,7 +439,7 @@ def midprice(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -455,7 +455,7 @@ def midprice(
     if month:
         params["month"] = month
     
-    return _make_api_request("MIDPRICE", params, datatype)
+    return _make_api_request("MIDPRICE", params)
 
 
 @tool
@@ -465,7 +465,7 @@ def sar(
     acceleration: float = 0.01,
     maximum: float = 0.20,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the parabolic SAR (SAR) values.
     
@@ -480,7 +480,7 @@ def sar(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -497,7 +497,7 @@ def sar(
     if month:
         params["month"] = month
     
-    return _make_api_request("SAR", params, datatype)
+    return _make_api_request("SAR", params)
 
 
 @tool
@@ -505,7 +505,7 @@ def trange(
     symbol: str,
     interval: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the true range (TRANGE) values.
     
@@ -518,7 +518,7 @@ def trange(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -533,7 +533,7 @@ def trange(
     if month:
         params["month"] = month
     
-    return _make_api_request("TRANGE", params, datatype)
+    return _make_api_request("TRANGE", params)
 
 
 @tool
@@ -542,7 +542,7 @@ def atr(
     interval: str,
     time_period: int,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the average true range (ATR) values.
     
@@ -556,7 +556,7 @@ def atr(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -572,7 +572,7 @@ def atr(
     if month:
         params["month"] = month
     
-    return _make_api_request("ATR", params, datatype)
+    return _make_api_request("ATR", params)
 
 
 @tool
@@ -581,7 +581,7 @@ def natr(
     interval: str,
     time_period: int,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the normalized average true range (NATR) values.
     
@@ -595,7 +595,7 @@ def natr(
                will be calculated based on the most recent 30 days of intraday data. You can use the month 
                parameter (in YYYY-MM format) to compute intraday technical indicators for a specific month 
                in history. For example, month=2009-01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
     
     Returns:
@@ -611,4 +611,4 @@ def natr(
     if month:
         params["month"] = month
     
-    return _make_api_request("NATR", params, datatype)
+    return _make_api_request("NATR", params)

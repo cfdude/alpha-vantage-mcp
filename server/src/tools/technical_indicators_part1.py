@@ -8,7 +8,7 @@ def sma(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the simple moving average (SMA) values.
@@ -25,7 +25,7 @@ def sma(
               be calculated based on the most recent 30 days of intraday data. You can use the month parameter
               (in YYYY-MM format) to compute intraday technical indicators for a specific month in history.
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -42,7 +42,7 @@ def sma(
     if month:
         params["month"] = month
     
-    return _make_api_request("SMA", params, datatype)
+    return _make_api_request("SMA", params)
 
 
 @tool
@@ -52,7 +52,7 @@ def ema(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the exponential moving average (EMA) values.
@@ -69,7 +69,7 @@ def ema(
               be calculated based on the most recent 30 days of intraday data. You can use the month parameter
               (in YYYY-MM format) to compute intraday technical indicators for a specific month in history.
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -86,7 +86,7 @@ def ema(
     if month:
         params["month"] = month
     
-    return _make_api_request("EMA", params, datatype)
+    return _make_api_request("EMA", params)
 
 
 @tool
@@ -96,7 +96,7 @@ def wma(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the weighted moving average (WMA) values.
@@ -113,7 +113,7 @@ def wma(
               be calculated based on the most recent 30 days of intraday data. You can use the month parameter
               (in YYYY-MM format) to compute intraday technical indicators for a specific month in history.
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -130,7 +130,7 @@ def wma(
     if month:
         params["month"] = month
     
-    return _make_api_request("WMA", params, datatype)
+    return _make_api_request("WMA", params)
 
 
 @tool
@@ -140,7 +140,7 @@ def dema(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the double exponential moving average (DEMA) values.
@@ -157,7 +157,7 @@ def dema(
               be calculated based on the most recent 30 days of intraday data. You can use the month parameter
               (in YYYY-MM format) to compute intraday technical indicators for a specific month in history.
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -174,7 +174,7 @@ def dema(
     if month:
         params["month"] = month
     
-    return _make_api_request("DEMA", params, datatype)
+    return _make_api_request("DEMA", params)
 
 
 @tool
@@ -184,7 +184,7 @@ def tema(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the triple exponential moving average (TEMA) values.
@@ -201,7 +201,7 @@ def tema(
               be calculated based on the most recent 30 days of intraday data. You can use the month parameter
               (in YYYY-MM format) to compute intraday technical indicators for a specific month in history.
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -218,7 +218,7 @@ def tema(
     if month:
         params["month"] = month
     
-    return _make_api_request("TEMA", params, datatype)
+    return _make_api_request("TEMA", params)
 
 
 @tool
@@ -228,7 +228,7 @@ def trima(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the triangular moving average (TRIMA) values.
@@ -245,7 +245,7 @@ def trima(
               be calculated based on the most recent 30 days of intraday data. You can use the month parameter
               (in YYYY-MM format) to compute intraday technical indicators for a specific month in history.
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -262,7 +262,7 @@ def trima(
     if month:
         params["month"] = month
     
-    return _make_api_request("TRIMA", params, datatype)
+    return _make_api_request("TRIMA", params)
 
 
 @tool
@@ -272,7 +272,7 @@ def kama(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the Kaufman adaptive moving average (KAMA) values.
@@ -289,7 +289,7 @@ def kama(
               be calculated based on the most recent 30 days of intraday data. You can use the month parameter
               (in YYYY-MM format) to compute intraday technical indicators for a specific month in history.
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -306,7 +306,7 @@ def kama(
     if month:
         params["month"] = month
     
-    return _make_api_request("KAMA", params, datatype)
+    return _make_api_request("KAMA", params)
 
 
 @tool
@@ -317,7 +317,7 @@ def mama(
     month: str = None,
     fastlimit: float = 0.01,
     slowlimit: float = 0.01,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the MESA adaptive moving average (MAMA) values.
@@ -334,7 +334,7 @@ def mama(
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
         fastlimit: Positive floats are accepted. By default, fastlimit=0.01.
         slowlimit: Positive floats are accepted. By default, slowlimit=0.01.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -354,7 +354,7 @@ def mama(
     if slowlimit != 0.01:
         params["slowlimit"] = str(slowlimit)
     
-    return _make_api_request("MAMA", params, datatype)
+    return _make_api_request("MAMA", params)
 
 
 @tool
@@ -362,7 +362,7 @@ def vwap(
     symbol: str,
     interval: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the volume weighted average price (VWAP) for intraday time series.
@@ -376,7 +376,7 @@ def vwap(
               be calculated based on the most recent 30 days of intraday data. You can use the month parameter
               (in YYYY-MM format) to compute intraday technical indicators for a specific month in history.
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -391,7 +391,7 @@ def vwap(
     if month:
         params["month"] = month
     
-    return _make_api_request("VWAP", params, datatype)
+    return _make_api_request("VWAP", params)
 
 
 @tool
@@ -401,7 +401,7 @@ def t3(
     time_period: int,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the triple exponential moving average (T3) values.
@@ -418,7 +418,7 @@ def t3(
               be calculated based on the most recent 30 days of intraday data. You can use the month parameter
               (in YYYY-MM format) to compute intraday technical indicators for a specific month in history.
               For example, month=2009-01. Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -435,7 +435,7 @@ def t3(
     if month:
         params["month"] = month
     
-    return _make_api_request("T3", params, datatype)
+    return _make_api_request("T3", params)
 
 
 @tool
@@ -447,7 +447,7 @@ def macd(
     fastperiod: int = 12,
     slowperiod: int = 26,
     signalperiod: int = 9,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the moving average convergence / divergence (MACD) values.
@@ -465,7 +465,7 @@ def macd(
         fastperiod: Positive integers are accepted. By default, fastperiod=12.
         slowperiod: Positive integers are accepted. By default, slowperiod=26.
         signalperiod: Positive integers are accepted. By default, signalperiod=9.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -487,7 +487,7 @@ def macd(
     if signalperiod != 9:
         params["signalperiod"] = str(signalperiod)
     
-    return _make_api_request("MACD", params, datatype)
+    return _make_api_request("MACD", params)
 
 
 @tool
@@ -502,7 +502,7 @@ def macdext(
     fastmatype: int = 0,
     slowmatype: int = 0,
     signalmatype: int = 0,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the moving average convergence / divergence values with controllable moving average type.
@@ -538,7 +538,7 @@ def macdext(
                      3 = Double Exponential Moving Average (DEMA), 4 = Triple Exponential Moving Average (TEMA),
                      5 = Triangular Moving Average (TRIMA), 6 = T3 Moving Average, 7 = Kaufman Adaptive Moving Average (KAMA),
                      8 = MESA Adaptive Moving Average (MAMA).
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -566,7 +566,7 @@ def macdext(
     if signalmatype != 0:
         params["signalmatype"] = str(signalmatype)
     
-    return _make_api_request("MACDEXT", params, datatype)
+    return _make_api_request("MACDEXT", params)
 
 
 @tool
@@ -579,7 +579,7 @@ def stoch(
     slowdperiod: int = 3,
     slowkmatype: int = 0,
     slowdmatype: int = 0,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the stochastic oscillator (STOCH) values.
@@ -608,7 +608,7 @@ def stoch(
                     3 = Double Exponential Moving Average (DEMA), 4 = Triple Exponential Moving Average (TEMA),
                     5 = Triangular Moving Average (TRIMA), 6 = T3 Moving Average, 7 = Kaufman Adaptive Moving Average (KAMA),
                     8 = MESA Adaptive Moving Average (MAMA).
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -633,7 +633,7 @@ def stoch(
     if slowdmatype != 0:
         params["slowdmatype"] = str(slowdmatype)
     
-    return _make_api_request("STOCH", params, datatype)
+    return _make_api_request("STOCH", params)
 
 
 @tool
@@ -644,7 +644,7 @@ def stochf(
     fastkperiod: int = 5,
     fastdperiod: int = 3,
     fastdmatype: int = 0,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
     Returns the stochastic fast (STOCHF) values.
@@ -666,7 +666,7 @@ def stochf(
                     3 = Double Exponential Moving Average (DEMA), 4 = Triple Exponential Moving Average (TEMA),
                     5 = Triangular Moving Average (TRIMA), 6 = T3 Moving Average, 7 = Kaufman Adaptive Moving Average (KAMA),
                     8 = MESA Adaptive Moving Average (MAMA).
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV file.
 
     Returns:
@@ -687,4 +687,4 @@ def stochf(
     if fastdmatype != 0:
         params["fastdmatype"] = str(fastdmatype)
     
-    return _make_api_request("STOCHF", params, datatype)
+    return _make_api_request("STOCHF", params)

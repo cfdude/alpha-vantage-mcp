@@ -39,10 +39,6 @@ Parameters:
     Type: String
     NoEcho: true
     Description: R2 secret access key
-  AnalyticsLogsBucket:
-    Type: String
-    Default: alphavantage-mcp-analytics-logs
-    Description: S3 bucket name for MCP analytics logs
   SubnetIds:
     Type: CommaDelimitedList
     Description: Comma-delimited list of subnet IDs for Lambda VPC deployment (optional)
@@ -67,26 +63,6 @@ Resources:
         IndexDocument: index.html
         ErrorDocument: index.html
 
-  # S3 bucket for analytics logs
-  AnalyticsLogsBucketResource:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Ref AnalyticsLogsBucket
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      LifecycleConfiguration:
-        Rules:
-          - Id: AnalyticsLogsLifecycle
-            Status: Enabled
-            Transitions:
-              - TransitionInDays: 30
-                StorageClass: STANDARD_IA
-              - TransitionInDays: 90
-                StorageClass: GLACIER
-            ExpirationInDays: 2555  # 7 years retention
 
   # CloudFront distribution
   CloudFrontDistribution:
@@ -225,7 +201,7 @@ Resources:
         Variables:
           ENVIRONMENT: !Ref Environment
           PYTHONPATH: /var/runtime
-          MAX_RESPONSE_TOKENS: '10000'
+          MAX_RESPONSE_TOKENS: '50000'
           DOMAIN_NAME: !Ref DomainName
           R2_BUCKET: !Ref R2Bucket
           R2_PUBLIC_DOMAIN: !Ref R2PublicDomain
@@ -249,7 +225,3 @@ Outputs:
   MCPLambdaFunction:
     Description: "MCP Lambda Function ARN"
     Value: !GetAtt MCPLambdaFunction.Arn
-  AnalyticsLogsBucket:
-    Description: "S3 bucket for MCP analytics logs"
-    Value: !Ref AnalyticsLogsBucketResource
-  # MCPAnalyticsDatabase output removed - now managed by setup-glue-tables.sh script

@@ -6,7 +6,7 @@ def realtime_options(
     symbol: str,
     require_greeks: bool = False,
     contract: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns realtime US options data with full market coverage.
     
@@ -19,7 +19,7 @@ def realtime_options(
                        Set require_greeks=true to enable greeks & IVs in the API response.
         contract: The US options contract ID you would like to specify. By default, the contract parameter 
                  is not set and the entire option chain for a given symbol will be returned.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                  json returns the options data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
@@ -35,14 +35,14 @@ def realtime_options(
     if contract:
         params["contract"] = contract
     
-    return _make_api_request("REALTIME_OPTIONS", params, datatype)
+    return _make_api_request("REALTIME_OPTIONS", params)
 
 
 @tool
 def historical_options(
     symbol: str, 
     date: str = None, 
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the full historical options chain for a specific symbol on a specific date.
     
@@ -54,7 +54,7 @@ def historical_options(
         symbol: The name of the equity of your choice. For example: symbol=IBM
         date: By default, the date parameter is not set and the API will return data for the previous trading session. 
               Any date later than 2008-01-01 is accepted. For example, date=2017-11-15.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications: 
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications: 
                   json returns the options data in JSON format; csv returns the data as a CSV (comma separated value) file.
 
     Returns:
@@ -68,5 +68,5 @@ def historical_options(
     if date:
         params["date"] = date
     
-    return _make_api_request("HISTORICAL_OPTIONS", params, datatype)
+    return _make_api_request("HISTORICAL_OPTIONS", params)
 

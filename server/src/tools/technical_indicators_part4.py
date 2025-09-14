@@ -6,7 +6,7 @@ def ad(
     symbol: str,
     interval: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the Chaikin A/D line (AD) values.
 
@@ -20,7 +20,7 @@ def ad(
                the most recent 30 days of intraday data. You can use the month parameter (in YYYY-MM format) to compute
                intraday technical indicators for a specific month in history. For example, month=2009-01.
                Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV
                  (comma separated value) file.
 
@@ -36,7 +36,7 @@ def ad(
     if month:
         params["month"] = month
     
-    return _make_api_request("AD", params, datatype)
+    return _make_api_request("AD", params)
 
 
 @tool
@@ -46,7 +46,7 @@ def adosc(
     month: str = None,
     fastperiod: int = 3,
     slowperiod: int = 10,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the Chaikin A/D oscillator (ADOSC) values.
 
@@ -62,7 +62,7 @@ def adosc(
                Any month equal to or later than 2000-01 (January 2000) is supported.
         fastperiod: The time period of the fast EMA. Positive integers are accepted. By default, fastperiod=3.
         slowperiod: The time period of the slow EMA. Positive integers are accepted. By default, slowperiod=10.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV
                  (comma separated value) file.
 
@@ -82,7 +82,7 @@ def adosc(
     if slowperiod != 10:
         params["slowperiod"] = str(slowperiod)
     
-    return _make_api_request("ADOSC", params, datatype)
+    return _make_api_request("ADOSC", params)
 
 
 @tool
@@ -90,7 +90,7 @@ def obv(
     symbol: str,
     interval: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the on balance volume (OBV) values.
 
@@ -104,7 +104,7 @@ def obv(
                the most recent 30 days of intraday data. You can use the month parameter (in YYYY-MM format) to compute
                intraday technical indicators for a specific month in history. For example, month=2009-01.
                Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV
                  (comma separated value) file.
 
@@ -120,7 +120,7 @@ def obv(
     if month:
         params["month"] = month
     
-    return _make_api_request("OBV", params, datatype)
+    return _make_api_request("OBV", params)
 
 
 @tool
@@ -129,7 +129,7 @@ def ht_trendline(
     interval: str,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the Hilbert transform, instantaneous trendline (HT_TRENDLINE) values.
 
@@ -144,7 +144,7 @@ def ht_trendline(
                the most recent 30 days of intraday data. You can use the month parameter (in YYYY-MM format) to compute
                intraday technical indicators for a specific month in history. For example, month=2009-01.
                Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV
                  (comma separated value) file.
 
@@ -161,7 +161,7 @@ def ht_trendline(
     if month:
         params["month"] = month
     
-    return _make_api_request("HT_TRENDLINE", params, datatype)
+    return _make_api_request("HT_TRENDLINE", params)
 
 
 @tool
@@ -170,7 +170,7 @@ def ht_sine(
     interval: str,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the Hilbert transform, sine wave (HT_SINE) values.
 
@@ -185,7 +185,7 @@ def ht_sine(
                the most recent 30 days of intraday data. You can use the month parameter (in YYYY-MM format) to compute
                intraday technical indicators for a specific month in history. For example, month=2009-01.
                Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV
                  (comma separated value) file.
 
@@ -202,7 +202,7 @@ def ht_sine(
     if month:
         params["month"] = month
     
-    return _make_api_request("HT_SINE", params, datatype)
+    return _make_api_request("HT_SINE", params)
 
 
 @tool
@@ -211,7 +211,7 @@ def ht_trendmode(
     interval: str,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the Hilbert transform, trend vs cycle mode (HT_TRENDMODE) values.
 
@@ -226,7 +226,7 @@ def ht_trendmode(
                the most recent 30 days of intraday data. You can use the month parameter (in YYYY-MM format) to compute
                intraday technical indicators for a specific month in history. For example, month=2009-01.
                Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV
                  (comma separated value) file.
 
@@ -243,7 +243,7 @@ def ht_trendmode(
     if month:
         params["month"] = month
     
-    return _make_api_request("HT_TRENDMODE", params, datatype)
+    return _make_api_request("HT_TRENDMODE", params)
 
 
 @tool
@@ -252,7 +252,7 @@ def ht_dcperiod(
     interval: str,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the Hilbert transform, dominant cycle period (HT_DCPERIOD) values.
 
@@ -267,7 +267,7 @@ def ht_dcperiod(
                the most recent 30 days of intraday data. You can use the month parameter (in YYYY-MM format) to compute
                intraday technical indicators for a specific month in history. For example, month=2009-01.
                Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV
                  (comma separated value) file.
 
@@ -284,7 +284,7 @@ def ht_dcperiod(
     if month:
         params["month"] = month
     
-    return _make_api_request("HT_DCPERIOD", params, datatype)
+    return _make_api_request("HT_DCPERIOD", params)
 
 
 @tool
@@ -293,7 +293,7 @@ def ht_dcphase(
     interval: str,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the Hilbert transform, dominant cycle phase (HT_DCPHASE) values.
 
@@ -308,7 +308,7 @@ def ht_dcphase(
                the most recent 30 days of intraday data. You can use the month parameter (in YYYY-MM format) to compute
                intraday technical indicators for a specific month in history. For example, month=2009-01.
                Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV
                  (comma separated value) file.
 
@@ -325,7 +325,7 @@ def ht_dcphase(
     if month:
         params["month"] = month
     
-    return _make_api_request("HT_DCPHASE", params, datatype)
+    return _make_api_request("HT_DCPHASE", params)
 
 
 @tool
@@ -334,7 +334,7 @@ def ht_phasor(
     interval: str,
     series_type: str,
     month: str = None,
-    datatype: str = "json"
+    datatype: str = "csv"
 ) -> dict[str, str] | str:
     """Returns the Hilbert transform, phasor components (HT_PHASOR) values.
 
@@ -349,7 +349,7 @@ def ht_phasor(
                the most recent 30 days of intraday data. You can use the month parameter (in YYYY-MM format) to compute
                intraday technical indicators for a specific month in history. For example, month=2009-01.
                Any month equal to or later than 2000-01 (January 2000) is supported.
-        datatype: By default, datatype=json. Strings json and csv are accepted with the following specifications:
+        datatype: By default, datatype=csv. Strings json and csv are accepted with the following specifications:
                  json returns the daily time series in JSON format; csv returns the time series as a CSV
                  (comma separated value) file.
 
@@ -366,4 +366,4 @@ def ht_phasor(
     if month:
         params["month"] = month
     
-    return _make_api_request("HT_PHASOR", params, datatype)
+    return _make_api_request("HT_PHASOR", params)
