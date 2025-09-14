@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# AWS SAM deployment script for MCP Analytics (Kinesis Data Firehose)
+# AWS SAM deployment script for MCP Analytics (CloudWatch Logs + Lambda)
 AWS_PROFILE=${AWS_PROFILE:-default}
 
 # Load environment variables from .env if it exists
@@ -11,7 +11,7 @@ fi
 
 set -e
 
-echo "🚀 Starting deployment of MCP Analytics Firehose stack..."
+echo "🚀 Starting deployment of MCP Analytics CloudWatch Logs stack..."
 
 echo "🏗️  Building SAM application..."
 sam build --template analytics/analytics.yaml
@@ -36,8 +36,6 @@ if [ -f "analytics/samconfig-analytics.toml" ]; then
     
     # Add parameters if environment variables are set
     add_param "AnalyticsLogsBucket" "ANALYTICS_LOGS_BUCKET"
-    add_param "FirehoseRoleArn" "FIREHOSE_ROLE_ARN"
-    add_param "LambdaExecutionRoleArn" "LAMBDA_EXECUTION_ROLE_ARN"
     add_param "LambdaLogGroupName" "LAMBDA_LOG_GROUP_NAME"
     
     if [ -n "$PARAM_OVERRIDES" ]; then
@@ -51,4 +49,4 @@ else
 fi
 
 echo "✅ Analytics deployment complete!"
-echo "🔗 Firehose stream created for MCP analytics logs."
+echo "🔗 CloudWatch Logs pipeline created for MCP analytics logs."

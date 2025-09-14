@@ -6,32 +6,22 @@ Set up autonomous log analytics for your Alpha Vantage MCP server deployment.
 
 Run these scripts in order to set up the complete pipeline:
 
-1. **Create IAM role for Kinesis Data Firehose:**
+1. **Create IAM role for Lambda logs processor:**
    ```bash
-   ./create-firehose-role.sh
+   ./create-logs-processor-role.sh
    ```
 
-2. **Create basic Lambda execution role (if needed):**
-   ```bash
-   ./create-basic-lambda-role.sh
-   ```
-
-3. **Create CloudWatch Logs role (if using subscription filters):**
-   ```bash
-   ./create-cloudwatch-logs-role.sh
-   ```
-
-4. **Deploy the analytics infrastructure:**
+2. **Deploy the analytics infrastructure:**
    ```bash
    ./deploy-analytics.sh
    ```
 
-5. **Set up Glue tables for querying:**
+3. **Set up Glue tables for querying:**
    ```bash
    ./setup-glue-tables.sh
    ```
 
-6. **Query analytics data:**
+4. **Query analytics data:**
    ```bash
    ./query-athena.sh
    ```
@@ -40,10 +30,7 @@ Run these scripts in order to set up the complete pipeline:
 
 The scripts use the following environment variables (can be set in `.env` file):
 
-- `STACK_NAME` - CloudFormation stack name (default: `alphavantage-mcp-server`)
 - `ANALYTICS_LOGS_BUCKET` - S3 bucket for analytics logs (default: `alphavantage-mcp-analytics-logs`)
-- `FIREHOSE_ROLE_ARN` - ARN of the Firehose IAM role (set by create-firehose-role.sh)
-- `LAMBDA_EXECUTION_ROLE_ARN` - ARN of the Lambda execution role
 - `LAMBDA_LOG_GROUP_NAME` - CloudWatch Log Group name for Lambda functions
 - `AWS_PROFILE` - AWS profile to use (optional)
 
@@ -51,9 +38,7 @@ The scripts use the following environment variables (can be set in `.env` file):
 
 - **CloudWatch Logs**: `/aws/lambda/[function-name]`
 - **IAM Roles**:
-  - `KinesisFirehoseDeliveryRole-mcp` - For Firehose delivery streams
-  - `BasicLambdaExecutionRole` - For Lambda function execution
-  - `CloudWatchLogsRole-mcp` - For CloudWatch Logs subscription filters
+  - `LogsProcessorRole-mcp` - For Lambda logs processor function
 - **S3 Destination**: `s3://[bucket]/logs/`
 - **Glue Database**: `mcp_analytics`
 - **Glue Table**: `mcp_logs`
@@ -68,10 +53,8 @@ The scripts use the following environment variables (can be set in `.env` file):
 
 ## Available Scripts
 
-- **`create-firehose-role.sh`**: Creates IAM role for Kinesis Data Firehose with full access policies
-- **`create-basic-lambda-role.sh`**: Creates basic Lambda execution role for CloudWatch Logs access
-- **`create-cloudwatch-logs-role.sh`**: Creates CloudWatch Logs role for subscription filters
-- **`deploy-analytics.sh`**: Deploys the AWS SAM analytics infrastructure (Kinesis Firehose, etc.)
+- **`create-logs-processor-role.sh`**: Creates IAM role for Lambda logs processor with S3 and CloudWatch access
+- **`deploy-analytics.sh`**: Deploys the AWS SAM analytics infrastructure (CloudWatch Logs + Lambda)
 - **`setup-glue-tables.sh`**: Sets up AWS Glue database and tables for analytics querying
 - **`query-athena.sh`**: Queries the analytics data using Amazon Athena
 

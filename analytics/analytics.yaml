@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Kinesis Data Firehose delivery stream for MCP analytics logs
+Description: CloudWatch Logs analytics pipeline for MCP logs using Lambda processing
 
 Parameters:
   AnalyticsLogsBucket:
@@ -33,62 +33,30 @@ Resources:
               - TransitionInDays: 90
                 StorageClass: GLACIER
             ExpirationInDays: 2555  # 7 years retention
-  # Lambda function for log transformation
-  FirehoseTransformFunction:
+  # Lambda function to process logs and write to S3
+  LogsProcessorFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: firehose-transform
+      FunctionName: mcp-logs-processor
       Runtime: python3.9
-      Handler: firehose_transform.lambda_handler
-      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/BasicLambdaExecutionRole'
+      Handler: logs_processor.lambda_handler
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/LogsProcessorRole-mcp'
       Code: src
-      Description: Transform CloudWatch logs for Kinesis Data Firehose
+      Description: Process CloudWatch logs and write to S3
       Timeout: 300
-      MemorySize: 128
+      MemorySize: 256
+      Environment:
+        Variables:
+          S3_BUCKET: !Ref AnalyticsLogsBucketResource
 
-  # Kinesis Data Firehose Delivery Stream
-  MCPAnalyticsStream:
-    Type: AWS::KinesisFirehose::DeliveryStream
+  # Permission for CloudWatch Logs to invoke Lambda
+  LogsInvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
     Properties:
-      DeliveryStreamName: mcp-analytics-stream
-      DeliveryStreamType: DirectPut
-      ExtendedS3DestinationConfiguration:
-        RoleARN: !Sub 'arn:aws:iam::${AWS::AccountId}:role/KinesisFirehoseDeliveryRole-mcp'
-        BucketARN: !GetAtt AnalyticsLogsBucketResource.Arn
-        Prefix: 'logs/'
-        ErrorOutputPrefix: 'errors/'
-        BufferingHints:
-          SizeInMBs: 5
-          IntervalInSeconds: 60
-        CompressionFormat: GZIP
-        EncryptionConfiguration:
-          NoEncryptionConfig: NoEncryption
-        CloudWatchLoggingOptions:
-          Enabled: true
-          LogGroupName: '/aws/kinesisfirehose/mcp-analytics-stream'
-          LogStreamName: 'mcp-analytics-stream'
-        ProcessingConfiguration:
-          Enabled: true
-          Processors:
-            - Type: Lambda
-              Parameters:
-                - ParameterName: LambdaArn
-                  ParameterValue: !GetAtt FirehoseTransformFunction.Arn
-                - ParameterName: NumberOfRetries
-                  ParameterValue: '3'
-                - ParameterName: BufferSizeInMBs
-                  ParameterValue: '3'
-                - ParameterName: BufferIntervalInSeconds
-                  ParameterValue: '60'
-            - Type: Decompression
-              Parameters:
-                - ParameterName: CompressionFormat
-                  ParameterValue: GZIP
-            - Type: CloudWatchLogProcessing
-              Parameters:
-                - ParameterName: DataMessageExtraction
-                  ParameterValue: 'true'
-        S3BackupMode: Disabled
+      FunctionName: !Ref LogsProcessorFunction
+      Action: lambda:InvokeFunction
+      Principal: !Sub logs.${AWS::Region}.amazonaws.com
+      SourceArn: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LambdaLogGroupName}:*
 
   # CloudWatch Logs Subscription Filter
   MCPAnalyticsSubscriptionFilter:
@@ -97,18 +65,13 @@ Resources:
       LogGroupName: !Ref LambdaLogGroupName
       FilterName: mcp-analytics-filter
       FilterPattern: '"MCP_ANALYTICS"'
-      DestinationArn: !GetAtt MCPAnalyticsStream.Arn
-      RoleArn: !Sub 'arn:aws:iam::${AWS::AccountId}:role/CloudWatchLogsRole-mcp'
+      DestinationArn: !GetAtt LogsProcessorFunction.Arn
 
 Outputs:
-  FirehoseStreamName:
-    Description: 'Kinesis Data Firehose delivery stream name'
-    Value: !Ref MCPAnalyticsStream
-  
-  FirehoseStreamArn:
-    Description: 'Kinesis Data Firehose delivery stream ARN'
-    Value: !GetAtt MCPAnalyticsStream.Arn
-  
   AnalyticsLogsBucket:
     Description: 'S3 bucket for MCP analytics logs'
     Value: !Ref AnalyticsLogsBucketResource
+
+  LogsProcessorFunctionArn:
+    Description: 'Logs processor Lambda function ARN'
+    Value: !GetAtt LogsProcessorFunction.Arn
