@@ -1,0 +1,114 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Kinesis Data Firehose delivery stream for MCP analytics logs
+
+Parameters:
+  AnalyticsLogsBucket:
+    Type: String
+    Default: alphavantage-mcp-analytics-logs
+    Description: S3 bucket name for MCP analytics logs
+  
+  LambdaLogGroupName:
+    Type: String
+    Description: CloudWatch log group name for the MCP Lambda function
+    Default: /aws/lambda/alphavantage-mcp-server
+
+Resources:
+  # S3 bucket for analytics logs
+  AnalyticsLogsBucketResource:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref AnalyticsLogsBucket
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: AnalyticsLogsLifecycle
+            Status: Enabled
+            Transitions:
+              - TransitionInDays: 30
+                StorageClass: STANDARD_IA
+              - TransitionInDays: 90
+                StorageClass: GLACIER
+            ExpirationInDays: 2555  # 7 years retention
+  # Lambda function for log transformation
+  FirehoseTransformFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: firehose-transform
+      Runtime: python3.9
+      Handler: firehose_transform.lambda_handler
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/BasicLambdaExecutionRole'
+      Code: src
+      Description: Transform CloudWatch logs for Kinesis Data Firehose
+      Timeout: 300
+      MemorySize: 128
+
+  # Kinesis Data Firehose Delivery Stream
+  MCPAnalyticsStream:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Properties:
+      DeliveryStreamName: mcp-analytics-stream
+      DeliveryStreamType: DirectPut
+      ExtendedS3DestinationConfiguration:
+        RoleARN: !Sub 'arn:aws:iam::${AWS::AccountId}:role/KinesisFirehoseDeliveryRole-mcp'
+        BucketARN: !GetAtt AnalyticsLogsBucketResource.Arn
+        Prefix: 'logs/'
+        ErrorOutputPrefix: 'errors/'
+        BufferingHints:
+          SizeInMBs: 5
+          IntervalInSeconds: 60
+        CompressionFormat: GZIP
+        EncryptionConfiguration:
+          NoEncryptionConfig: NoEncryption
+        CloudWatchLoggingOptions:
+          Enabled: true
+          LogGroupName: '/aws/kinesisfirehose/mcp-analytics-stream'
+          LogStreamName: 'mcp-analytics-stream'
+        ProcessingConfiguration:
+          Enabled: true
+          Processors:
+            - Type: Lambda
+              Parameters:
+                - ParameterName: LambdaArn
+                  ParameterValue: !GetAtt FirehoseTransformFunction.Arn
+                - ParameterName: NumberOfRetries
+                  ParameterValue: '3'
+                - ParameterName: BufferSizeInMBs
+                  ParameterValue: '3'
+                - ParameterName: BufferIntervalInSeconds
+                  ParameterValue: '60'
+            - Type: Decompression
+              Parameters:
+                - ParameterName: CompressionFormat
+                  ParameterValue: GZIP
+            - Type: CloudWatchLogProcessing
+              Parameters:
+                - ParameterName: DataMessageExtraction
+                  ParameterValue: 'true'
+        S3BackupMode: Disabled
+
+  # CloudWatch Logs Subscription Filter
+  MCPAnalyticsSubscriptionFilter:
+    Type: AWS::Logs::SubscriptionFilter
+    Properties:
+      LogGroupName: !Ref LambdaLogGroupName
+      FilterName: mcp-analytics-filter
+      FilterPattern: '"MCP_ANALYTICS"'
+      DestinationArn: !GetAtt MCPAnalyticsStream.Arn
+      RoleArn: !Sub 'arn:aws:iam::${AWS::AccountId}:role/CloudWatchLogsRole-mcp'
+
+Outputs:
+  FirehoseStreamName:
+    Description: 'Kinesis Data Firehose delivery stream name'
+    Value: !Ref MCPAnalyticsStream
+  
+  FirehoseStreamArn:
+    Description: 'Kinesis Data Firehose delivery stream ARN'
+    Value: !GetAtt MCPAnalyticsStream.Arn
+  
+  AnalyticsLogsBucket:
+    Description: 'S3 bucket for MCP analytics logs'
+    Value: !Ref AnalyticsLogsBucketResource
