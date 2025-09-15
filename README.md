@@ -22,12 +22,12 @@ https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
 
 ### Setup Instructions by Platform
 - [Claude (Web & Desktop)](#claude)
+- [OpenAI Agents SDK](#openai-agents-sdk)
 - [ChatGPT](#chatgpt)
 - [Visual Studio Code](#visual-studio-code)
 - [Cursor](#cursor)
 - [Claude Code](#claude-code)
 - [Codex](#codex)
-- [OpenAI Agents SDK](#openai-agents-sdk)
 - [Gemini CLI](#gemini-cli)
 
 &nbsp;
@@ -58,6 +58,19 @@ To connect Claude (Web or Desktop) to this MCP server:
 4. Click "Connect"
 5. Enter your Alpha Vantage API token
 6. Click "Authorize Access"
+
+&nbsp;
+
+### OpenAI Agents SDK
+
+To use the Alpha Vantage MCP server with OpenAI Agents SDK, see our [example agent](https://github.com/alphavantage/alpha_vantage_mcp/blob/main/examples/agent/README.md) that demonstrates:
+
+- Interactive financial analysis agent
+- Session management for conversation continuity
+- Real-time tool execution with Alpha Vantage data
+- Support for both HTTP and stdio MCP connections
+
+The example includes a complete setup guide and configuration templates.
 
 &nbsp;
 
@@ -151,19 +164,6 @@ Then connect with:
 ```
 /mcp
 ```
-
-&nbsp;
-
-### OpenAI Agents SDK
-
-To use the Alpha Vantage MCP server with OpenAI Agents SDK, see our [example agent](https://github.com/alphavantage/alpha_vantage_mcp/blob/main/examples/agent/README.md) that demonstrates:
-
-- Interactive financial analysis agent
-- Session management for conversation continuity
-- Real-time tool execution with Alpha Vantage data
-- Support for both HTTP and stdio MCP connections
-
-The example includes a complete setup guide and configuration templates.
 
 &nbsp;
 
