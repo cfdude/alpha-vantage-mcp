@@ -58,7 +58,7 @@ def _make_api_request(function_name: str, params: dict) -> dict | str:
     api_params.update({
         "function": function_name,
         "apikey": get_api_key(),
-        "source": "alphavangtagemcp"
+        "source": "alphavantagemcp"
     })
     
     # Handle entitlement parameter if present in params or global variable
