@@ -1,6 +1,6 @@
 [project]
 name = "av-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "Alpha Vantage MCP Server - Financial data APIs via Model Context Protocol"
 requires-python = ">=3.13"
 license = {text = "MIT"}
@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
-alphavantage-mcp-server = "stdio_server:main"
+av-mcp = "src.stdio_server:main"
 
 [build-system]
 requires = ["hatchling"]

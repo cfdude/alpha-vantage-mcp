@@ -26,11 +26,11 @@ async def test_mcp_server_stdio():
     print("=" * 50)
     
     try:
-        # Create server parameters  
+        # Create server parameters
         api_key = os.getenv("ALPHAVANTAGE_API_KEY", "test")
         server_params = StdioServerParameters(
-            command=sys.executable,
-            args=["stdio_server.py", api_key, "--categories", "ping"]
+            command="uvx",
+            args=["av-mcp", api_key, "--categories", "ping"]
         )
         print(f"📡 Starting server: {server_params.command} {' '.join(server_params.args)}")
         

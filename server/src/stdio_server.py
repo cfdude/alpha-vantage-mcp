@@ -24,11 +24,8 @@ import mcp.types as types
 from mcp.server.lowlevel import NotificationOptions, Server
 from mcp.server.models import InitializationOptions
 
-# Add the server directory to sys.path so we can import from src
-sys.path.insert(0, os.path.dirname(__file__))
-
-from src.context import set_api_key
-from src.tools.registry import get_all_tools, TOOL_MODULES
+from .context import set_api_key
+from .tools.registry import get_all_tools, TOOL_MODULES
 
 
 class StdioMCPServer:
@@ -117,44 +114,37 @@ class StdioMCPServer:
 @click.option('--verbose', '-v', is_flag=True, help='Enable verbose logging')
 def cli(api_key, api_key_option, categories, list_categories, verbose):
     """Alpha Vantage MCP Server (stdio transport)
-    
+
     Available tool categories:
     """ + "\n".join(f"  - {cat}" for cat in TOOL_MODULES.keys()) + """
-    
+
     Examples:
-      python stdio_server.py YOUR_API_KEY
-      python stdio_server.py YOUR_API_KEY --categories core_stock_apis forex
-      python stdio_server.py --api-key YOUR_API_KEY --categories technical_indicators
+      av-mcp YOUR_API_KEY
+      av-mcp YOUR_API_KEY --categories core_stock_apis forex
+      av-mcp --api-key YOUR_API_KEY --categories technical_indicators
     """
-    return api_key, api_key_option, list(categories), list_categories, verbose
-
-
-def main():
-    """Main entry point"""
-    api_key_arg, api_key_option, categories, list_categories, verbose = cli(standalone_mode=False)
-    
     # Configure logging based on verbose flag
     if not verbose:
         logger.remove()
         logger.add(sys.stderr, level="WARNING")
-    
+
     # List categories and exit if requested
     if list_categories:
         print("Available tool categories:")
         for category in TOOL_MODULES.keys():
             print(f"  - {category}")
         return
-    
+
     # Get API key from args or environment
-    api_key = api_key_arg or api_key_option or os.getenv('ALPHA_VANTAGE_API_KEY')
-    
+    api_key = api_key or api_key_option or os.getenv('ALPHA_VANTAGE_API_KEY')
+
     if not api_key:
         logger.error("API key required. Provide via argument or ALPHA_VANTAGE_API_KEY environment variable")
         print("Error: API key required", file=sys.stderr)
-        print("Usage: python stdio_server.py YOUR_API_KEY", file=sys.stderr)
-        print("   or: ALPHA_VANTAGE_API_KEY=YOUR_KEY python stdio_server.py", file=sys.stderr)
+        print("Usage: av-mcp YOUR_API_KEY", file=sys.stderr)
+        print("   or: ALPHA_VANTAGE_API_KEY=YOUR_KEY av-mcp", file=sys.stderr)
         sys.exit(1)
-    
+
     # Validate categories if provided
     if categories:
         invalid_categories = [cat for cat in categories if cat not in TOOL_MODULES]
@@ -165,12 +155,12 @@ def main():
             for cat in TOOL_MODULES.keys():
                 print(f"  - {cat}", file=sys.stderr)
             sys.exit(1)
-    
+
     # Create and run server
     if verbose:
         logger.info(f"Starting Alpha Vantage MCP Server (stdio) with {len(categories or TOOL_MODULES)} categories")
-    server = StdioMCPServer(api_key, categories, verbose)
-    
+    server = StdioMCPServer(api_key, list(categories), verbose)
+
     try:
         asyncio.run(server.run())
     except KeyboardInterrupt:
@@ -179,6 +169,11 @@ def main():
     except Exception as e:
         logger.error(f"Server error: {e}")
         sys.exit(1)
+
+
+def main():
+    """Main entry point"""
+    cli()
 
 
 if __name__ == "__main__":
