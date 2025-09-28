@@ -10,36 +10,33 @@ To use the server, <a href="https://www.alphavantage.co/support/#api-key" onclic
 
 ⭐ View MCP source code on [Github](https://github.com/alphavantage/alpha_vantage_mcp)
 
-&nbsp;
 
-### Connection URL
-Connect to the MCP server using:
+### Connection Examples
+
+**Remote Server Connection:**
 ```
 https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
 ```
 
-&nbsp;
+**Local Server Connection:**
+```
+uvx av-mcp YOUR_API_KEY
+```
+
 
 ### Setup Instructions by Platform
-- [Claude (Web & Desktop)](#claude)
-- [OpenAI Agents SDK](#openai-agents-sdk)
-- [ChatGPT](#chatgpt)
-- [Visual Studio Code](#visual-studio-code)
-- [Cursor](#cursor)
-- [Claude Code](#claude-code)
-- [Codex](#codex)
-- [Gemini CLI](#gemini-cli)
 
-&nbsp;
+<details>
+<summary><b>Install in Claude</b></summary>
 
-### Claude
+#### Remote Server Connection
+
 To connect Claude (Web or Desktop) to this MCP server:
 
 📺 Watch the **setup tutorial** - Click the image below to watch a step-by-step video guide:
 
 [![Alpha Vantage MCP Setup Tutorial](https://img.youtube.com/vi/W69x2qJcYmI/maxresdefault.jpg)](https://www.youtube.com/watch?v=W69x2qJcYmI)
 
-&nbsp;
 
 📺 Already have your Alpha Vantage MCP server set up? Below are a few examples of Claude performing various stock analysis & charting tasks:
 
@@ -59,9 +56,27 @@ To connect Claude (Web or Desktop) to this MCP server:
 5. Enter your Alpha Vantage API token
 6. Click "Authorize Access"
 
-&nbsp;
+#### Local Server Connection
 
-### OpenAI Agents SDK
+Open Claude Desktop developer settings and edit your `claude_desktop_config.json` file to add the following configuration. See [Claude Desktop MCP docs](https://modelcontextprotocol.io/quickstart/user) for more info.
+
+```json
+{
+  "mcpServers": {
+    "alphavantage": {
+      "command": "uvx",
+      "args": ["av-mcp", "YOUR_API_KEY"]
+    }
+  }
+}
+```
+
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
+
+</details>
+
+<details>
+<summary><b>Install in OpenAI Agents SDK</b></summary>
 
 To use the Alpha Vantage MCP server with OpenAI Agents SDK, see our [example agent](https://github.com/alphavantage/alpha_vantage_mcp/blob/main/examples/agent/README.md) that demonstrates:
 
@@ -72,9 +87,12 @@ To use the Alpha Vantage MCP server with OpenAI Agents SDK, see our [example age
 
 The example includes a complete setup guide and configuration templates.
 
-&nbsp;
+</details>
 
-### ChatGPT
+
+<details>
+<summary><b>Install in ChatGPT</b></summary>
+
 To connect ChatGPT to this MCP server using ChatGPT Developer mode:
 
 **Requirements:**
@@ -89,13 +107,17 @@ To connect ChatGPT to this MCP server using ChatGPT Developer mode:
 
 **Note:** While Developer mode is available for both Pro and Plus accounts, MCP tool execution is currently most reliable with Pro accounts. We're monitoring Plus plan functionality and will update this guide as improvements are made.
 
-&nbsp;
+</details>
 
-### Visual Studio Code
-To connect VS Code with GitHub Copilot to this MCP server:
 
-1. Create a `.vscode/mcp.json` file in your workspace
-2. Add this configuration (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+<details>
+<summary><b>Install in Visual Studio Code</b></summary>
+
+Add this to your VS Code MCP config file. See [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for more info.
+
+#### VS Code Remote Server Connection
+
+Create a `.vscode/mcp.json` file in your workspace and add this configuration (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
 
 ```json
 {
@@ -108,11 +130,32 @@ To connect VS Code with GitHub Copilot to this MCP server:
 }
 ```
 
+#### VS Code Local Server Connection
+
+```json
+{
+  "servers": {
+    "alphavantage": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["av-mcp", "YOUR_API_KEY"]
+    }
+  }
+}
+```
+
 Open the Chat view and select Agent mode
 
-&nbsp;
+</details>
 
-### Cursor
+
+<details>
+<summary><b>Install in Cursor</b></summary>
+
+Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file is the recommended approach. You may also install in a specific project by creating `.cursor/mcp.json` in your project folder. See [Cursor MCP docs](https://docs.cursor.com/context/model-context-protocol) for more info.
+
+#### Cursor Remote Server Connection
+
 Configure Cursor by editing `~/.cursor/mcp.json` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
 
 ```json
@@ -125,14 +168,42 @@ Configure Cursor by editing `~/.cursor/mcp.json` (replace `YOUR_API_KEY` with yo
 }
 ```
 
-&nbsp;
+#### Cursor Local Server Connection
 
-### Claude Code
+```json
+{
+  "mcpServers": {
+    "alphavantage": {
+      "command": "uvx",
+      "args": ["av-mcp", "YOUR_API_KEY"]
+    }
+  }
+}
+```
 
-To install and configure (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
+
+</details>
+
+
+<details>
+<summary><b>Install in Claude Code</b></summary>
+
+Run this command. See [Claude Code MCP docs](https://docs.anthropic.com/en/docs/claude-code/mcp) for more info.
+
+#### Claude Code Remote Server Connection
+
 ```bash
 claude mcp add -t http alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
 ```
+
+#### Claude Code Local Server Connection
+
+```bash
+claude mcp add alphavantage -- uvx av-mcp YOUR_API_KEY
+```
+
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 
 Run `claude` in your terminal from your project directory
 
@@ -141,21 +212,20 @@ Then connect with:
 /mcp
 ```
 
-&nbsp;
+</details>
 
-### Codex
-To connect Codex CLI to this MCP server:
 
-Install mcp-proxy (required because our server supports streamable HTTP only while Codex only supports stdio - mcp-proxy bridges this gap). See [installation methods](https://github.com/sparfenyuk/mcp-proxy?tab=readme-ov-file#installation):
-```bash
-uv tool install mcp-proxy
-```
+<details>
+<summary><b>Install in OpenAI Codex</b></summary>
 
-Configure Codex by editing `~/.codex/config.toml` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+See [OpenAI Codex](https://github.com/openai/codex) for more information.
+
+Add the following configuration to your Codex MCP server settings by editing `~/.codex/config.toml` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+
 ```toml
 [mcp_servers.alphavantage]
-command = "mcp-proxy"
-args = ["--transport", "streamablehttp", "https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY"]
+command = "uvx"
+args = ["av-mcp", "YOUR_API_KEY"]
 ```
 
 Run `codex` in your terminal from your project directory
@@ -165,19 +235,27 @@ Then connect with:
 /mcp
 ```
 
-&nbsp;
+</details>
 
-### Gemini CLI
-To use Alpha Vantage's MCP server in Gemini CLI:
+
+<details>
+<summary><b>Install in Gemini CLI</b></summary>
+
+See [Gemini CLI Configuration](https://google-gemini.github.io/gemini-cli/docs/tools/mcp-server.html) for details.
 
 **CLI Command (Recommended):**
 ```bash
 gemini mcp add -t http alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
 ```
 
+**Local Server CLI Command:**
+```bash
+gemini mcp add alphavantage uvx av-mcp YOUR_API_KEY
+```
+
 **Manual Configuration:**
-1. Edit `~/.gemini/settings.json`
-2. Add this config (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+1. Open the Gemini CLI settings file. The location is `~/.gemini/settings.json` (where `~` is your home directory).
+2. Add the following to the `mcpServers` object in your `settings.json` file:
 
 ```json
 {
@@ -189,16 +267,25 @@ gemini mcp add -t http alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_
 }
 ```
 
-Then (for both methods):
+Or, for a local server:
 
-Run `gemini` in your terminal from your project directory
-
-Then connect with:
+```json
+{
+  "mcpServers": {
+    "alphavantage": {
+      "command": "uvx",
+      "args": ["av-mcp", "YOUR_API_KEY"]
+    }
+  }
+}
 ```
-/mcp
-```
 
-&nbsp;
+If the `mcpServers` object does not exist, create it.
+
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
+
+</details>
+
 
 ### Category Filtering
 Optionally filter available tools by category using:
@@ -218,7 +305,6 @@ Available categories:
 
 If no categories are specified, all tools will be available.
 
-&nbsp;
 
 ## Tools Reference
 
@@ -249,7 +335,6 @@ If no categories are specified, all tools will be available.
 
 💡 Each of these MCP tools maps to a corresponding Alpha Vantage API endpoint. If you are interested in the full API specs (in addition to the brief tool descriptions below), please refer to the Alpha Vantage [API documentation](https://www.alphavantage.co/documentation/).  
 
-&nbsp;
 
 ### CORE_STOCK_APIS
 

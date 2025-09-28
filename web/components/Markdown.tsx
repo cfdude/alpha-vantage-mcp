@@ -224,6 +224,16 @@ className="text-3xl font-light mb-8" style={{ color: '#42DCA3' }}
     // Regular div
     return <div className={className} {...props} />;
   },
+  details: ({ children }) => (
+    <details className="mb-4 rounded-lg border overflow-hidden details-container" style={{ borderColor: 'rgba(74, 222, 128, 0.3)', backgroundColor: '#1f1f1f' }}>
+      {children}
+    </details>
+  ),
+  summary: ({ children }) => (
+    <summary className="cursor-pointer font-semibold rounded-t-lg hover:opacity-80" style={{ backgroundColor: 'rgba(66, 220, 163, 0.1)', color: '#42DCA3', padding: '1rem' }}>
+      {children}
+    </summary>
+  ),
 };
 
 // Function to parse Hugo shortcodes and convert YouTube links
@@ -277,6 +287,16 @@ export default function Markdown({ content, className = '' }: MarkdownProps) {
         
         pre::-webkit-scrollbar-thumb:hover {
           background: rgba(66, 220, 163, 0.5);
+        }
+
+        .details-container[open] {
+          padding: 0 1rem 1rem 1rem;
+        }
+
+        .details-container[open] summary {
+          border-bottom: 1px solid rgba(74, 222, 128, 0.3);
+          margin: 0 -1rem 1rem -1rem;
+          padding: 1rem;
         }
       `}</style>
       <ReactMarkdown
