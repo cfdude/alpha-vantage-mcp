@@ -3,7 +3,7 @@ name = "alphavantage-mcp-server"
 version = "0.1.0"
 description = "Alpha Vantage MCP Server - Financial data APIs via Model Context Protocol"
 requires-python = ">=3.13"
-license = {file = "../LICENSE"}
+license = {text = "MIT"}
 dependencies = [
     "awslabs-mcp-lambda-handler>=0.1.8",
     "click>=8.2.1",
