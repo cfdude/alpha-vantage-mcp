@@ -1,5 +1,5 @@
 [project]
-name = "alphavantage-openai-agent"
+name = "alpha-vantage-agent"
 version = "0.1.0"
 description = "OpenAI agents example using Alpha Vantage MCP server"
 requires-python = ">=3.13"

@@ -1,5 +1,5 @@
 [project]
-name = "alphavantage-mcp-server"
+name = "av-mcp"
 version = "0.1.0"
 description = "Alpha Vantage MCP Server - Financial data APIs via Model Context Protocol"
 requires-python = ">=3.13"
