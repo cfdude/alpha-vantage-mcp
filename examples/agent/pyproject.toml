@@ -3,6 +3,7 @@ name = "alphavantage-openai-agent"
 version = "0.1.0"
 description = "OpenAI agents example using Alpha Vantage MCP server"
 requires-python = ">=3.13"
+license = {text = "MIT"}
 dependencies = [
     "openai-agents",
     "pydantic",
