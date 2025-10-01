@@ -26,7 +26,8 @@ uvx av-mcp YOUR_API_KEY
 
 ### Setup Instructions by Use Case
 
-_Powering your chatbot with financial data_
+💬📊 _Power your chatbot with financial data_
+
 
 <details>
 <summary><b>Install in Claude</b></summary>
@@ -99,7 +100,7 @@ To connect ChatGPT to this MCP server using ChatGPT Developer mode:
 
 &nbsp;
 
-_Coding up fintech apps_
+💻💵 _Code up fintech apps_
 
 <details>
 <summary><b>Install in OpenAI Codex</b></summary>
@@ -279,7 +280,7 @@ Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 
 &nbsp;
 
-_Creating agentic workflows for quantitative investing_
+🤖📈 _Create agentic workflows for quantitative investing_
 
 <details>
 <summary><b>Install in OpenAI Agents SDK</b></summary>
