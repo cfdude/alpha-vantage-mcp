@@ -24,7 +24,9 @@ uvx av-mcp YOUR_API_KEY
 ```
 
 
-### Setup Instructions by Platform
+### Setup Instructions by Use Case
+
+_Powering your chatbot with financial data_
 
 <details>
 <summary><b>Install in Claude</b></summary>
@@ -75,20 +77,6 @@ Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 
 </details>
 
-<details>
-<summary><b>Install in OpenAI Agents SDK</b></summary>
-
-To use the Alpha Vantage MCP server with OpenAI Agents SDK, see our [example agent](https://github.com/alphavantage/alpha_vantage_mcp/blob/main/examples/agent/README.md) that demonstrates:
-
-- Interactive financial analysis agent
-- Session management for conversation continuity
-- Real-time tool execution with Alpha Vantage data
-- Support for both HTTP and stdio MCP connections
-
-The example includes a complete setup guide and configuration templates.
-
-</details>
-
 
 <details>
 <summary><b>Install in ChatGPT</b></summary>
@@ -109,6 +97,31 @@ To connect ChatGPT to this MCP server using ChatGPT Developer mode:
 
 </details>
 
+&nbsp;
+
+_Coding up fintech apps_
+
+<details>
+<summary><b>Install in OpenAI Codex</b></summary>
+
+See [OpenAI Codex](https://github.com/openai/codex) for more information.
+
+Add the following configuration to your Codex MCP server settings by editing `~/.codex/config.toml` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+
+```toml
+[mcp_servers.alphavantage]
+command = "uvx"
+args = ["av-mcp", "YOUR_API_KEY"]
+```
+
+Run `codex` in your terminal from your project directory
+
+Then connect with:
+```
+/mcp
+```
+
+</details>
 
 <details>
 <summary><b>Install in Visual Studio Code</b></summary>
@@ -215,28 +228,6 @@ Then connect with:
 </details>
 
 
-<details>
-<summary><b>Install in OpenAI Codex</b></summary>
-
-See [OpenAI Codex](https://github.com/openai/codex) for more information.
-
-Add the following configuration to your Codex MCP server settings by editing `~/.codex/config.toml` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
-
-```toml
-[mcp_servers.alphavantage]
-command = "uvx"
-args = ["av-mcp", "YOUR_API_KEY"]
-```
-
-Run `codex` in your terminal from your project directory
-
-Then connect with:
-```
-/mcp
-```
-
-</details>
-
 
 <details>
 <summary><b>Install in Gemini CLI</b></summary>
@@ -286,6 +277,25 @@ Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 
 </details>
 
+&nbsp;
+
+_Creating agentic workflows for quantitative investing_
+
+<details>
+<summary><b>Install in OpenAI Agents SDK</b></summary>
+
+To use the Alpha Vantage MCP server with OpenAI Agents SDK, see our [example agent](https://github.com/alphavantage/alpha_vantage_mcp/blob/main/examples/agent/README.md) that demonstrates:
+
+- Interactive financial analysis agent
+- Session management for conversation continuity
+- Real-time tool execution with Alpha Vantage data
+- Support for both HTTP and stdio MCP connections
+
+The example includes a complete setup guide and configuration templates.
+
+</details>
+
+&nbsp;
 
 ### Category Filtering
 Optionally filter available tools by category using:
