@@ -25,20 +25,13 @@ uvx av-mcp YOUR_API_KEY
 
 
 ### Platform Setup Instructions by Use Case
-If the setup instructions mention `uv` / `uvx` (a [modern Python package](https://docs.astral.sh/uv/)
- and project manager), install it using:
-
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
 💬📊 _Power your chatbot with financial data_
 
 
 <details>
 <summary><b>Install in Claude</b></summary>
 
-#### Remote Server Connection
+#### Claude Remote Server Connection
 
 To connect Claude (Web or Desktop) to this MCP server:
 
@@ -65,9 +58,16 @@ To connect Claude (Web or Desktop) to this MCP server:
 5. Enter your Alpha Vantage API token
 6. Click "Authorize Access"
 
-#### Local Server Connection
+#### Claude Local Server Connection
+See [Claude Desktop MCP docs](https://modelcontextprotocol.io/quickstart/user) for more info.
 
-Open Claude Desktop developer settings and edit your `claude_desktop_config.json` file to add the following configuration. See [Claude Desktop MCP docs](https://modelcontextprotocol.io/quickstart/user) for more info.
+Install `uv` (a [modern Python package](https://docs.astral.sh/uv/) and project manager):
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Open Claude Desktop developer settings and edit your `claude_desktop_config.json` file to add the following configuration:
 
 ```json
 {
@@ -113,6 +113,12 @@ To connect ChatGPT to this MCP server using ChatGPT Developer mode:
 
 See [OpenAI Codex](https://github.com/openai/codex) for more information.
 
+Install `uv` (a [modern Python package](https://docs.astral.sh/uv/) and project manager):
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
 Install **Codex CLI v0.34 or later** to avoid compatibility issues.
 
 ```bash
@@ -126,13 +132,15 @@ npm update -g @openai/codex
 codex --version
 ```
 
-Add the following configuration to your Codex MCP server settings by editing `~/.codex/config.toml` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+Add the following configuration to your Codex MCP server settings by editing `~/.codex/config.toml`:
 
 ```toml
 [mcp_servers.alphavantage]
 command = "uvx"
 args = ["av-mcp", "YOUR_API_KEY"]
 ```
+
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 
 Run `codex` in your terminal from your project directory. First-time users will be guided through additional prompts.
 
@@ -146,11 +154,13 @@ Then connect with:
 <details>
 <summary><b>Install in Visual Studio Code</b></summary>
 
-Add this to your VS Code MCP config file. See [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for more info.
+See [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for more info.
+
+Create `.vscode/mcp.json` (your VS Code MCP config file) in your workspace, and paste into it one of the following configurations, depending on whether you’re connecting remotely or running the server locally.
 
 #### VS Code Remote Server Connection
 
-Create a `.vscode/mcp.json` file in your workspace and add this configuration (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+Paste the following into `.vscode/mcp.json`:
 
 ```json
 {
@@ -163,7 +173,17 @@ Create a `.vscode/mcp.json` file in your workspace and add this configuration (r
 }
 ```
 
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
+
 #### VS Code Local Server Connection
+
+First, install `uv` (a [modern Python package](https://docs.astral.sh/uv/) and project manager):
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then, paste the following into `.vscode/mcp.json`:
 
 ```json
 {
@@ -177,6 +197,8 @@ Create a `.vscode/mcp.json` file in your workspace and add this configuration (r
 }
 ```
 
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
+
 Open the Chat view and select Agent mode
 
 </details>
@@ -185,11 +207,13 @@ Open the Chat view and select Agent mode
 <details>
 <summary><b>Install in Cursor</b></summary>
 
-Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file is the recommended approach. You may also install in a specific project by creating `.cursor/mcp.json` in your project folder. See [Cursor MCP docs](https://docs.cursor.com/context/model-context-protocol) for more info.
+See [Cursor MCP docs](https://docs.cursor.com/context/model-context-protocol) for more information.
+
+Paste one of the following configurations into your Cursor `~/.cursor/mcp.json` file, depending on whether you’re connecting remotely or running the server locally. You may also install in a specific project by creating `.cursor/mcp.json` in your project folder. 
 
 #### Cursor Remote Server Connection
 
-Configure Cursor by editing `~/.cursor/mcp.json` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
+Configure Cursor by editing `~/.cursor/mcp.json`:
 
 ```json
 {
@@ -201,7 +225,17 @@ Configure Cursor by editing `~/.cursor/mcp.json` (replace `YOUR_API_KEY` with yo
 }
 ```
 
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
+
 #### Cursor Local Server Connection
+
+First, install `uv` (a [modern Python package](https://docs.astral.sh/uv/) and project manager):
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then, paste the following into your Cursor `~/.cursor/mcp.json` file:
 
 ```json
 {
@@ -222,7 +256,9 @@ Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 <details>
 <summary><b>Install in Claude Code</b></summary>
 
-Run this command. See [Claude Code MCP docs](https://docs.anthropic.com/en/docs/claude-code/mcp) for more info.
+See [Claude Code MCP docs](https://docs.anthropic.com/en/docs/claude-code/mcp) for more information.
+
+Run one of the following commands, depending on whether you’re connecting remotely or running the server locally.
 
 #### Claude Code Remote Server Connection
 
@@ -230,7 +266,17 @@ Run this command. See [Claude Code MCP docs](https://docs.anthropic.com/en/docs/
 claude mcp add -t http alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
 ```
 
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
+
 #### Claude Code Local Server Connection
+
+First, install `uv` (a [modern Python package](https://docs.astral.sh/uv/) and project manager):
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then run:
 
 ```bash
 claude mcp add alphavantage -- uvx av-mcp YOUR_API_KEY
@@ -238,7 +284,7 @@ claude mcp add alphavantage -- uvx av-mcp YOUR_API_KEY
 
 Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 
-Run `claude` in your terminal from your project directory
+Run `claude` in your terminal from your project directory.
 
 Then connect with:
 ```
@@ -252,21 +298,35 @@ Then connect with:
 <details>
 <summary><b>Install in Gemini CLI</b></summary>
 
-See [Gemini CLI Configuration](https://google-gemini.github.io/gemini-cli/docs/tools/mcp-server.html) for details.
+See [Gemini CLI Configuration](https://google-gemini.github.io/gemini-cli/docs/tools/mcp-server.html) for more information.
 
-**CLI Command (Recommended):**
+Run one of the following commands, depending on whether you’re connecting remotely or running the server locally.
+
+**Gemini CLI Remote Server Connection (Recommended):**
 ```bash
 gemini mcp add -t http alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
 ```
 
-**Local Server CLI Command:**
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
+
+**Gemini CLI Local Server Connection:**
+Install `uv` (a [modern Python package](https://docs.astral.sh/uv/) and project manager):
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then run:
+
 ```bash
 gemini mcp add alphavantage uvx av-mcp YOUR_API_KEY
 ```
 
+Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
+
 **Manual Configuration:**
 1. Open the Gemini CLI settings file. The location is `~/.gemini/settings.json` (where `~` is your home directory).
-2. Add the following to the `mcpServers` object in your `settings.json` file:
+2. Add the following to the `mcpServers` object in your `settings.json` file (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
 
 ```json
 {
@@ -278,7 +338,7 @@ gemini mcp add alphavantage uvx av-mcp YOUR_API_KEY
 }
 ```
 
-Or, for a local server:
+Or, for a local server (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
 
 ```json
 {
@@ -292,8 +352,6 @@ Or, for a local server:
 ```
 
 If the `mcpServers` object does not exist, create it.
-
-Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 
 </details>
 
