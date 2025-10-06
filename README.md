@@ -24,7 +24,13 @@ uvx av-mcp YOUR_API_KEY
 ```
 
 
-### Setup Instructions by Use Case
+### Platform Setup Instructions by Use Case
+If the setup instructions mention `uv` / `uvx` (a [modern Python package](https://docs.astral.sh/uv/)
+ and project manager), install it using:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
 💬📊 _Power your chatbot with financial data_
 
@@ -107,6 +113,19 @@ To connect ChatGPT to this MCP server using ChatGPT Developer mode:
 
 See [OpenAI Codex](https://github.com/openai/codex) for more information.
 
+Install **Codex CLI v0.34 or later** to avoid compatibility issues.
+
+```bash
+# Install (if not already installed)
+npm install -g @openai/codex
+
+# Or update to the latest version
+npm update -g @openai/codex
+
+# Verify installation and version
+codex --version
+```
+
 Add the following configuration to your Codex MCP server settings by editing `~/.codex/config.toml` (replace `YOUR_API_KEY` with your actual Alpha Vantage API key):
 
 ```toml
@@ -115,7 +134,7 @@ command = "uvx"
 args = ["av-mcp", "YOUR_API_KEY"]
 ```
 
-Run `codex` in your terminal from your project directory
+Run `codex` in your terminal from your project directory. First-time users will be guided through additional prompts.
 
 Then connect with:
 ```
