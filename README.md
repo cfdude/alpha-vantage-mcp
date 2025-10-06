@@ -23,6 +23,7 @@ https://mcp.alphavantage.co/mcp?apikey=YOUR_API_KEY
 uvx av-mcp YOUR_API_KEY
 ```
 
+&nbsp;
 
 ### Platform Setup Instructions by Use Case
 If the setup instructions mention `uv` / `uvx` (a [modern Python package](https://docs.astral.sh/uv/)
@@ -335,6 +336,7 @@ Available categories:
 
 If no categories are specified, all tools will be available.
 
+&nbsp;
 
 ## Tools Reference
 
@@ -350,6 +352,8 @@ If no categories are specified, all tools will be available.
 | economic_indicators | `REAL_GDP`, `REAL_GDP_PER_CAPITA`, `TREASURY_YIELD`, `FEDERAL_FUNDS_RATE`, `CPI`, `INFLATION`, `RETAIL_SALES`, `DURABLES`, `UNEMPLOYMENT`, `NONFARM_PAYROLL` |
 | technical_indicators | `SMA`, `EMA`, `WMA`, `DEMA`, `TEMA`, `TRIMA`, `KAMA`, `MAMA`, `VWAP`, `T3`, `MACD`, `MACDEXT`, `STOCH`, `STOCHF`, `RSI`, `STOCHRSI`, `WILLR`, `ADX`, `ADXR`, `APO`, `PPO`, `MOM`, `BOP`, `CCI`, `CMO`, `ROC`, `ROCR`, `AROON`, `AROONOSC`, `MFI`, `TRIX`, `ULTOSC`, `DX`, `MINUS_DI`, `PLUS_DI`, `MINUS_DM`, `PLUS_DM`, `BBANDS`, `MIDPOINT`, `MIDPRICE`, `SAR`, `TRANGE`, `ATR`, `NATR`, `AD`, `ADOSC`, `OBV`, `HT_TRENDLINE`, `HT_SINE`, `HT_TRENDMODE`, `HT_DCPERIOD`, `HT_DCPHASE`, `HT_PHASOR` |
 | ping | `PING`, `ADD_TWO_NUMBERS` |
+
+&nbsp;
 
 ### Table of Contents - API Tools
 - [core_stock_apis](#core_stock_apis)
