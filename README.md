@@ -311,6 +311,7 @@ gemini mcp add -t http alphavantage https://mcp.alphavantage.co/mcp?apikey=YOUR_
 Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 
 **Gemini CLI Local Server Connection:**
+
 Install `uv` (a [modern Python package](https://docs.astral.sh/uv/) and project manager):
 
 ```bash
