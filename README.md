@@ -32,6 +32,9 @@ uvx av-mcp YOUR_API_KEY
 <details>
 <summary><b>Install in Claude</b></summary>
 
+**Requirements:**
+- Claude Pro account (or higher tier)
+  
 #### Claude Remote Server Connection
 
 To connect Claude (Web or Desktop) to this MCP server:
@@ -89,11 +92,11 @@ Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 <details>
 <summary><b>Install in ChatGPT</b></summary>
 
-To connect ChatGPT to this MCP server using ChatGPT Developer mode:
-
 **Requirements:**
-- ChatGPT Pro or Plus account
+- ChatGPT Plus account (or higher tier)
 - Developer mode enabled (beta feature) - see [OpenAI's Developer Mode documentation](https://platform.openai.com/docs/guides/developer-mode)
+  
+To connect ChatGPT to this MCP server using ChatGPT Developer mode:
 
 **Setup:**
 1. Go to [ChatGPT Settings → Connectors](https://chatgpt.com/#settings/Connectors)
@@ -111,6 +114,9 @@ To connect ChatGPT to this MCP server using ChatGPT Developer mode:
 
 <details>
 <summary><b>Install in OpenAI Codex</b></summary>
+
+**Requirements:**
+- ChatGPT Plus account (or higher tier)
 
 See [OpenAI Codex](https://github.com/openai/codex) for more information.
 
@@ -257,6 +263,9 @@ Replace `YOUR_API_KEY` with your actual Alpha Vantage API key.
 <details>
 <summary><b>Install in Claude Code</b></summary>
 
+  **Requirements:**
+- Claude Pro account (or higher tier)
+  
 See [Claude Code MCP docs](https://docs.anthropic.com/en/docs/claude-code/mcp) for more information.
 
 Run one of the following commands, depending on whether you’re connecting remotely or running the server locally.
