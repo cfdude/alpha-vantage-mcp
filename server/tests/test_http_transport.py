@@ -9,6 +9,7 @@ import os
 import sys
 
 import dotenv
+import pytest
 from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
 
@@ -21,6 +22,8 @@ if not os.getenv("ALPHAVANTAGE_API_KEY"):
 # MCP endpoint from deployment
 api_key = os.getenv("ALPHAVANTAGE_API_KEY", "test")
 domain_name = os.getenv("DOMAIN_NAME")
+MCP_SERVER_ENDPOINT = None
+
 if domain_name:
     MCP_SERVER_ENDPOINT = f"https://{domain_name}/mcp?apikey={api_key}"
 else:
@@ -35,6 +38,11 @@ else:
 
 async def test_mcp_server():
     """Test the deployed MCP server using real MCP client"""
+    if not MCP_SERVER_ENDPOINT:
+        pytest.skip(
+            "MCP_SERVER_ENDPOINT not configured - set DOMAIN_NAME or MCP_SERVER_ENDPOINT environment variable to run this integration test"
+        )
+
     print("🚀 Testing deployed MCP server")
     print(f"📡 Connecting to: {MCP_SERVER_ENDPOINT}")
     print("=" * 60)
