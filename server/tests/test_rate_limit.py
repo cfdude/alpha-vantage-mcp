@@ -2,7 +2,7 @@
 MCP Client test for rate limiting using GLOBAL_QUOTE tool
 Run from the repository root:
     uv run tests/test_rate_limit.py
-    
+
 Add --rate-limit-test flag to test with 30 API calls (for rate limit testing):
     uv run tests/test_rate_limit.py --rate-limit-test
 """
@@ -11,11 +11,10 @@ import asyncio
 import os
 import sys
 
-from mcp import ClientSession
-from mcp.client.streamable_http import streamablehttp_client
-
 import dotenv
 from loguru import logger
+from mcp import ClientSession
+from mcp.client.streamable_http import streamablehttp_client
 
 dotenv.load_dotenv()
 
@@ -31,7 +30,11 @@ if domain_name:
 else:
     base_endpoint = os.getenv("MCP_SERVER_ENDPOINT")
     if base_endpoint:
-        MCP_SERVER_ENDPOINT = f"{base_endpoint}?apikey={api_key}" if "?" not in base_endpoint else f"{base_endpoint}&apikey={api_key}"
+        MCP_SERVER_ENDPOINT = (
+            f"{base_endpoint}?apikey={api_key}"
+            if "?" not in base_endpoint
+            else f"{base_endpoint}&apikey={api_key}"
+        )
 
 
 async def test_rate_limit(rate_limit_test=False):
@@ -39,7 +42,7 @@ async def test_rate_limit(rate_limit_test=False):
     print("🚀 Testing MCP server rate limiting")
     print(f"📡 Connecting to: {MCP_SERVER_ENDPOINT}")
     print("=" * 60)
-    
+
     try:
         # Connect to the deployed MCP server
         async with streamablehttp_client(MCP_SERVER_ENDPOINT) as (
@@ -48,11 +51,11 @@ async def test_rate_limit(rate_limit_test=False):
             _,
         ):
             print("✅ Connected to MCP server endpoint")
-            
+
             # Create a session using the client streams
             async with ClientSession(read_stream, write_stream) as session:
                 print("✅ MCP session created")
-                
+
                 # Initialize the connection
                 print("\n🔧 Initializing MCP session...")
                 try:
@@ -63,7 +66,7 @@ async def test_rate_limit(rate_limit_test=False):
                 except Exception as init_error:
                     print(f"❌ Initialization failed: {init_error}")
                     raise
-                
+
                 # List available tools
                 print("\n🔨 Listing available tools...")
                 tools_result = await session.list_tools()
@@ -71,7 +74,7 @@ async def test_rate_limit(rate_limit_test=False):
                 print(f"✅ Found {len(tools)} tools:")
                 for tool in tools:
                     print(f"   - {tool.name}: {tool.description}")
-                
+
                 # Test GLOBAL_QUOTE tool with AAPL
                 if any(tool.name == "GLOBAL_QUOTE" for tool in tools):
                     num_calls = 30 if rate_limit_test else 1
@@ -80,23 +83,29 @@ async def test_rate_limit(rate_limit_test=False):
                     for i in range(1, num_calls + 1):
                         try:
                             logger.info(f"Making GLOBAL_QUOTE call #{i}/{num_calls}")
-                            quote_result = await session.call_tool("GLOBAL_QUOTE", {"symbol": "AAPL"})
-                            logger.success(f"Call #{i} - GLOBAL_QUOTE AAPL response: {quote_result.content}")
+                            quote_result = await session.call_tool(
+                                "GLOBAL_QUOTE", {"symbol": "AAPL"}
+                            )
+                            logger.success(
+                                f"Call #{i} - GLOBAL_QUOTE AAPL response: {quote_result.content}"
+                            )
                         except Exception as quote_error:
                             logger.error(f"Call #{i} - GLOBAL_QUOTE test failed: {quote_error}")
-                    print(f"✅ Completed {num_calls} GLOBAL_QUOTE call{'s' if num_calls > 1 else ''}")
+                    print(
+                        f"✅ Completed {num_calls} GLOBAL_QUOTE call{'s' if num_calls > 1 else ''}"
+                    )
                 else:
                     print("❌ GLOBAL_QUOTE tool not found")
                     return False
-                
-                print(f"\n🎉 Rate limit test completed successfully!")
+
+                print("\n🎉 Rate limit test completed successfully!")
                 print("Your MCP server handled the rate limiting test!")
-                
+
     except Exception as e:
         print(f"❌ Connection failed: {e}")
         print("Make sure your MCP server endpoint is correct and accessible")
         return False
-    
+
     return True
 
 
@@ -105,14 +114,14 @@ async def main():
     rate_limit_test = "--rate-limit-test" in sys.argv
     if rate_limit_test:
         sys.argv.remove("--rate-limit-test")
-    
+
     if len(sys.argv) > 1:
         global MCP_SERVER_ENDPOINT
         MCP_SERVER_ENDPOINT = sys.argv[1]
         print(f"Using custom endpoint: {MCP_SERVER_ENDPOINT}")
-    
+
     success = await test_rate_limit(rate_limit_test=rate_limit_test)
-    
+
     if success:
         print("\n✅ Rate limit test PASSED")
     else:
