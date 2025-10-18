@@ -23,7 +23,7 @@ import aiofiles
 import aiofiles.os
 
 from ..utils.output_config import OutputConfig
-from ..utils.security import validate_safe_path
+from ..utils.security import SecurityError, sanitize_filename, validate_safe_path
 
 
 class OutputHandlerError(Exception):
@@ -62,6 +62,42 @@ class FileMetadata:
     compressed: bool
     rows: int
     checksum: str = ""
+
+
+@dataclass
+class FileInfo:
+    """
+    Information about a file in a project.
+
+    Attributes:
+        name: Name of the file.
+        size: File size in bytes.
+        modified_time: Last modified time (ISO format).
+        format: File format (csv, json, csv.gz, json.gz).
+    """
+
+    name: str
+    size: int
+    modified_time: str
+    format: str
+
+
+@dataclass
+class ProjectInfo:
+    """
+    Information about a project folder.
+
+    Attributes:
+        name: Project name.
+        file_count: Number of files in the project.
+        total_size: Total size of all files in bytes.
+        last_modified: Last modified time (ISO format).
+    """
+
+    name: str
+    file_count: int
+    total_size: int
+    last_modified: str
 
 
 def _format_size(size_bytes: int) -> str:
@@ -445,3 +481,313 @@ class OutputHandler:
                 "checksum": metadata.checksum,
             },
         }
+
+    async def create_project_folder(self, project_name: str) -> Path:
+        """
+        Create a project subdirectory under client_root.
+
+        This method is idempotent - it will succeed even if the folder already exists.
+        All project names are sanitized for security to prevent directory traversal attacks.
+
+        Args:
+            project_name: Name of the project (will be sanitized).
+
+        Returns:
+            Path: The created project folder path.
+
+        Raises:
+            ValueError: If project_name is empty or invalid.
+            PermissionError: If unable to create folder due to permissions.
+            OutputHandlerError: If folder creation fails for other reasons.
+
+        Examples:
+            >>> handler = OutputHandler(config)
+            >>> project_path = await handler.create_project_folder("my-project")
+            >>> project_path.exists()
+            True
+
+            >>> # Idempotent - calling again returns same path
+            >>> project_path2 = await handler.create_project_folder("my-project")
+            >>> project_path == project_path2
+            True
+
+            >>> # Dangerous names are sanitized
+            >>> path = await handler.create_project_folder("../etc/passwd")
+            >>> path.name
+            'etcpasswd'
+        """
+        if not project_name or not isinstance(project_name, str):
+            raise ValueError("project_name must be a non-empty string")
+
+        # Sanitize project name for security
+        safe_name = sanitize_filename(project_name)
+        if not safe_name:
+            raise ValueError(f"Invalid project name after sanitization: {project_name}")
+
+        # Create full project path
+        project_path = self.config.client_root / safe_name
+
+        try:
+            # Create directory with configured permissions (idempotent with exist_ok=True)
+            project_path.mkdir(
+                mode=self.config.default_folder_permissions,
+                parents=True,
+                exist_ok=True,
+            )
+            return project_path
+
+        except PermissionError as e:
+            raise PermissionError(
+                f"Cannot create project folder {project_path}: {e}. "
+                "Check directory permissions and ensure you have write access."
+            ) from e
+        except Exception as e:
+            raise OutputHandlerError(
+                f"Failed to create project folder {project_path}: {e}. "
+                "Check disk space and path validity."
+            ) from e
+
+    async def list_project_files(self, project_name: str, pattern: str = "*") -> list[FileInfo]:
+        """
+        List all files in a project folder with optional pattern filtering.
+
+        Files are listed recursively and sorted by modified time (newest first).
+        Supports glob patterns for filtering (e.g., "*.csv", "2024-*.json").
+
+        Args:
+            project_name: Name of the project.
+            pattern: Glob pattern for filtering files (default: "*" for all files).
+
+        Returns:
+            List of FileInfo objects sorted by modified time (newest first).
+            Returns empty list if project doesn't exist or has no matching files.
+
+        Raises:
+            ValueError: If project_name is empty or invalid.
+            PermissionError: If unable to access project folder.
+
+        Examples:
+            >>> files = await handler.list_project_files("my-project")
+            >>> len(files)
+            5
+
+            >>> # Filter by pattern
+            >>> csv_files = await handler.list_project_files("my-project", "*.csv")
+            >>> all(f.format.startswith("csv") for f in csv_files)
+            True
+
+            >>> # Get files from specific time period
+            >>> jan_files = await handler.list_project_files("stocks", "2024-01-*.csv")
+        """
+        if not project_name or not isinstance(project_name, str):
+            raise ValueError("project_name must be a non-empty string")
+
+        # Sanitize project name
+        safe_name = sanitize_filename(project_name)
+        project_path = self.config.client_root / safe_name
+
+        # Return empty list if project doesn't exist
+        if not project_path.exists():
+            return []
+
+        if not project_path.is_dir():
+            raise ValueError(f"Path exists but is not a directory: {project_path}")
+
+        try:
+            # Collect all matching files
+            file_infos = []
+
+            # Use rglob for recursive glob matching
+            for file_path in project_path.rglob(pattern):
+                if file_path.is_file():
+                    stat = await aiofiles.os.stat(file_path)
+
+                    # Determine file format
+                    suffix = file_path.suffix.lstrip(".")
+                    if file_path.suffixes and len(file_path.suffixes) >= 2:
+                        # Handle .csv.gz, .json.gz
+                        if file_path.suffixes[-1] == ".gz":
+                            suffix = f"{file_path.suffixes[-2].lstrip('.')}.gz"
+
+                    file_info = FileInfo(
+                        name=str(file_path.relative_to(project_path)),
+                        size=stat.st_size,
+                        modified_time=datetime.fromtimestamp(stat.st_mtime, UTC).isoformat(),
+                        format=suffix,
+                    )
+                    file_infos.append((stat.st_mtime, file_info))
+
+            # Sort by modified time (newest first) and return FileInfo objects
+            file_infos.sort(key=lambda x: x[0], reverse=True)
+            return [info for _, info in file_infos]
+
+        except PermissionError as e:
+            raise PermissionError(
+                f"Cannot access project folder {project_path}: {e}. " "Check directory permissions."
+            ) from e
+
+    async def delete_project_file(self, project_name: str, filename: str) -> bool:
+        """
+        Delete a specific file from a project folder.
+
+        This method includes security validation to prevent path traversal attacks.
+        It will not delete directories, only files.
+
+        Args:
+            project_name: Name of the project.
+            filename: Name of the file to delete (relative to project folder).
+
+        Returns:
+            bool: True if file was deleted, False if file didn't exist.
+
+        Raises:
+            ValueError: If project_name or filename is empty/invalid.
+            SecurityError: If filename attempts to escape project folder.
+            PermissionError: If unable to delete file due to permissions.
+            OutputHandlerError: If deletion fails for other reasons.
+
+        Examples:
+            >>> # Delete a file
+            >>> deleted = await handler.delete_project_file("stocks", "old_data.csv")
+            >>> deleted
+            True
+
+            >>> # Deleting non-existent file returns False
+            >>> deleted = await handler.delete_project_file("stocks", "missing.csv")
+            >>> deleted
+            False
+
+            >>> # Works with compressed files
+            >>> deleted = await handler.delete_project_file("stocks", "data.csv.gz")
+            >>> deleted
+            True
+
+            >>> # Security: Path traversal is blocked
+            >>> await handler.delete_project_file("stocks", "../other/file.csv")
+            SecurityError: Path escapes project folder
+        """
+        if not project_name or not isinstance(project_name, str):
+            raise ValueError("project_name must be a non-empty string")
+
+        if not filename or not isinstance(filename, str):
+            raise ValueError("filename must be a non-empty string")
+
+        # Sanitize project name and filename
+        safe_project_name = sanitize_filename(project_name)
+        safe_filename = sanitize_filename(filename)
+
+        project_path = self.config.client_root / safe_project_name
+
+        # Construct file path and validate it's contained within project
+        file_path = project_path / safe_filename
+
+        # Security validation - ensure file path is within project folder
+        try:
+            resolved_file = file_path.resolve(strict=False)
+            resolved_project = project_path.resolve(strict=True)
+
+            if not resolved_file.is_relative_to(resolved_project):
+                raise SecurityError(
+                    f"Path traversal detected: {filename} escapes project folder {project_name}"
+                )
+        except Exception as e:
+            if isinstance(e, SecurityError):
+                raise
+            raise ValueError(f"Cannot resolve file path: {e}") from e
+
+        # Return False if file doesn't exist
+        if not file_path.exists():
+            return False
+
+        # Don't delete directories
+        if not file_path.is_file():
+            raise ValueError(f"Path is not a file: {filename}")
+
+        try:
+            await aiofiles.os.remove(file_path)
+            return True
+
+        except PermissionError as e:
+            raise PermissionError(
+                f"Cannot delete file {file_path}: {e}. " "Check file permissions."
+            ) from e
+        except Exception as e:
+            raise OutputHandlerError(f"Failed to delete file {file_path}: {e}") from e
+
+    async def list_projects(self) -> list[ProjectInfo]:
+        """
+        List all project folders under client_root.
+
+        Projects are sorted by last modified time (newest first).
+        Hidden folders (starting with '.') are excluded.
+
+        Returns:
+            List of ProjectInfo objects with metadata about each project.
+            Returns empty list if no projects exist.
+
+        Raises:
+            PermissionError: If unable to access client_root.
+
+        Examples:
+            >>> projects = await handler.list_projects()
+            >>> len(projects)
+            3
+
+            >>> # Projects are sorted by last modified
+            >>> projects[0].last_modified > projects[1].last_modified
+            True
+
+            >>> # Each project has metadata
+            >>> project = projects[0]
+            >>> project.name
+            'stock-analysis'
+            >>> project.file_count
+            15
+            >>> project.total_size
+            1048576
+        """
+        try:
+            project_infos = []
+
+            # Iterate through directories in client_root
+            for item in self.config.client_root.iterdir():
+                # Skip non-directories and hidden folders
+                if not item.is_dir() or item.name.startswith("."):
+                    continue
+
+                # Calculate project stats
+                file_count = 0
+                total_size = 0
+                last_modified = 0
+
+                # Recursively count files and sizes
+                for file_path in item.rglob("*"):
+                    if file_path.is_file():
+                        stat = await aiofiles.os.stat(file_path)
+                        file_count += 1
+                        total_size += stat.st_size
+                        last_modified = max(last_modified, stat.st_mtime)
+
+                # Use directory's mtime if no files found
+                if last_modified == 0:
+                    stat = await aiofiles.os.stat(item)
+                    last_modified = stat.st_mtime
+
+                project_info = ProjectInfo(
+                    name=item.name,
+                    file_count=file_count,
+                    total_size=total_size,
+                    last_modified=datetime.fromtimestamp(last_modified, UTC).isoformat(),
+                )
+
+                project_infos.append((last_modified, project_info))
+
+            # Sort by last modified time (newest first) and return ProjectInfo objects
+            project_infos.sort(key=lambda x: x[0], reverse=True)
+            return [info for _, info in project_infos]
+
+        except PermissionError as e:
+            raise PermissionError(
+                f"Cannot access client_root {self.config.client_root}: {e}. "
+                "Check directory permissions."
+            ) from e
