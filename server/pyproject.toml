@@ -2,13 +2,14 @@
 name = "av-mcp"
 version = "0.2.0"
 description = "Alpha Vantage MCP Server - Financial data APIs via Model Context Protocol"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 license = {text = "MIT"}
 dependencies = [
     "awslabs-mcp-lambda-handler>=0.1.8",
     "click>=8.2.1",
     "loguru>=0.7.3",
     "mcp>=1.12.3",
+    "pydantic>=2.0.0",
     "python-dotenv>=1.1.1",
 ]
 
@@ -77,6 +78,7 @@ known-first-party = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 python_files = "test_*.py"
