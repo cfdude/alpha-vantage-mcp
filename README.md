@@ -410,20 +410,24 @@ If no categories are specified, all tools will be available.
 
 | Category | Tools |
 |----------|-------|
-| core_stock_apis | `TIME_SERIES_INTRADAY`, `TIME_SERIES_DAILY`, `TIME_SERIES_DAILY_ADJUSTED`, `TIME_SERIES_WEEKLY`, `TIME_SERIES_WEEKLY_ADJUSTED`, `TIME_SERIES_MONTHLY`, `TIME_SERIES_MONTHLY_ADJUSTED`, `GLOBAL_QUOTE`, `REALTIME_BULK_QUOTES`, `SYMBOL_SEARCH`, `MARKET_STATUS` |
+| core_stock_apis | `GET_TIME_SERIES` *(consolidated)*, `TIME_SERIES_INTRADAY`, `TIME_SERIES_DAILY`, `TIME_SERIES_DAILY_ADJUSTED`, `TIME_SERIES_WEEKLY`, `TIME_SERIES_WEEKLY_ADJUSTED`, `TIME_SERIES_MONTHLY`, `TIME_SERIES_MONTHLY_ADJUSTED`, `GLOBAL_QUOTE`, `REALTIME_BULK_QUOTES`, `SYMBOL_SEARCH`, `MARKET_STATUS` |
 | options_data_apis | `REALTIME_OPTIONS`, `HISTORICAL_OPTIONS` |
 | alpha_intelligence | `NEWS_SENTIMENT`, `EARNINGS_CALL_TRANSCRIPT`, `TOP_GAINERS_LOSERS`, `INSIDER_TRANSACTIONS`, `ANALYTICS_FIXED_WINDOW`, `ANALYTICS_SLIDING_WINDOW` |
 | fundamental_data | `COMPANY_OVERVIEW`, `INCOME_STATEMENT`, `BALANCE_SHEET`, `CASH_FLOW`, `EARNINGS`, `LISTING_STATUS`, `EARNINGS_CALENDAR`, `IPO_CALENDAR` |
-| forex | `FX_INTRADAY`, `FX_DAILY`, `FX_WEEKLY`, `FX_MONTHLY` |
-| cryptocurrencies | `CURRENCY_EXCHANGE_RATE`, `DIGITAL_CURRENCY_INTRADAY`, `DIGITAL_CURRENCY_DAILY`, `DIGITAL_CURRENCY_WEEKLY`, `DIGITAL_CURRENCY_MONTHLY` |
+| forex | `GET_FOREX_DATA` *(consolidated)*, `FX_INTRADAY`, `FX_DAILY`, `FX_WEEKLY`, `FX_MONTHLY` |
+| cryptocurrencies | `GET_CRYPTO_DATA` *(consolidated)*, `CURRENCY_EXCHANGE_RATE`, `CRYPTO_INTRADAY`, `DIGITAL_CURRENCY_DAILY`, `DIGITAL_CURRENCY_WEEKLY`, `DIGITAL_CURRENCY_MONTHLY` |
 | commodities | `WTI`, `BRENT`, `NATURAL_GAS`, `COPPER`, `ALUMINUM`, `WHEAT`, `CORN`, `COTTON`, `SUGAR`, `COFFEE`, `ALL_COMMODITIES` |
 | economic_indicators | `REAL_GDP`, `REAL_GDP_PER_CAPITA`, `TREASURY_YIELD`, `FEDERAL_FUNDS_RATE`, `CPI`, `INFLATION`, `RETAIL_SALES`, `DURABLES`, `UNEMPLOYMENT`, `NONFARM_PAYROLL` |
-| technical_indicators | `SMA`, `EMA`, `WMA`, `DEMA`, `TEMA`, `TRIMA`, `KAMA`, `MAMA`, `VWAP`, `T3`, `MACD`, `MACDEXT`, `STOCH`, `STOCHF`, `RSI`, `STOCHRSI`, `WILLR`, `ADX`, `ADXR`, `APO`, `PPO`, `MOM`, `BOP`, `CCI`, `CMO`, `ROC`, `ROCR`, `AROON`, `AROONOSC`, `MFI`, `TRIX`, `ULTOSC`, `DX`, `MINUS_DI`, `PLUS_DI`, `MINUS_DM`, `PLUS_DM`, `BBANDS`, `MIDPOINT`, `MIDPRICE`, `SAR`, `TRANGE`, `ATR`, `NATR`, `AD`, `ADOSC`, `OBV`, `HT_TRENDLINE`, `HT_SINE`, `HT_TRENDMODE`, `HT_DCPERIOD`, `HT_DCPHASE`, `HT_PHASOR` |
+| technical_indicators | `GET_MOVING_AVERAGE` *(consolidated)*, `SMA`, `EMA`, `WMA`, `DEMA`, `TEMA`, `TRIMA`, `KAMA`, `MAMA`, `VWAP`, `T3`, `MACD`, `MACDEXT`, `STOCH`, `STOCHF`, `RSI`, `STOCHRSI`, `WILLR`, `ADX`, `ADXR`, `APO`, `PPO`, `MOM`, `BOP`, `CCI`, `CMO`, `ROC`, `ROCR`, `AROON`, `AROONOSC`, `MFI`, `TRIX`, `ULTOSC`, `DX`, `MINUS_DI`, `PLUS_DI`, `MINUS_DM`, `PLUS_DM`, `BBANDS`, `MIDPOINT`, `MIDPRICE`, `SAR`, `TRANGE`, `ATR`, `NATR`, `AD`, `ADOSC`, `OBV`, `HT_TRENDLINE`, `HT_SINE`, `HT_TRENDMODE`, `HT_DCPERIOD`, `HT_DCPHASE`, `HT_PHASOR` |
 | ping | `PING`, `ADD_TWO_NUMBERS` |
 
 &nbsp;
 
 ### Table of Contents - API Tools
+- [🎯 GET_TIME_SERIES - Unified Time Series Tool](#-get_time_series---unified-time-series-tool) *(NEW - Consolidates 11 tools)*
+- [💱 GET_FOREX_DATA - Unified Forex Tool](#-get_forex_data---unified-forex-tool) *(NEW - Consolidates 4 tools)*
+- [₿ GET_CRYPTO_DATA - Unified Crypto Tool](#-get_crypto_data---unified-crypto-tool) *(NEW - Consolidates 5 tools)*
+- [📈 GET_MOVING_AVERAGE - Unified Moving Average Tool](#-get_moving_average---unified-moving-average-tool) *(NEW - Consolidates 10 tools)*
 - [core_stock_apis](#core_stock_apis)
 - [options_data_apis](#options_data_apis)
 - [alpha_intelligence](#alpha_intelligence)
@@ -435,8 +439,697 @@ If no categories are specified, all tools will be available.
 - [technical_indicators](#technical_indicators)
 - [ping](#ping)
 
-💡 Each of these MCP tools maps to a corresponding Alpha Vantage API endpoint. If you are interested in the full API specs (in addition to the brief tool descriptions below), please refer to the Alpha Vantage [API documentation](https://www.alphavantage.co/documentation/).  
+💡 Each of these MCP tools maps to a corresponding Alpha Vantage API endpoint. If you are interested in the full API specs (in addition to the brief tool descriptions below), please refer to the Alpha Vantage [API documentation](https://www.alphavantage.co/documentation/).
 
+---
+
+## 🎯 GET_TIME_SERIES - Unified Time Series Tool
+
+**NEW:** Consolidates 11 separate time series tools into one unified interface with ~85% context window reduction.
+
+### Overview
+
+`GET_TIME_SERIES` is a powerful consolidated tool that replaces 11 individual time series endpoints with a single, easy-to-use interface. Simply specify the `series_type` parameter to access any time series data.
+
+**Key Benefits:**
+- ✅ One tool instead of 11 (simpler API, less to remember)
+- ✅ ~7,000 token reduction in context window usage
+- ✅ Consistent parameter validation across all series types
+- ✅ Automatic large response handling via output helper
+- ✅ Clear error messages when parameters don't match series type
+
+### Supported Series Types
+
+| series_type | Description | Replaces Tool |
+|-------------|-------------|---------------|
+| `intraday` | Intraday OHLCV data (1min-60min bars) | TIME_SERIES_INTRADAY |
+| `daily` | Raw daily OHLCV data | TIME_SERIES_DAILY |
+| `daily_adjusted` | Daily data with split/dividend adjustments | TIME_SERIES_DAILY_ADJUSTED |
+| `weekly` | Weekly time series (last day of week) | TIME_SERIES_WEEKLY |
+| `weekly_adjusted` | Adjusted weekly time series | TIME_SERIES_WEEKLY_ADJUSTED |
+| `monthly` | Monthly time series (last day of month) | TIME_SERIES_MONTHLY |
+| `monthly_adjusted` | Adjusted monthly time series | TIME_SERIES_MONTHLY_ADJUSTED |
+| `quote` | Latest price and volume for a symbol | GLOBAL_QUOTE |
+| `bulk_quotes` | Real-time quotes for up to 100 symbols | REALTIME_BULK_QUOTES |
+| `search` | Symbol search/lookup by keywords | SYMBOL_SEARCH |
+| `market_status` | Current market status (open/closed) | MARKET_STATUS |
+
+### Parameters
+
+**Required Parameters (vary by series_type):**
+
+| series_type | Required Parameters | Optional Parameters |
+|-------------|-------------------|---------------------|
+| `intraday` | `symbol`, `interval` | `adjusted`, `extended_hours`, `month`, `outputsize` |
+| `daily`, `daily_adjusted` | `symbol` | `outputsize` |
+| `weekly`, `weekly_adjusted`, `monthly`, `monthly_adjusted` | `symbol` | None |
+| `quote` | `symbol` | None |
+| `bulk_quotes` | `symbols` | None |
+| `search` | `keywords` | None |
+| `market_status` | None | None |
+
+**Common Parameters (all series types):**
+- `datatype`: Output format (`"json"` or `"csv"`, default: `"csv"`)
+- `entitlement`: Data entitlement level (`"delayed"` or `"realtime"`)
+- `force_inline`: Force inline output regardless of size (default: `false`)
+- `force_file`: Force file output regardless of size (default: `false`)
+
+**Intraday-Specific Parameters:**
+- `interval`: Time interval - `"1min"`, `"5min"`, `"15min"`, `"30min"`, `"60min"`
+- `adjusted`: Return adjusted data (default: `true`)
+- `extended_hours`: Include extended trading hours (default: `true`)
+- `month`: Query specific month in `YYYY-MM` format (e.g., `"2024-01"`)
+- `outputsize`: `"compact"` (latest 100 points) or `"full"` (complete history)
+
+### Usage Examples
+
+**1. Get Intraday Data for IBM:**
+```python
+GET_TIME_SERIES(
+    series_type="intraday",
+    symbol="IBM",
+    interval="5min",
+    outputsize="compact"
+)
+```
+
+**2. Get Daily Adjusted Data for Apple:**
+```python
+GET_TIME_SERIES(
+    series_type="daily_adjusted",
+    symbol="AAPL",
+    outputsize="full"
+)
+```
+
+**3. Get Real-Time Quotes for Multiple Stocks:**
+```python
+GET_TIME_SERIES(
+    series_type="bulk_quotes",
+    symbols="AAPL,MSFT,GOOGL,TSLA"
+)
+```
+
+**4. Search for a Symbol:**
+```python
+GET_TIME_SERIES(
+    series_type="search",
+    keywords="microsoft"
+)
+```
+
+**5. Check Market Status:**
+```python
+GET_TIME_SERIES(
+    series_type="market_status"
+)
+```
+
+**6. Get Historical Monthly Data:**
+```python
+GET_TIME_SERIES(
+    series_type="monthly_adjusted",
+    symbol="NVDA"
+)
+```
+
+### Migration from Old Tools
+
+If you were using the individual tools, here's how to migrate:
+
+**Old approach:**
+```python
+TIME_SERIES_INTRADAY(symbol="IBM", interval="5min")
+TIME_SERIES_DAILY_ADJUSTED(symbol="AAPL")
+REALTIME_BULK_QUOTES(symbol="AAPL,MSFT")  # Note: misleading parameter name
+SYMBOL_SEARCH(keywords="microsoft")
+```
+
+**New approach:**
+```python
+GET_TIME_SERIES(series_type="intraday", symbol="IBM", interval="5min")
+GET_TIME_SERIES(series_type="daily_adjusted", symbol="AAPL")
+GET_TIME_SERIES(series_type="bulk_quotes", symbols="AAPL,MSFT")  # Clearer parameter name
+GET_TIME_SERIES(series_type="search", keywords="microsoft")
+```
+
+**Key Changes:**
+- Add `series_type` parameter to specify data type
+- For bulk quotes: use `symbols` instead of `symbol` (clearer intent)
+- All other parameters remain the same
+
+### Error Handling
+
+The tool provides clear error messages when parameters don't match the series_type:
+
+```python
+# ❌ Wrong: Missing required parameter
+GET_TIME_SERIES(series_type="intraday", symbol="IBM")
+# Error: "interval is required when series_type='intraday'"
+
+# ❌ Wrong: Using wrong parameter
+GET_TIME_SERIES(series_type="bulk_quotes", symbol="AAPL")
+# Error: "Use 'symbols' (not 'symbol') parameter for series_type='bulk_quotes'"
+
+# ✅ Correct
+GET_TIME_SERIES(series_type="intraday", symbol="IBM", interval="5min")
+GET_TIME_SERIES(series_type="bulk_quotes", symbols="AAPL,MSFT")
+```
+
+---
+
+## 💱 GET_FOREX_DATA - Unified Forex Tool
+
+**NEW:** Consolidates 4 separate forex tools into one unified interface with ~78% context window reduction.
+
+### Overview
+
+`GET_FOREX_DATA` is a consolidated tool that replaces 4 individual forex endpoints with a single, easy-to-use interface. Simply specify the `timeframe` parameter to access any forex data.
+
+**Key Benefits:**
+- ✅ One tool instead of 4 (simpler API, less to remember)
+- ✅ ~2,400 token reduction in context window usage
+- ✅ Consistent parameter validation across all timeframes
+- ✅ Clear error messages when parameters don't match timeframe
+- ✅ Support for all major forex currency pairs
+
+### Supported Timeframes
+
+| timeframe | Description | Replaces Tool |
+|-----------|-------------|---------------|
+| `intraday` | Intraday exchange rates (1min-60min bars) | FX_INTRADAY |
+| `daily` | Daily exchange rates | FX_DAILY |
+| `weekly` | Weekly exchange rates (last day of week) | FX_WEEKLY |
+| `monthly` | Monthly exchange rates (last day of month) | FX_MONTHLY |
+
+### Parameters
+
+**Required Parameters (all timeframes):**
+- `timeframe`: The timeframe for the data - `"intraday"`, `"daily"`, `"weekly"`, or `"monthly"`
+- `from_symbol`: The currency to convert from (e.g., `"EUR"`, `"GBP"`, `"USD"`)
+- `to_symbol`: The currency to convert to (e.g., `"USD"`, `"JPY"`, `"CHF"`)
+
+**Timeframe-Specific Parameters:**
+
+| timeframe | Additional Required | Optional Parameters |
+|-----------|-------------------|---------------------|
+| `intraday` | `interval` | `outputsize` |
+| `daily`, `weekly`, `monthly` | None | `outputsize` |
+
+**Common Optional Parameters:**
+- `outputsize`: `"compact"` (latest 100 points) or `"full"` (complete history), default: `"compact"`
+- `datatype`: Output format (`"json"` or `"csv"`, default: `"csv"`)
+- `force_inline`: Force inline output regardless of size (default: `false`)
+- `force_file`: Force file output regardless of size (default: `false`)
+
+**Intraday-Specific Parameters:**
+- `interval`: Time interval - `"1min"`, `"5min"`, `"15min"`, `"30min"`, `"60min"` (required for intraday)
+
+### Usage Examples
+
+**1. Get Intraday EUR/USD Exchange Rate:**
+```python
+GET_FOREX_DATA(
+    timeframe="intraday",
+    from_symbol="EUR",
+    to_symbol="USD",
+    interval="5min",
+    outputsize="compact"
+)
+```
+
+**2. Get Daily GBP/USD Exchange Rate (Full History):**
+```python
+GET_FOREX_DATA(
+    timeframe="daily",
+    from_symbol="GBP",
+    to_symbol="USD",
+    outputsize="full"
+)
+```
+
+**3. Get Weekly EUR/JPY Exchange Rate:**
+```python
+GET_FOREX_DATA(
+    timeframe="weekly",
+    from_symbol="EUR",
+    to_symbol="JPY"
+)
+```
+
+**4. Get Monthly CAD/USD Exchange Rate:**
+```python
+GET_FOREX_DATA(
+    timeframe="monthly",
+    from_symbol="CAD",
+    to_symbol="USD"
+)
+```
+
+### Migration from Old Tools
+
+If you were using the individual forex tools, here's how to migrate:
+
+**Old approach:**
+```python
+FX_INTRADAY(from_symbol="EUR", to_symbol="USD", interval="5min")
+FX_DAILY(from_symbol="GBP", to_symbol="USD", outputsize="full")
+FX_WEEKLY(from_symbol="EUR", to_symbol="JPY")
+FX_MONTHLY(from_symbol="CAD", to_symbol="USD")
+```
+
+**New approach:**
+```python
+GET_FOREX_DATA(timeframe="intraday", from_symbol="EUR", to_symbol="USD", interval="5min")
+GET_FOREX_DATA(timeframe="daily", from_symbol="GBP", to_symbol="USD", outputsize="full")
+GET_FOREX_DATA(timeframe="weekly", from_symbol="EUR", to_symbol="JPY")
+GET_FOREX_DATA(timeframe="monthly", from_symbol="CAD", to_symbol="USD")
+```
+
+**Key Changes:**
+- Add `timeframe` parameter to specify the data frequency
+- All other parameters remain the same
+
+### Error Handling
+
+The tool provides clear error messages when parameters don't match the timeframe:
+
+```python
+# ❌ Wrong: Missing required interval for intraday
+GET_FOREX_DATA(timeframe="intraday", from_symbol="EUR", to_symbol="USD")
+# Error: "interval is required when timeframe='intraday'"
+
+# ❌ Wrong: Using interval with non-intraday timeframe
+GET_FOREX_DATA(timeframe="daily", from_symbol="EUR", to_symbol="USD", interval="5min")
+# Error: "interval parameter is not applicable for timeframe='daily'"
+
+# ✅ Correct
+GET_FOREX_DATA(timeframe="intraday", from_symbol="EUR", to_symbol="USD", interval="5min")
+GET_FOREX_DATA(timeframe="daily", from_symbol="EUR", to_symbol="USD")
+```
+
+---
+
+## ₿ GET_CRYPTO_DATA - Unified Crypto Tool
+
+**NEW:** Consolidates 5 separate cryptocurrency/currency tools into one unified interface with ~78% context window reduction.
+
+### Overview
+
+`GET_CRYPTO_DATA` is a powerful consolidated tool that replaces 5 individual crypto/currency endpoints with a single, easy-to-use interface. It handles both time series data and exchange rates through the `data_type` parameter.
+
+**Key Benefits:**
+- ✅ One tool instead of 5 (simpler API, less to remember)
+- ✅ ~3,200 token reduction in context window usage
+- ✅ Handles both crypto time series and exchange rates
+- ✅ Consistent parameter validation across all data types
+- ✅ Clear error messages when parameters don't match data type
+
+### Supported Data Types
+
+| data_type | timeframe | Description | Replaces Tool |
+|-----------|-----------|-------------|---------------|
+| `timeseries` | `intraday` | Intraday crypto time series (1min-60min) | CRYPTO_INTRADAY |
+| `timeseries` | `daily` | Daily crypto time series | DIGITAL_CURRENCY_DAILY |
+| `timeseries` | `weekly` | Weekly crypto time series | DIGITAL_CURRENCY_WEEKLY |
+| `timeseries` | `monthly` | Monthly crypto time series | DIGITAL_CURRENCY_MONTHLY |
+| `exchange_rate` | N/A | Real-time currency exchange rate | CURRENCY_EXCHANGE_RATE |
+
+### Parameters
+
+**Required Parameters (vary by data_type):**
+
+| data_type | Required Parameters |
+|-----------|-------------------|
+| `timeseries` | `timeframe`, `symbol`, `market` |
+| `exchange_rate` | `from_currency`, `to_currency` |
+
+**Timeseries-Specific:**
+- `symbol`: The cryptocurrency symbol (e.g., `"BTC"`, `"ETH"`, `"XRP"`)
+- `market`: The market currency (e.g., `"USD"`, `"EUR"`, `"CNY"`)
+- `timeframe`: `"intraday"`, `"daily"`, `"weekly"`, or `"monthly"`
+- `interval`: Time interval for intraday only - `"1min"`, `"5min"`, `"15min"`, `"30min"`, `"60min"`
+
+**Exchange Rate-Specific:**
+- `from_currency`: The currency to convert from (crypto or fiat, e.g., `"BTC"`, `"USD"`)
+- `to_currency`: The currency to convert to (crypto or fiat, e.g., `"USD"`, `"BTC"`)
+
+**Common Optional Parameters:**
+- `outputsize`: `"compact"` (latest 100 points) or `"full"` (complete history), default: `"compact"`
+- `datatype`: Output format (`"json"` or `"csv"`, default: `"csv"`)
+- `force_inline`: Force inline output regardless of size (default: `false`)
+- `force_file`: Force file output regardless of size (default: `false`)
+
+### Usage Examples
+
+**1. Get Intraday BTC/USD Time Series:**
+```python
+GET_CRYPTO_DATA(
+    data_type="timeseries",
+    timeframe="intraday",
+    symbol="BTC",
+    market="USD",
+    interval="5min",
+    outputsize="compact"
+)
+```
+
+**2. Get Daily ETH/USD Time Series:**
+```python
+GET_CRYPTO_DATA(
+    data_type="timeseries",
+    timeframe="daily",
+    symbol="ETH",
+    market="USD"
+)
+```
+
+**3. Get Weekly XRP/EUR Time Series:**
+```python
+GET_CRYPTO_DATA(
+    data_type="timeseries",
+    timeframe="weekly",
+    symbol="XRP",
+    market="EUR"
+)
+```
+
+**4. Get Monthly LTC/CNY Time Series:**
+```python
+GET_CRYPTO_DATA(
+    data_type="timeseries",
+    timeframe="monthly",
+    symbol="LTC",
+    market="CNY"
+)
+```
+
+**5. Get BTC to USD Exchange Rate:**
+```python
+GET_CRYPTO_DATA(
+    data_type="exchange_rate",
+    from_currency="BTC",
+    to_currency="USD"
+)
+```
+
+**6. Get USD to BTC Exchange Rate (Fiat to Crypto):**
+```python
+GET_CRYPTO_DATA(
+    data_type="exchange_rate",
+    from_currency="USD",
+    to_currency="BTC"
+)
+```
+
+**7. Get Crypto-to-Crypto Exchange Rate:**
+```python
+GET_CRYPTO_DATA(
+    data_type="exchange_rate",
+    from_currency="BTC",
+    to_currency="ETH"
+)
+```
+
+### Migration from Old Tools
+
+If you were using the individual crypto/currency tools, here's how to migrate:
+
+**Old approach:**
+```python
+CRYPTO_INTRADAY(symbol="BTC", market="USD", interval="5min")
+DIGITAL_CURRENCY_DAILY(symbol="ETH", market="USD")
+DIGITAL_CURRENCY_WEEKLY(symbol="XRP", market="EUR")
+DIGITAL_CURRENCY_MONTHLY(symbol="LTC", market="CNY")
+CURRENCY_EXCHANGE_RATE(from_currency="BTC", to_currency="USD")
+```
+
+**New approach:**
+```python
+GET_CRYPTO_DATA(data_type="timeseries", timeframe="intraday", symbol="BTC", market="USD", interval="5min")
+GET_CRYPTO_DATA(data_type="timeseries", timeframe="daily", symbol="ETH", market="USD")
+GET_CRYPTO_DATA(data_type="timeseries", timeframe="weekly", symbol="XRP", market="EUR")
+GET_CRYPTO_DATA(data_type="timeseries", timeframe="monthly", symbol="LTC", market="CNY")
+GET_CRYPTO_DATA(data_type="exchange_rate", from_currency="BTC", to_currency="USD")
+```
+
+**Key Changes:**
+- Add `data_type` parameter (`"timeseries"` or `"exchange_rate"`)
+- For timeseries: add `timeframe` parameter
+- All other parameters remain the same
+
+### Error Handling
+
+The tool provides clear error messages when parameters don't match the data type:
+
+```python
+# ❌ Wrong: Missing timeframe for timeseries
+GET_CRYPTO_DATA(data_type="timeseries", symbol="BTC", market="USD")
+# Error: "timeframe is required when data_type='timeseries'"
+
+# ❌ Wrong: Missing interval for intraday timeseries
+GET_CRYPTO_DATA(data_type="timeseries", timeframe="intraday", symbol="BTC", market="USD")
+# Error: "interval is required when timeframe='intraday'"
+
+# ❌ Wrong: Using timeseries params with exchange_rate
+GET_CRYPTO_DATA(data_type="exchange_rate", from_currency="BTC", to_currency="USD", symbol="BTC")
+# Error: "symbol/market parameters are only applicable for data_type='timeseries'"
+
+# ✅ Correct
+GET_CRYPTO_DATA(data_type="timeseries", timeframe="intraday", symbol="BTC", market="USD", interval="5min")
+GET_CRYPTO_DATA(data_type="timeseries", timeframe="daily", symbol="BTC", market="USD")
+GET_CRYPTO_DATA(data_type="exchange_rate", from_currency="BTC", to_currency="USD")
+```
+
+---
+
+## 📈 GET_MOVING_AVERAGE - Unified Moving Average Tool
+
+**NEW:** Consolidates 10 separate moving average indicator tools into one unified interface with ~90% context window reduction.
+
+### Overview
+
+`GET_MOVING_AVERAGE` is a powerful consolidated tool that replaces 10 individual moving average endpoints with a single, easy-to-use interface. Simply specify the `indicator_type` parameter to access any moving average indicator.
+
+**Key Benefits:**
+- ✅ One tool instead of 10 (simpler API, less to remember)
+- ✅ ~5,400 token reduction in context window usage
+- ✅ Sophisticated conditional validation for complex parameter patterns
+- ✅ Clear error messages when parameters don't match indicator type
+- ✅ Support for all major moving average types including adaptive algorithms
+
+### Supported Indicator Types
+
+| indicator_type | Description | Replaces Tool |
+|----------------|-------------|---------------|
+| `sma` | Simple Moving Average | SMA |
+| `ema` | Exponential Moving Average | EMA |
+| `wma` | Weighted Moving Average | WMA |
+| `dema` | Double Exponential Moving Average | DEMA |
+| `tema` | Triple Exponential Moving Average | TEMA |
+| `trima` | Triangular Moving Average | TRIMA |
+| `kama` | Kaufman Adaptive Moving Average | KAMA |
+| `mama` | MESA Adaptive Moving Average | MAMA |
+| `t3` | Triple Exponential Moving Average T3 | T3 |
+| `vwap` | Volume Weighted Average Price | VWAP |
+
+### Parameters
+
+The tool uses sophisticated conditional validation to handle three distinct parameter patterns:
+
+#### 1. Standard Indicators (SMA, EMA, WMA, DEMA, TEMA, TRIMA, KAMA, T3)
+
+**Required Parameters:**
+- `indicator_type`: One of `"sma"`, `"ema"`, `"wma"`, `"dema"`, `"tema"`, `"trima"`, `"kama"`, `"t3"`
+- `symbol`: Stock ticker symbol (e.g., `"IBM"`, `"AAPL"`)
+- `interval`: Time interval - `"1min"`, `"5min"`, `"15min"`, `"30min"`, `"60min"`, `"daily"`, `"weekly"`, `"monthly"`
+- `time_period`: Number of data points for calculation (positive integer, e.g., `60`, `200`)
+- `series_type`: Price type - `"close"`, `"open"`, `"high"`, `"low"`
+
+**Optional Parameters:**
+- `month`: Specific month for intraday data in `YYYY-MM` format (e.g., `"2024-01"`) - **only for intraday intervals**
+
+#### 2. MAMA (MESA Adaptive Moving Average)
+
+**Required Parameters:**
+- `indicator_type`: `"mama"`
+- `symbol`: Stock ticker symbol
+- `interval`: Time interval (same options as standard indicators)
+- `series_type`: Price type - `"close"`, `"open"`, `"high"`, `"low"`
+
+**Optional Parameters:**
+- `fastlimit`: Fast limit (0.0-1.0), default: `0.01`
+- `slowlimit`: Slow limit (0.0-1.0), default: `0.01`
+- `month`: Specific month for intraday data (intraday only)
+
+**Note:** MAMA does NOT use `time_period` - it uses `fastlimit` and `slowlimit` instead.
+
+#### 3. VWAP (Volume Weighted Average Price)
+
+**Required Parameters:**
+- `indicator_type`: `"vwap"`
+- `symbol`: Stock ticker symbol
+- `interval`: **Must be intraday** - `"1min"`, `"5min"`, `"15min"`, `"30min"`, `"60min"`
+
+**Optional Parameters:**
+- `month`: Specific month for intraday data in `YYYY-MM` format
+
+**Note:** VWAP does NOT use `time_period` or `series_type` - it calculates from OHLCV data automatically.
+
+#### Common Optional Parameters (All Indicators)
+
+- `datatype`: Output format (`"json"` or `"csv"`, default: `"csv"`)
+- `force_inline`: Force inline output regardless of size (default: `false`)
+- `force_file`: Force file output regardless of size (default: `false`)
+
+### Parameter Reference Table
+
+| Indicator Type | symbol | interval | time_period | series_type | fastlimit | slowlimit | month (intraday) |
+|----------------|--------|----------|-------------|-------------|-----------|-----------|------------------|
+| **sma** | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Rejected | ❌ Rejected | ✅ Optional |
+| **ema** | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Rejected | ❌ Rejected | ✅ Optional |
+| **wma** | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Rejected | ❌ Rejected | ✅ Optional |
+| **dema** | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Rejected | ❌ Rejected | ✅ Optional |
+| **tema** | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Rejected | ❌ Rejected | ✅ Optional |
+| **trima** | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Rejected | ❌ Rejected | ✅ Optional |
+| **kama** | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Rejected | ❌ Rejected | ✅ Optional |
+| **t3** | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Rejected | ❌ Rejected | ✅ Optional |
+| **mama** | ✅ Required | ✅ Required | ❌ Rejected | ✅ Required | ✅ Optional (0.01) | ✅ Optional (0.01) | ✅ Optional |
+| **vwap** | ✅ Required | ✅ Intraday Only | ❌ Rejected | ❌ Rejected | ❌ Rejected | ❌ Rejected | ✅ Optional |
+
+### Usage Examples
+
+#### 1. Standard Moving Average (SMA)
+```python
+GET_MOVING_AVERAGE(
+    indicator_type="sma",
+    symbol="IBM",
+    interval="daily",
+    time_period=60,
+    series_type="close"
+)
+```
+
+#### 2. Exponential Moving Average (EMA)
+```python
+GET_MOVING_AVERAGE(
+    indicator_type="ema",
+    symbol="AAPL",
+    interval="weekly",
+    time_period=200,
+    series_type="high"
+)
+```
+
+#### 3. MAMA with Custom Limits
+```python
+GET_MOVING_AVERAGE(
+    indicator_type="mama",
+    symbol="MSFT",
+    interval="daily",
+    series_type="close",
+    fastlimit=0.02,
+    slowlimit=0.05
+)
+```
+
+#### 4. MAMA with Default Limits
+```python
+GET_MOVING_AVERAGE(
+    indicator_type="mama",
+    symbol="GOOGL",
+    interval="daily",
+    series_type="close"
+    # fastlimit and slowlimit default to 0.01
+)
+```
+
+#### 5. VWAP (Intraday Only)
+```python
+GET_MOVING_AVERAGE(
+    indicator_type="vwap",
+    symbol="TSLA",
+    interval="5min"
+)
+```
+
+#### 6. Intraday SMA with Specific Month
+```python
+GET_MOVING_AVERAGE(
+    indicator_type="sma",
+    symbol="IBM",
+    interval="15min",
+    time_period=50,
+    series_type="close",
+    month="2024-01"
+)
+```
+
+#### 7. WMA with JSON Output
+```python
+GET_MOVING_AVERAGE(
+    indicator_type="wma",
+    symbol="NVDA",
+    interval="daily",
+    time_period=100,
+    series_type="close",
+    datatype="json"
+)
+```
+
+### Migration from Old Tools
+
+If you were using the individual moving average tools, here's how to migrate:
+
+**Old approach:**
+```python
+SMA(symbol="IBM", interval="daily", time_period=60, series_type="close")
+EMA(symbol="AAPL", interval="weekly", time_period=200, series_type="high")
+MAMA(symbol="MSFT", interval="daily", series_type="close", fastlimit=0.02, slowlimit=0.05)
+VWAP(symbol="TSLA", interval="5min")
+```
+
+**New approach:**
+```python
+GET_MOVING_AVERAGE(indicator_type="sma", symbol="IBM", interval="daily", time_period=60, series_type="close")
+GET_MOVING_AVERAGE(indicator_type="ema", symbol="AAPL", interval="weekly", time_period=200, series_type="high")
+GET_MOVING_AVERAGE(indicator_type="mama", symbol="MSFT", interval="daily", series_type="close", fastlimit=0.02, slowlimit=0.05)
+GET_MOVING_AVERAGE(indicator_type="vwap", symbol="TSLA", interval="5min")
+```
+
+**Key Changes:**
+- Add `indicator_type` parameter to specify the moving average type
+- All other parameters remain the same
+- Validation is stricter - invalid parameter combinations will be rejected with clear error messages
+
+### Error Handling
+
+The tool provides clear error messages when parameters don't match the indicator type:
+
+```python
+# ❌ Wrong: Missing required time_period for SMA
+GET_MOVING_AVERAGE(indicator_type="sma", symbol="IBM", interval="daily", series_type="close")
+# Error: "time_period is required for indicator_type='sma'"
+
+# ❌ Wrong: Using time_period with MAMA (uses fastlimit/slowlimit instead)
+GET_MOVING_AVERAGE(indicator_type="mama", symbol="IBM", interval="daily", series_type="close", time_period=60)
+# Error: "time_period is not valid for indicator_type='mama'. Use fastlimit and slowlimit parameters instead."
+
+# ❌ Wrong: VWAP with non-intraday interval
+GET_MOVING_AVERAGE(indicator_type="vwap", symbol="IBM", interval="daily")
+# Error: "indicator_type='vwap' only supports intraday intervals. Valid options: 1min, 5min, 15min, 30min, 60min. Got: daily"
+
+# ❌ Wrong: Using series_type with VWAP
+GET_MOVING_AVERAGE(indicator_type="vwap", symbol="IBM", interval="5min", series_type="close")
+# Error: "series_type is not valid for indicator_type='vwap'. VWAP is calculated from price and volume data automatically."
+
+# ✅ Correct
+GET_MOVING_AVERAGE(indicator_type="sma", symbol="IBM", interval="daily", time_period=60, series_type="close")
+GET_MOVING_AVERAGE(indicator_type="mama", symbol="IBM", interval="daily", series_type="close", fastlimit=0.02)
+GET_MOVING_AVERAGE(indicator_type="vwap", symbol="TSLA", interval="5min")
+```
+
+---
 
 ### CORE_STOCK_APIS
 

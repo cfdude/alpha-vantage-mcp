@@ -5,6 +5,7 @@ from typing import Union, get_type_hints
 # Tool module mapping with lazy imports
 TOOL_MODULES = {
     "core_stock_apis": "src.tools.core_stock_apis",
+    "time_series_unified": "src.tools.time_series_unified",  # Sprint 2: Unified time series tool
     "options_data_apis": "src.tools.options_data_apis",
     "alpha_intelligence": "src.tools.alpha_intelligence",
     "commodities": "src.tools.commodities",
@@ -23,7 +24,12 @@ TOOL_MODULES = {
 }
 
 # Categories that should have entitlement parameter added
-ENTITLEMENT_CATEGORIES = {"core_stock_apis", "options_data_apis", "technical_indicators"}
+ENTITLEMENT_CATEGORIES = {
+    "core_stock_apis",
+    "time_series_unified",  # Sprint 2: Add entitlement to unified tool
+    "options_data_apis",
+    "technical_indicators",
+}
 
 # Registry for decorated tools by category
 _tool_registries = {}
