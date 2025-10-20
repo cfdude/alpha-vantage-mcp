@@ -26,6 +26,7 @@ from mcp.server.models import InitializationOptions
 
 from .context import set_api_key
 from .tools.registry import TOOL_MODULES, get_all_tools
+from .utils.startup_validator import validate_startup_config
 
 
 class StdioMCPServer:
@@ -154,6 +155,21 @@ def cli(api_key, api_key_option, categories, list_categories, verbose):
         print("Usage: av-mcp YOUR_API_KEY", file=sys.stderr)
         print("   or: ALPHA_VANTAGE_API_KEY=YOUR_KEY av-mcp", file=sys.stderr)
         sys.exit(1)
+
+    # Run startup validation checks
+    if verbose:
+        logger.info("Running startup configuration validation...")
+
+    # Set API key in environment for validation
+    os.environ["ALPHA_VANTAGE_API_KEY"] = api_key
+
+    # Validate startup configuration
+    if not validate_startup_config(verbose=verbose):
+        # Validation failed with errors - already printed by validator
+        sys.exit(1)
+
+    if verbose:
+        logger.info("Startup validation passed - proceeding with server initialization")
 
     # Validate categories if provided
     if categories:

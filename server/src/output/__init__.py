@@ -11,8 +11,8 @@ from .handler import (
 from .project_tools import (
     CREATE_PROJECT_TOOL,
     DELETE_FILE_TOOL,
-    LIST_PROJECTS_TOOL,
     LIST_PROJECT_FILES_TOOL,
+    LIST_PROJECTS_TOOL,
     PROJECT_MANAGEMENT_TOOLS,
 )
 

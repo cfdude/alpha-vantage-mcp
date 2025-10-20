@@ -202,7 +202,7 @@ def test_mcp_client_functionality():
     else:
         print(f"\n⚠️  {total - passed} test(s) failed. Please review the implementation.")
 
-    return passed == total
+    assert passed == total, f"{total - passed} test(s) failed. Please review the implementation."
 
 
 def main():

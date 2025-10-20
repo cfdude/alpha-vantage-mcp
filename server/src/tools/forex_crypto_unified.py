@@ -187,14 +187,14 @@ def get_forex_data(
         # Step 2: Route request to appropriate API function
         function_name, api_params = route_forex_request(request)
 
-        # Step 3: Make API request
-        response = _make_api_request(function_name, api_params)
-
-        # Step 4: Handle output decision (file vs inline)
-        # NOTE: Sprint 1 output helper integration would go here
-        # For now, we return the response as-is since _make_api_request
-        # already handles large responses with R2 upload
-        # TODO: Integrate with OutputHandler for file-based output when needed
+        # Step 3: Make API request with Sprint 1 integration
+        # Pass force_inline and force_file to enable output helper system
+        response = _make_api_request(
+            function_name,
+            api_params,
+            force_inline=request.force_inline,
+            force_file=request.force_file,
+        )
 
         return response
 
@@ -341,14 +341,14 @@ def get_crypto_data(
         # Step 2: Route request to appropriate API function
         function_name, api_params = route_crypto_request(request)
 
-        # Step 3: Make API request
-        response = _make_api_request(function_name, api_params)
-
-        # Step 4: Handle output decision (file vs inline)
-        # NOTE: Sprint 1 output helper integration would go here
-        # For now, we return the response as-is since _make_api_request
-        # already handles large responses with R2 upload
-        # TODO: Integrate with OutputHandler for file-based output when needed
+        # Step 3: Make API request with Sprint 1 integration
+        # Pass force_inline and force_file to enable output helper system
+        response = _make_api_request(
+            function_name,
+            api_params,
+            force_inline=request.force_inline,
+            force_file=request.force_file,
+        )
 
         return response
 

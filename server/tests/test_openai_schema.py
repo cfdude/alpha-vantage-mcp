@@ -49,7 +49,6 @@ def test_schema_generation():
         print("✓ All descriptions are within 300 character limit")
 
     print(f"\n✓ Schema generated successfully with {len(schema['paths'])} endpoints")
-    return schema
 
 
 def test_tool_execution():

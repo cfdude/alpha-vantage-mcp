@@ -13,7 +13,6 @@ Run:
 
 import os
 import time
-from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from src.decision.token_estimator import TokenEstimator
@@ -85,19 +84,17 @@ def example_automatic_decision():
 
         should_file, token_count, reason = estimator.should_output_to_file(small_data, config)
 
-        print(f"\nSmall data (20 rows):")
+        print("\nSmall data (20 rows):")
         print(f"  Token count: {token_count}")
         print(f"  Decision: {'FILE' if should_file else 'INLINE'}")
         print(f"  Reason: {reason}")
 
         # Test with large data (should go to file)
-        large_data = [
-            {"id": i, "data": "x" * 100, "extra": f"value_{i}"} for i in range(100)
-        ]
+        large_data = [{"id": i, "data": "x" * 100, "extra": f"value_{i}"} for i in range(100)]
 
         should_file, token_count, reason = estimator.should_output_to_file(large_data, config)
 
-        print(f"\nLarge data (100 rows with long strings):")
+        print("\nLarge data (100 rows with long strings):")
         print(f"  Token count: {token_count:,}")
         print(f"  Decision: {'FILE' if should_file else 'INLINE'}")
         print(f"  Reason: {reason}")
@@ -123,7 +120,7 @@ def example_override_mechanism():
 
         # Normal decision
         should_file, token_count, reason = estimator.should_output_to_file(data, config)
-        print(f"\nNormal decision:")
+        print("\nNormal decision:")
         print(f"  Token count: {token_count}")
         print(f"  Decision: {'FILE' if should_file else 'INLINE'}")
         print(f"  Reason: {reason}")
@@ -132,7 +129,7 @@ def example_override_mechanism():
         should_file, token_count, reason = estimator.should_output_to_file(
             data, config, force_inline=True
         )
-        print(f"\nForced inline (AI override):")
+        print("\nForced inline (AI override):")
         print(f"  Token count: {token_count}")
         print(f"  Decision: {'FILE' if should_file else 'INLINE'}")
         print(f"  Reason: {reason}")
@@ -141,7 +138,7 @@ def example_override_mechanism():
         should_file, token_count, reason = estimator.should_output_to_file(
             data, config, force_file=True
         )
-        print(f"\nForced file (AI override):")
+        print("\nForced file (AI override):")
         print(f"  Token count: {token_count}")
         print(f"  Decision: {'FILE' if should_file else 'INLINE'}")
         print(f"  Reason: {reason}")
@@ -162,7 +159,7 @@ def example_performance_characteristics():
     start = time.perf_counter()
     tokens = estimator.estimate_tokens(small_data)
     elapsed_ms = (time.perf_counter() - start) * 1000
-    print(f"\nSmall dataset (10 rows):")
+    print("\nSmall dataset (10 rows):")
     print(f"  Tokens: {tokens}")
     print(f"  Time: {elapsed_ms:.2f}ms (target: <10ms)")
 
@@ -171,7 +168,7 @@ def example_performance_characteristics():
     start = time.perf_counter()
     tokens = estimator.estimate_tokens(medium_data)
     elapsed_ms = (time.perf_counter() - start) * 1000
-    print(f"\nMedium dataset (1,000 rows):")
+    print("\nMedium dataset (1,000 rows):")
     print(f"  Tokens: {tokens:,}")
     print(f"  Time: {elapsed_ms:.2f}ms (target: <100ms)")
 
@@ -180,7 +177,7 @@ def example_performance_characteristics():
     start = time.perf_counter()
     tokens = estimator.estimate_tokens(large_data)
     elapsed_ms = (time.perf_counter() - start) * 1000
-    print(f"\nLarge dataset (10,000 rows):")
+    print("\nLarge dataset (10,000 rows):")
     print(f"  Tokens: {tokens:,}")
     print(f"  Time: {elapsed_ms:.2f}ms (target: <500ms)")
 
@@ -189,7 +186,7 @@ def example_performance_characteristics():
     start = time.perf_counter()
     tokens = estimator.estimate_tokens(huge_data)
     elapsed_ms = (time.perf_counter() - start) * 1000
-    print(f"\nHuge dataset (100,000 rows - fallback estimation):")
+    print("\nHuge dataset (100,000 rows - fallback estimation):")
     print(f"  Tokens: {tokens:,}")
     print(f"  Time: {elapsed_ms:.2f}ms (target: <100ms)")
 
