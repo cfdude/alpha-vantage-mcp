@@ -1,8 +1,7 @@
 {
   "enabledMcpjsonServers": [
-    "alpaca",
     "alphavantage",
-    "financial-datasets",
     "context7"
-  ]
+  ],
+  "enableAllProjectMcpServers": true
 }

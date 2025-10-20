@@ -77,6 +77,7 @@ dependencies = [
     { name = "click" },
     { name = "loguru" },
     { name = "mcp" },
+    { name = "pydantic" },
     { name = "python-dotenv" },
 ]
 
@@ -94,6 +95,7 @@ requires-dist = [
     { name = "click", specifier = ">=8.2.1" },
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "mcp", specifier = ">=1.12.3" },
+    { name = "pydantic", specifier = ">=2.0.0" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
 ]
 
