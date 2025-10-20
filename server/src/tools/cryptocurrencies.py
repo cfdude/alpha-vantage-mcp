@@ -1,3 +1,13 @@
+"""
+Cryptocurrency and digital currency APIs for Alpha Vantage MCP server.
+
+NOTE: CURRENCY_EXCHANGE_RATE is included in this module (cryptocurrencies category)
+because it handles BOTH cryptocurrency and fiat currency exchanges. This is by design,
+as the API supports any combination of digital and physical currencies (e.g., BTC/USD,
+USD/EUR, ETH/BTC). Users looking for general forex may also find it in the forex_crypto
+unified tool.
+"""
+
 from src.common import _make_api_request
 from src.tools.registry import tool
 
@@ -7,6 +17,11 @@ def currency_exchange_rate(
     from_currency: str, to_currency: str, datatype: str = "csv"
 ) -> dict[str, str] | str:
     """
+    Returns realtime exchange rate for ANY pair of digital OR physical currencies.
+
+    NOTE: This tool handles BOTH cryptocurrency and traditional fiat currency exchanges.
+    Examples: BTC/USD, USD/EUR, ETH/BTC, JPY/GBP - all supported.
+
     This API returns the realtime exchange rate for any pair of digital currency (e.g., Bitcoin) or physical currency (e.g., USD).
 
     Args:

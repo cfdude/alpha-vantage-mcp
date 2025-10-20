@@ -17,7 +17,11 @@ Crypto:
 - DIGITAL_CURRENCY_DAILY
 - DIGITAL_CURRENCY_WEEKLY
 - DIGITAL_CURRENCY_MONTHLY
-- CURRENCY_EXCHANGE_RATE
+- CURRENCY_EXCHANGE_RATE (handles BOTH crypto and fiat currencies - e.g., BTC/USD, USD/EUR, ETH/BTC)
+
+NOTE: CURRENCY_EXCHANGE_RATE is in the cryptocurrencies category but supports ANY currency pair
+(crypto-to-crypto, crypto-to-fiat, or fiat-to-fiat). This is by design as it's a universal
+currency exchange rate API.
 """
 
 import json

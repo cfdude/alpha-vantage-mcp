@@ -128,7 +128,7 @@ def cli(api_key, api_key_option, categories, list_categories, verbose):
 
     Examples:
       av-mcp YOUR_API_KEY
-      av-mcp YOUR_API_KEY --categories core_stock_apis forex
+      av-mcp YOUR_API_KEY --categories core_stock_apis --categories forex
       av-mcp --api-key YOUR_API_KEY --categories technical_indicators
     """
     )
