@@ -3,22 +3,45 @@ import inspect
 from typing import Union, get_type_hints
 
 # Tool module mapping with lazy imports
+# NOTE: Old individual tool modules have been replaced by unified tools in Sprint 3
 TOOL_MODULES = {
+    # Core Stock APIs (kept as-is)
     "core_stock_apis": "src.tools.core_stock_apis",
-    "time_series_unified": "src.tools.time_series_unified",  # Sprint 2: Unified time series tool
     "options_data_apis": "src.tools.options_data_apis",
     "alpha_intelligence": "src.tools.alpha_intelligence",
-    "commodities": "src.tools.commodities",
-    "cryptocurrencies": "src.tools.cryptocurrencies",
-    "economic_indicators": "src.tools.economic_indicators",
-    "forex": "src.tools.forex",
-    "fundamental_data": "src.tools.fundamental_data",
-    "technical_indicators": [
-        "src.tools.technical_indicators_part1",
-        "src.tools.technical_indicators_part2",
-        "src.tools.technical_indicators_part3",
-        "src.tools.technical_indicators_part4",
-    ],
+
+    # Sprint 2: Unified Time Series (replaces individual time series endpoints)
+    "time_series_unified": "src.tools.time_series_unified",
+
+    # Sprint 3 Unified Tools - Technical Indicators
+    # (replaces old technical_indicators with 68+ individual tools)
+    "moving_average_unified": "src.tools.moving_average_unified",  # 10 indicators
+    "oscillator_unified": "src.tools.oscillator_unified",  # 17 indicators
+    "trend_unified": "src.tools.trend_unified",  # 10 indicators
+    "volatility_unified": "src.tools.volatility_unified",  # 7 indicators
+    "volume_unified": "src.tools.volume_unified",  # 3 indicators
+    "cycle_unified": "src.tools.cycle_unified",  # 5 indicators
+
+    # Sprint 3 Unified Tools - Fundamental Data
+    # (replaces old fundamental_data with 7 individual tools)
+    "financial_statements_unified": "src.tools.financial_statements_unified",  # 3 statements
+    "company_data_unified": "src.tools.company_data_unified",  # 3 data types
+    "market_data_unified": "src.tools.market_data_unified",  # 3 market data types
+
+    # Sprint 3 Unified Tools - Economic Indicators
+    # (replaces old economic_indicators with 10 individual tools)
+    "economic_indicators_unified": "src.tools.economic_indicators_unified",  # 10 indicators
+
+    # Sprint 3 Unified Tools - Commodities
+    # (replaces old commodities with 11 individual tools)
+    "energy_commodity_unified": "src.tools.energy_commodity_unified",  # 3 energy commodities
+    "materials_commodity_unified": "src.tools.materials_commodity_unified",  # 8 materials
+
+    # Sprint 3 Unified Tools - Forex/Crypto
+    # (replaces old forex + cryptocurrencies with 9 individual tools)
+    "forex_crypto_unified": "src.tools.forex_crypto_unified",  # 2 unified tools
+
+    # Utility Tools
     "ping": "src.tools.ping",
     "openai": "src.tools.openai",
 }
@@ -26,9 +49,15 @@ TOOL_MODULES = {
 # Categories that should have entitlement parameter added
 ENTITLEMENT_CATEGORIES = {
     "core_stock_apis",
-    "time_series_unified",  # Sprint 2: Add entitlement to unified tool
+    "time_series_unified",
     "options_data_apis",
-    "technical_indicators",
+    # Sprint 3 Unified Tools that need entitlement
+    "trend_unified",
+    "volatility_unified",
+    "volume_unified",
+    "cycle_unified",
+    "moving_average_unified",
+    "oscillator_unified",
 }
 
 # Registry for decorated tools by category

@@ -88,9 +88,9 @@ def test_category_filtering():
     print("✓ Category filtering reduces available tools")
 
     # Test multiple categories
-    schema_multi = generate_openapi_schema(categories=["core_stock_apis", "forex"])
+    schema_multi = generate_openapi_schema(categories=["core_stock_apis", "forex_crypto_unified"])
     multi_tools_count = len(schema_multi["paths"])
-    print(f"  Tools in 'core_stock_apis' + 'forex' categories: {multi_tools_count}")
+    print(f"  Tools in 'core_stock_apis' + 'forex_crypto_unified' categories: {multi_tools_count}")
 
     # Verify combined categories have more tools than single category
     assert multi_tools_count >= stocks_tools_count
