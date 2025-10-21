@@ -9,50 +9,24 @@ from dependencies that may not be initialized during test collection.
 """
 
 import json
-import sys
-from unittest.mock import MagicMock
+from unittest.mock import patch
 
 import pytest
 
-
-# Mock the problematic imports BEFORE importing our module
-@pytest.fixture(scope="module", autouse=True)
-def mock_dependencies():
-    """Mock src.common and dependencies to avoid import errors."""
-    # Create mock modules
-    mock_utils = MagicMock()
-    mock_utils.estimate_tokens = MagicMock()
-    mock_utils.upload_to_r2 = MagicMock()
-
-    mock_common = MagicMock()
-    mock_common._make_api_request = MagicMock()
-
-    # Inject mocks into sys.modules
-    sys.modules["src.utils"] = mock_utils
-    sys.modules["src.common"] = mock_common
-
-    yield
-
-    # Cleanup (optional, but good practice)
-    if "src.utils" in sys.modules:
-        del sys.modules["src.utils"]
-    if "src.common" in sys.modules:
-        del sys.modules["src.common"]
 
 
 class TestGetMovingAverageIntegration:
     """Integration tests for get_moving_average tool."""
 
-    def test_sma_request_flow(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_sma_request_flow(self, mock_api_request):
         """Test complete flow for SMA request."""
         # Import after mocks are in place
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
         # Mock the API response
-        _make_api_request.return_value = "timestamp,SMA\n2024-01-01,102.5\n2024-01-02,103.0"
+        mock_api_request.return_value = "timestamp,SMA\n2024-01-01,102.5\n2024-01-02,103.0"
 
         # Make request
         result = get_moving_average(
@@ -64,8 +38,8 @@ class TestGetMovingAverageIntegration:
         )
 
         # Verify API was called with correct parameters
-        _make_api_request.assert_called_once()
-        call_args = _make_api_request.call_args
+        mock_api_request.assert_called_once()
+        call_args = mock_api_request.call_args
         assert call_args[0][0] == "SMA"
         params = call_args[0][1]
         assert params["symbol"] == "IBM"
@@ -79,16 +53,13 @@ class TestGetMovingAverageIntegration:
         assert "SMA" in result
 
         # Reset mock for next test
-        _make_api_request.reset_mock()
-
-    def test_ema_request_flow(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_ema_request_flow(self, mock_api_request):
         """Test complete flow for EMA request."""
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
-        _make_api_request.return_value = "timestamp,EMA\n2024-01-01,150.25\n2024-01-02,150.75"
+        mock_api_request.return_value = "timestamp,EMA\n2024-01-01,150.25\n2024-01-02,150.75"
 
         result = get_moving_average(
             indicator_type="ema",
@@ -99,8 +70,8 @@ class TestGetMovingAverageIntegration:
             datatype="csv",
         )
 
-        _make_api_request.assert_called_once()
-        call_args = _make_api_request.call_args
+        mock_api_request.assert_called_once()
+        call_args = mock_api_request.call_args
         assert call_args[0][0] == "EMA"
         params = call_args[0][1]
         assert params["symbol"] == "AAPL"
@@ -109,16 +80,13 @@ class TestGetMovingAverageIntegration:
         assert params["series_type"] == "high"
 
         assert isinstance(result, str)
-        _make_api_request.reset_mock()
-
-    def test_mama_request_flow(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_mama_request_flow(self, mock_api_request):
         """Test complete flow for MAMA request."""
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
-        _make_api_request.return_value = (
+        mock_api_request.return_value = (
             "timestamp,MAMA,FAMA\n2024-01-01,100.5,99.8\n2024-01-02,101.0,100.2"
         )
 
@@ -131,8 +99,8 @@ class TestGetMovingAverageIntegration:
             slowlimit=0.05,
         )
 
-        _make_api_request.assert_called_once()
-        call_args = _make_api_request.call_args
+        mock_api_request.assert_called_once()
+        call_args = mock_api_request.call_args
         assert call_args[0][0] == "MAMA"
         params = call_args[0][1]
         assert params["symbol"] == "MSFT"
@@ -144,16 +112,13 @@ class TestGetMovingAverageIntegration:
         assert "time_period" not in params
 
         assert isinstance(result, str)
-        _make_api_request.reset_mock()
-
-    def test_mama_request_with_defaults(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_mama_request_with_defaults(self, mock_api_request):
         """Test MAMA request uses default fastlimit/slowlimit."""
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
-        _make_api_request.return_value = "timestamp,MAMA,FAMA\n2024-01-01,100.5,99.8"
+        mock_api_request.return_value = "timestamp,MAMA,FAMA\n2024-01-01,100.5,99.8"
 
         get_moving_average(
             indicator_type="mama",
@@ -162,21 +127,17 @@ class TestGetMovingAverageIntegration:
             series_type="low",
         )
 
-        call_args = _make_api_request.call_args
+        call_args = mock_api_request.call_args
         params = call_args[0][1]
         assert params["fastlimit"] == 0.01  # Default
         assert params["slowlimit"] == 0.01  # Default
-
-        _make_api_request.reset_mock()
-
-    def test_vwap_request_flow(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_vwap_request_flow(self, mock_api_request):
         """Test complete flow for VWAP request."""
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
-        _make_api_request.return_value = (
+        mock_api_request.return_value = (
             "timestamp,VWAP\n2024-01-01 09:30,150.25\n2024-01-01 09:35,150.30"
         )
 
@@ -186,8 +147,8 @@ class TestGetMovingAverageIntegration:
             interval="5min",
         )
 
-        _make_api_request.assert_called_once()
-        call_args = _make_api_request.call_args
+        mock_api_request.assert_called_once()
+        call_args = mock_api_request.call_args
         assert call_args[0][0] == "VWAP"
         params = call_args[0][1]
         assert params["symbol"] == "TSLA"
@@ -199,16 +160,13 @@ class TestGetMovingAverageIntegration:
         assert "slowlimit" not in params
 
         assert isinstance(result, str)
-        _make_api_request.reset_mock()
-
-    def test_intraday_with_month(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_intraday_with_month(self, mock_api_request):
         """Test intraday request with month parameter."""
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
-        _make_api_request.return_value = "timestamp,SMA\n2024-01-01 09:30,100.5"
+        mock_api_request.return_value = "timestamp,SMA\n2024-01-01 09:30,100.5"
 
         get_moving_average(
             indicator_type="sma",
@@ -219,20 +177,16 @@ class TestGetMovingAverageIntegration:
             month="2024-01",
         )
 
-        call_args = _make_api_request.call_args
+        call_args = mock_api_request.call_args
         params = call_args[0][1]
         assert params["month"] == "2024-01"
-
-        _make_api_request.reset_mock()
-
-    def test_json_datatype(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_json_datatype(self, mock_api_request):
         """Test request with JSON datatype."""
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
-        _make_api_request.return_value = {
+        mock_api_request.return_value = {
             "Meta Data": {"Symbol": "IBM"},
             "Technical Analysis: SMA": {"2024-01-01": {"SMA": "102.5"}},
         }
@@ -246,17 +200,15 @@ class TestGetMovingAverageIntegration:
             datatype="json",
         )
 
-        call_args = _make_api_request.call_args
+        call_args = mock_api_request.call_args
         params = call_args[0][1]
         assert params["datatype"] == "json"
-
-        _make_api_request.reset_mock()
-
 
 class TestGetMovingAverageErrors:
     """Test error handling in get_moving_average tool."""
 
-    def test_validation_error_missing_time_period(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_validation_error_missing_time_period(self, mock_api_request):
         """Test validation error when time_period is missing for standard indicator."""
         from src.tools.moving_average_unified import get_moving_average
 
@@ -275,7 +227,8 @@ class TestGetMovingAverageErrors:
         assert error_data["error"] == "Request validation failed"
         assert "validation_errors" in error_data
 
-    def test_validation_error_vwap_non_intraday(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_validation_error_vwap_non_intraday(self, mock_api_request):
         """Test validation error when VWAP uses non-intraday interval."""
         from src.tools.moving_average_unified import get_moving_average
 
@@ -291,7 +244,8 @@ class TestGetMovingAverageErrors:
         assert "error" in error_data
         assert error_data["error"] == "Request validation failed"
 
-    def test_validation_error_mama_with_time_period(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_validation_error_mama_with_time_period(self, mock_api_request):
         """Test validation error when MAMA is given time_period."""
         from src.tools.moving_average_unified import get_moving_average
 
@@ -309,7 +263,8 @@ class TestGetMovingAverageErrors:
         assert "error" in error_data
         assert error_data["error"] == "Request validation failed"
 
-    def test_validation_error_vwap_with_series_type(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_validation_error_vwap_with_series_type(self, mock_api_request):
         """Test validation error when VWAP is given series_type."""
         from src.tools.moving_average_unified import get_moving_average
 
@@ -326,7 +281,8 @@ class TestGetMovingAverageErrors:
         assert "error" in error_data
         assert error_data["error"] == "Request validation failed"
 
-    def test_validation_error_force_inline_and_force_file(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_validation_error_force_inline_and_force_file(self, mock_api_request):
         """Test validation error when both force_inline and force_file are True."""
         from src.tools.moving_average_unified import get_moving_average
 
@@ -363,14 +319,13 @@ class TestGetMovingAverageAllIndicators:
             ("t3", "T3"),
         ],
     )
-    def test_standard_indicator_invocation(self, indicator_type, expected_function):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_standard_indicator_invocation(self, mock_api_request, indicator_type, expected_function):
         """Test all standard indicators can be invoked and route correctly."""
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
-        _make_api_request.return_value = f"timestamp,{expected_function}\n2024-01-01,100.5"
+        mock_api_request.return_value = f"timestamp,{expected_function}\n2024-01-01,100.5"
 
         get_moving_average(
             indicator_type=indicator_type,
@@ -380,19 +335,15 @@ class TestGetMovingAverageAllIndicators:
             series_type="close",
         )
 
-        call_args = _make_api_request.call_args
+        call_args = mock_api_request.call_args
         assert call_args[0][0] == expected_function
-
-        _make_api_request.reset_mock()
-
-    def test_mama_invocation(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_mama_invocation(self, mock_api_request):
         """Test MAMA can be invoked and routes correctly."""
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
-        _make_api_request.return_value = "timestamp,MAMA,FAMA\n2024-01-01,100.5,99.8"
+        mock_api_request.return_value = "timestamp,MAMA,FAMA\n2024-01-01,100.5,99.8"
 
         get_moving_average(
             indicator_type="mama",
@@ -401,19 +352,15 @@ class TestGetMovingAverageAllIndicators:
             series_type="close",
         )
 
-        call_args = _make_api_request.call_args
+        call_args = mock_api_request.call_args
         assert call_args[0][0] == "MAMA"
-
-        _make_api_request.reset_mock()
-
-    def test_vwap_invocation(self):
+    @patch("src.tools.moving_average_unified._make_api_request")
+    def test_vwap_invocation(self, mock_api_request):
         """Test VWAP can be invoked and routes correctly."""
-        from src.tools.moving_average_unified import (
-            _make_api_request,
-            get_moving_average,
+        from src.tools.moving_average_unified import (get_moving_average,
         )
 
-        _make_api_request.return_value = "timestamp,VWAP\n2024-01-01 09:30,100.5"
+        mock_api_request.return_value = "timestamp,VWAP\n2024-01-01 09:30,100.5"
 
         get_moving_average(
             indicator_type="vwap",
@@ -421,7 +368,5 @@ class TestGetMovingAverageAllIndicators:
             interval="5min",
         )
 
-        call_args = _make_api_request.call_args
+        call_args = mock_api_request.call_args
         assert call_args[0][0] == "VWAP"
-
-        _make_api_request.reset_mock()
