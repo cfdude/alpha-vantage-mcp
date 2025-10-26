@@ -56,8 +56,7 @@ class ForexRequest(BaseModel):
 
     from_symbol: str = Field(
         description=(
-            "Source currency code (3-letter forex symbol). "
-            "Examples: EUR, USD, GBP, JPY, CAD, AUD"
+            "Source currency code (3-letter forex symbol). Examples: EUR, USD, GBP, JPY, CAD, AUD"
         )
     )
 

@@ -14,7 +14,6 @@ from unittest.mock import patch
 import pytest
 
 
-
 class TestSimplePeriodIndicatorsIntegration:
     """Integration tests for simple period oscillators (WILLR, ADX, ADXR, CCI)."""
 
@@ -64,6 +63,7 @@ class TestSimplePeriodIndicatorsIntegration:
 
         # Reset mock for next test
 
+
 class TestSeriesPeriodIndicatorsIntegration:
     """Integration tests for series + period oscillators (RSI, MOM, CMO, ROC, ROCR)."""
 
@@ -104,6 +104,7 @@ class TestSeriesPeriodIndicatorsIntegration:
 
         assert isinstance(result, str)
 
+
 class TestMACDIndicatorsIntegration:
     """Integration tests for MACD family oscillators."""
 
@@ -137,6 +138,7 @@ class TestMACDIndicatorsIntegration:
         assert "time_period" not in params
 
         assert isinstance(result, str)
+
     @patch("src.tools.oscillator_unified._make_api_request")
     def test_macd_request_flow_with_custom_periods(self, mock_api_request):
         """Test MACD request with custom periods."""
@@ -161,6 +163,7 @@ class TestMACDIndicatorsIntegration:
         assert params["signalperiod"] == 5
 
         assert isinstance(result, str)
+
     @patch("src.tools.oscillator_unified._make_api_request")
     def test_macdext_request_flow(self, mock_api_request):
         """Test MACDEXT request with MA types."""
@@ -186,6 +189,7 @@ class TestMACDIndicatorsIntegration:
         assert params["signalmatype"] == 3
 
         assert isinstance(result, str)
+
 
 class TestAPOPPOIndicatorsIntegration:
     """Integration tests for APO and PPO oscillators."""
@@ -224,6 +228,7 @@ class TestAPOPPOIndicatorsIntegration:
         assert "time_period" not in params
         assert isinstance(result, str)
 
+
 class TestStochasticIndicatorsIntegration:
     """Integration tests for stochastic oscillators."""
 
@@ -254,6 +259,7 @@ class TestStochasticIndicatorsIntegration:
         assert "time_period" not in params
         assert "series_type" not in params
         assert isinstance(result, str)
+
     @patch("src.tools.oscillator_unified._make_api_request")
     def test_stochf_request_flow(self, mock_api_request):
         """Test STOCHF request flow."""
@@ -277,6 +283,7 @@ class TestStochasticIndicatorsIntegration:
         assert "slowkperiod" not in params
         assert "time_period" not in params
         assert isinstance(result, str)
+
     @patch("src.tools.oscillator_unified._make_api_request")
     def test_stochrsi_request_flow(self, mock_api_request):
         """Test STOCHRSI request flow."""
@@ -304,6 +311,7 @@ class TestStochasticIndicatorsIntegration:
         assert params["fastdmatype"] == 0
 
         assert isinstance(result, str)
+
 
 class TestBalanceOfPowerIntegration:
     """Integration tests for BOP (Balance of Power)."""
@@ -335,6 +343,7 @@ class TestBalanceOfPowerIntegration:
 
         assert isinstance(result, str)
 
+
 class TestIntradayWithMonth:
     """Integration tests for intraday requests with month parameter."""
 
@@ -360,6 +369,7 @@ class TestIntradayWithMonth:
         assert params["interval"] == "5min"
 
         assert isinstance(result, str)
+
 
 class TestErrorHandling:
     """Integration tests for error handling."""
@@ -429,7 +439,9 @@ class TestComprehensiveCoverage:
         ],
     )
     @patch("src.tools.oscillator_unified._make_api_request")
-    def test_all_17_indicators_end_to_end(self, mock_api_request, indicator_type, extra_params, expected_function):
+    def test_all_17_indicators_end_to_end(
+        self, mock_api_request, indicator_type, extra_params, expected_function
+    ):
         """Test complete end-to-end flow for all 17 oscillator indicators."""
         from src.tools.oscillator_unified import get_oscillator
 

@@ -9,10 +9,8 @@ TOOL_MODULES = {
     "core_stock_apis": "src.tools.core_stock_apis",
     "options_data_apis": "src.tools.options_data_apis",
     "alpha_intelligence": "src.tools.alpha_intelligence",
-
     # Sprint 2: Unified Time Series (replaces individual time series endpoints)
     "time_series_unified": "src.tools.time_series_unified",
-
     # Sprint 3 Unified Tools - Technical Indicators
     # (replaces old technical_indicators with 68+ individual tools)
     "moving_average_unified": "src.tools.moving_average_unified",  # 10 indicators
@@ -21,26 +19,21 @@ TOOL_MODULES = {
     "volatility_unified": "src.tools.volatility_unified",  # 7 indicators
     "volume_unified": "src.tools.volume_unified",  # 3 indicators
     "cycle_unified": "src.tools.cycle_unified",  # 5 indicators
-
     # Sprint 3 Unified Tools - Fundamental Data
     # (replaces old fundamental_data with 7 individual tools)
     "financial_statements_unified": "src.tools.financial_statements_unified",  # 3 statements
     "company_data_unified": "src.tools.company_data_unified",  # 3 data types
     "market_data_unified": "src.tools.market_data_unified",  # 3 market data types
-
     # Sprint 3 Unified Tools - Economic Indicators
     # (replaces old economic_indicators with 10 individual tools)
     "economic_indicators_unified": "src.tools.economic_indicators_unified",  # 10 indicators
-
     # Sprint 3 Unified Tools - Commodities
     # (replaces old commodities with 11 individual tools)
     "energy_commodity_unified": "src.tools.energy_commodity_unified",  # 3 energy commodities
     "materials_commodity_unified": "src.tools.materials_commodity_unified",  # 8 materials
-
     # Sprint 3 Unified Tools - Forex/Crypto
     # (replaces old forex + cryptocurrencies with 9 individual tools)
     "forex_crypto_unified": "src.tools.forex_crypto_unified",  # 2 unified tools
-
     # Utility Tools
     "ping": "src.tools.ping",
     "openai": "src.tools.openai",

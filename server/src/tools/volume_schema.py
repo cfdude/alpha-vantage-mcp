@@ -82,13 +82,13 @@ class VolumeRequest(BaseModel):
     fastperiod: int | None = Field(
         None,
         ge=1,
-        description=("Fast period for ADOSC EMA calculation. " "Used with: adosc (default: 3)."),
+        description=("Fast period for ADOSC EMA calculation. Used with: adosc (default: 3)."),
     )
 
     slowperiod: int | None = Field(
         None,
         ge=1,
-        description=("Slow period for ADOSC EMA calculation. " "Used with: adosc (default: 10)."),
+        description=("Slow period for ADOSC EMA calculation. Used with: adosc (default: 10)."),
     )
 
     # Month parameter (intraday only)

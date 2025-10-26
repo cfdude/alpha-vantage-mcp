@@ -236,7 +236,7 @@ class TokenEstimator:
             return len(self.encoding.encode(json_str))
         except Exception as e:
             raise TokenEstimationError(
-                f"Failed to estimate JSON tokens: {e}. " "Ensure data is JSON-serializable."
+                f"Failed to estimate JSON tokens: {e}. Ensure data is JSON-serializable."
             ) from e
 
     def estimate_by_rows(self, data: list[dict]) -> int:
@@ -383,12 +383,11 @@ class TokenEstimator:
 
         if token_count > threshold:
             reason = (
-                f"Exceeds token threshold ({token_count:,} tokens > "
-                f"{threshold:,} token threshold)"
+                f"Exceeds token threshold ({token_count:,} tokens > {threshold:,} token threshold)"
             )
             return (True, token_count, reason)
         else:
-            reason = f"Below threshold ({token_count:,} tokens < " f"{threshold:,} token threshold)"
+            reason = f"Below threshold ({token_count:,} tokens < {threshold:,} token threshold)"
             return (False, token_count, reason)
 
     def _serialize_for_tokens(self, data: Any) -> str:
@@ -412,7 +411,7 @@ class TokenEstimator:
 
         def _convert_special_types(obj):
             """Convert special types for JSON serialization."""
-            if isinstance(obj, (datetime, date)):
+            if isinstance(obj, datetime | date):
                 return obj.isoformat()
             elif isinstance(obj, Decimal):
                 return float(obj)

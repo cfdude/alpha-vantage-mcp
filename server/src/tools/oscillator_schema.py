@@ -171,20 +171,20 @@ class OscillatorRequest(BaseModel):
     slowkperiod: int | None = Field(
         None,
         ge=1,
-        description=("Slow K period for stochastic calculation. " "Used with: stoch (default: 3)."),
+        description=("Slow K period for stochastic calculation. Used with: stoch (default: 3)."),
     )
 
     slowdperiod: int | None = Field(
         None,
         ge=1,
-        description=("Slow D period for stochastic calculation. " "Used with: stoch (default: 3)."),
+        description=("Slow D period for stochastic calculation. Used with: stoch (default: 3)."),
     )
 
     fastdperiod: int | None = Field(
         None,
         ge=1,
         description=(
-            "Fast D period for stochastic calculation. " "Used with: stochf (default: 3), stochrsi."
+            "Fast D period for stochastic calculation. Used with: stochf (default: 3), stochrsi."
         ),
     )
 
@@ -204,7 +204,7 @@ class OscillatorRequest(BaseModel):
         ge=0,
         le=8,
         description=(
-            "Fast moving average type. " "Used with: macdext (default: 0), stochrsi (default: 0)."
+            "Fast moving average type. Used with: macdext (default: 0), stochrsi (default: 0)."
         ),
     )
 
@@ -212,28 +212,28 @@ class OscillatorRequest(BaseModel):
         None,
         ge=0,
         le=8,
-        description=("Slow moving average type. " "Used with: macdext (default: 0)."),
+        description=("Slow moving average type. Used with: macdext (default: 0)."),
     )
 
     signalmatype: int | None = Field(
         None,
         ge=0,
         le=8,
-        description=("Signal moving average type. " "Used with: macdext (default: 0)."),
+        description=("Signal moving average type. Used with: macdext (default: 0)."),
     )
 
     slowkmatype: int | None = Field(
         None,
         ge=0,
         le=8,
-        description=("Slow K moving average type. " "Used with: stoch (default: 0)."),
+        description=("Slow K moving average type. Used with: stoch (default: 0)."),
     )
 
     slowdmatype: int | None = Field(
         None,
         ge=0,
         le=8,
-        description=("Slow D moving average type. " "Used with: stoch (default: 0)."),
+        description=("Slow D moving average type. Used with: stoch (default: 0)."),
     )
 
     fastdmatype: int | None = Field(
@@ -241,7 +241,7 @@ class OscillatorRequest(BaseModel):
         ge=0,
         le=8,
         description=(
-            "Fast D moving average type. " "Used with: stochf (default: 0), stochrsi (default: 0)."
+            "Fast D moving average type. Used with: stochf (default: 0), stochrsi (default: 0)."
         ),
     )
 

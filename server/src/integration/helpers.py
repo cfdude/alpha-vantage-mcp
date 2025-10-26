@@ -156,7 +156,7 @@ def should_use_output_helper(
         raise ValueError("data cannot be None")
 
     # Check for empty data
-    if isinstance(data, (list, dict)) and len(data) == 0:
+    if isinstance(data, list | dict) and len(data) == 0:
         raise ValueError("Cannot process empty data")
 
     # Validate override flags

@@ -70,6 +70,7 @@ class TestGetForexDataIntegration:
         assert params["from_symbol"] == "GBP"
         assert params["to_symbol"] == "USD"
         assert params["outputsize"] == "full"
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_weekly_forex_flow(self, mock_api_request):
         """Test complete flow for weekly forex request."""
@@ -91,6 +92,7 @@ class TestGetForexDataIntegration:
         params = call_args[0][1]
         assert params["from_symbol"] == "EUR"
         assert params["to_symbol"] == "JPY"
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_monthly_forex_flow(self, mock_api_request):
         """Test complete flow for monthly forex request."""
@@ -112,6 +114,7 @@ class TestGetForexDataIntegration:
         params = call_args[0][1]
         assert params["from_symbol"] == "CAD"
         assert params["to_symbol"] == "USD"
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_forex_validation_error(self, mock_api_request):
         """Test that validation errors are handled properly."""
@@ -149,6 +152,7 @@ class TestGetForexDataIntegration:
         params = call_args[0][1]
         assert params["datatype"] == "json"
 
+
 class TestGetCryptoDataIntegration:
     """Integration tests for get_crypto_data tool."""
 
@@ -158,7 +162,7 @@ class TestGetCryptoDataIntegration:
         from src.tools.forex_crypto_unified import get_crypto_data
 
         mock_api_request.return_value = (
-            "timestamp,open,high,low,close,volume\n" "2024-01-01,42000,42500,41800,42300,1000"
+            "timestamp,open,high,low,close,volume\n2024-01-01,42000,42500,41800,42300,1000"
         )
 
         result = get_crypto_data(
@@ -181,13 +185,14 @@ class TestGetCryptoDataIntegration:
 
         assert isinstance(result, str)
         assert "timestamp" in result
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_daily_timeseries_flow(self, mock_api_request):
         """Test complete flow for daily crypto timeseries request."""
         from src.tools.forex_crypto_unified import get_crypto_data
 
         mock_api_request.return_value = (
-            "timestamp,open,high,low,close,volume\n" "2024-01-01,3000,3100,2950,3050,5000"
+            "timestamp,open,high,low,close,volume\n2024-01-01,3000,3100,2950,3050,5000"
         )
 
         get_crypto_data(
@@ -203,13 +208,14 @@ class TestGetCryptoDataIntegration:
         params = call_args[0][1]
         assert params["symbol"] == "ETH"
         assert params["market"] == "USD"
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_weekly_timeseries_flow(self, mock_api_request):
         """Test complete flow for weekly crypto timeseries request."""
         from src.tools.forex_crypto_unified import get_crypto_data
 
         mock_api_request.return_value = (
-            "timestamp,open,high,low,close,volume\n" "2024-01-01,0.50,0.52,0.48,0.51,10000"
+            "timestamp,open,high,low,close,volume\n2024-01-01,0.50,0.52,0.48,0.51,10000"
         )
 
         get_crypto_data(
@@ -225,13 +231,14 @@ class TestGetCryptoDataIntegration:
         params = call_args[0][1]
         assert params["symbol"] == "XRP"
         assert params["market"] == "EUR"
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_monthly_timeseries_flow(self, mock_api_request):
         """Test complete flow for monthly crypto timeseries request."""
         from src.tools.forex_crypto_unified import get_crypto_data
 
         mock_api_request.return_value = (
-            "timestamp,open,high,low,close,volume\n" "2024-01-01,80,85,78,83,8000"
+            "timestamp,open,high,low,close,volume\n2024-01-01,80,85,78,83,8000"
         )
 
         get_crypto_data(
@@ -247,6 +254,7 @@ class TestGetCryptoDataIntegration:
         params = call_args[0][1]
         assert params["symbol"] == "LTC"
         assert params["market"] == "CNY"
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_exchange_rate_flow(self, mock_api_request):
         """Test complete flow for crypto exchange rate request."""
@@ -268,6 +276,7 @@ class TestGetCryptoDataIntegration:
         assert params["to_currency"] == "USD"
 
         assert isinstance(result, str)
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_crypto_validation_error_missing_timeframe(self, mock_api_request):
         """Test that validation errors are handled properly."""
@@ -320,6 +329,7 @@ class TestGetCryptoDataIntegration:
         params = call_args[0][1]
         assert params["from_currency"] == "BTC"
         assert params["to_currency"] == "USD"
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_crypto_exchange_rate_fiat_to_crypto(self, mock_api_request):
         """Test exchange rate from fiat to crypto."""
@@ -337,6 +347,7 @@ class TestGetCryptoDataIntegration:
         params = call_args[0][1]
         assert params["from_currency"] == "USD"
         assert params["to_currency"] == "BTC"
+
     @patch("src.tools.forex_crypto_unified._make_api_request")
     def test_crypto_datatype_json(self, mock_api_request):
         """Test crypto with JSON datatype."""
@@ -355,6 +366,7 @@ class TestGetCryptoDataIntegration:
         call_args = mock_api_request.call_args
         params = call_args[0][1]
         assert params["datatype"] == "json"
+
 
 class TestParameterizedIntegration:
     """Parameterized integration tests."""
@@ -387,6 +399,7 @@ class TestParameterizedIntegration:
 
         call_args = mock_api_request.call_args
         assert call_args[0][0] == expected_function
+
     @pytest.mark.parametrize(
         "data_type,timeframe,expected_function",
         [
@@ -398,7 +411,9 @@ class TestParameterizedIntegration:
         ],
     )
     @patch("src.tools.forex_crypto_unified._make_api_request")
-    def test_all_crypto_types_integration(self, mock_api_request, data_type, timeframe, expected_function):
+    def test_all_crypto_types_integration(
+        self, mock_api_request, data_type, timeframe, expected_function
+    ):
         """Test all crypto data types integrate correctly."""
         from src.tools.forex_crypto_unified import get_crypto_data
 

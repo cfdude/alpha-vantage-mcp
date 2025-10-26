@@ -283,7 +283,7 @@ class OutputHandler:
                                 for v in values:
                                     if "," in v or '"' in v or "\n" in v:
                                         escaped_values.append(
-                                            f'"{v.replace(chr(34), chr(34)+chr(34))}"'
+                                            f'"{v.replace(chr(34), chr(34) + chr(34))}"'
                                         )
                                     else:
                                         escaped_values.append(v)
@@ -305,7 +305,7 @@ class OutputHandler:
                     pass  # Best effort cleanup
 
             raise FileWriteError(
-                f"Failed to write CSV file {output_path}: {e}. " "Check disk space and permissions."
+                f"Failed to write CSV file {output_path}: {e}. Check disk space and permissions."
             ) from e
 
     async def write_json(self, data: Any, filepath: Path, config: OutputConfig) -> FileMetadata:
@@ -395,8 +395,7 @@ class OutputHandler:
                     pass  # Best effort cleanup
 
             raise FileWriteError(
-                f"Failed to write JSON file {output_path}: {e}. "
-                "Check disk space and permissions."
+                f"Failed to write JSON file {output_path}: {e}. Check disk space and permissions."
             ) from e
 
     async def _generate_metadata(
@@ -623,7 +622,7 @@ class OutputHandler:
 
         except PermissionError as e:
             raise PermissionError(
-                f"Cannot access project folder {project_path}: {e}. " "Check directory permissions."
+                f"Cannot access project folder {project_path}: {e}. Check directory permissions."
             ) from e
 
     async def delete_project_file(self, project_name: str, filename: str) -> bool:
@@ -709,7 +708,7 @@ class OutputHandler:
 
         except PermissionError as e:
             raise PermissionError(
-                f"Cannot delete file {file_path}: {e}. " "Check file permissions."
+                f"Cannot delete file {file_path}: {e}. Check file permissions."
             ) from e
         except Exception as e:
             raise OutputHandlerError(f"Failed to delete file {file_path}: {e}") from e

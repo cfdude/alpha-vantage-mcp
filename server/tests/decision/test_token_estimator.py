@@ -547,9 +547,9 @@ class TestPerformanceBenchmarks:
         assert tiktoken_tokens > 0
 
         # Fallback should be significantly faster (allow 2x instead of 5x for CI variability)
-        assert (
-            fallback_time < tiktoken_time_normalized / 2
-        ), f"Fallback not fast enough: {fallback_time:.3f}s vs {tiktoken_time_normalized:.3f}s"
+        assert fallback_time < tiktoken_time_normalized / 2, (
+            f"Fallback not fast enough: {fallback_time:.3f}s vs {tiktoken_time_normalized:.3f}s"
+        )
 
 
 class TestTokenAccuracy:
@@ -594,9 +594,9 @@ class TestTokenAccuracy:
         assert fallback > 0
 
         # Fallback should be within 50% of actual (conservative)
-        assert (
-            0.5 * actual < fallback < 2.0 * actual
-        ), f"Fallback {fallback} not conservative enough (actual: {actual})"
+        assert 0.5 * actual < fallback < 2.0 * actual, (
+            f"Fallback {fallback} not conservative enough (actual: {actual})"
+        )
 
 
 # Pytest configuration for coverage

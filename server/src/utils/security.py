@@ -98,7 +98,7 @@ def validate_path_contained(path: Path, base_dir: Path) -> bool:
             resolved_path = path.resolve(strict=False)
         except Exception as e:
             raise SecurityError(
-                f"Cannot resolve path {path}: {e}. " "This may indicate a malformed path."
+                f"Cannot resolve path {path}: {e}. This may indicate a malformed path."
             ) from e
 
         if not resolved_path.is_relative_to(resolved_base):
@@ -114,7 +114,7 @@ def validate_path_contained(path: Path, base_dir: Path) -> bool:
             resolved_path = full_path.resolve(strict=False)
         except Exception as e:
             raise SecurityError(
-                f"Cannot resolve path {path}: {e}. " "This may indicate a malformed path."
+                f"Cannot resolve path {path}: {e}. This may indicate a malformed path."
             ) from e
 
     # Final containment check using is_relative_to (Python 3.9+)
@@ -290,8 +290,7 @@ def check_directory_permissions(directory: Path) -> None:
     """
     if not isinstance(directory, Path):
         raise ValueError(
-            f"directory must be a Path object, got {type(directory)}. "
-            "Please convert to Path first."
+            f"directory must be a Path object, got {type(directory)}. Please convert to Path first."
         )
 
     # Check if directory exists (handle permission errors during check)
@@ -397,7 +396,7 @@ def validate_safe_path(path: Path, base_dir: Path, check_permissions: bool = Tru
         resolved_full_path = full_path.resolve(strict=False)
     except Exception as e:
         raise SecurityError(
-            f"Cannot resolve path {full_path}: {e}. " "This may indicate a malformed path."
+            f"Cannot resolve path {full_path}: {e}. This may indicate a malformed path."
         ) from e
 
     # Check permissions if requested

@@ -189,13 +189,13 @@ def test_mcp_client_functionality():
         results.append(False)
 
     # Summary
-    print(f"\n{'='*50}")
+    print(f"\n{'=' * 50}")
     print("📊 TEST SUMMARY")
-    print(f"{'='*50}")
+    print(f"{'=' * 50}")
     passed = sum(results)
     total = len(results)
     print(f"Tests Passed: {passed}/{total}")
-    print(f"Success Rate: {(passed/total)*100:.1f}%")
+    print(f"Success Rate: {(passed / total) * 100:.1f}%")
 
     if passed == total:
         print("\n🎉 All tests passed! Your MCP server is working perfectly with client patterns.")
