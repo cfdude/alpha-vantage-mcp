@@ -1,14 +1,27 @@
 # Alpha Vantage MCP Server
 
-The official Alpha Vantage API MCP server enables LLMs and agentic workflows to seamlessly interact with real-time and historical stock market data through the Model Context Protocol (MCP). Add this server to your favorite apps such as Claude, Claude Code, Cursor, VS Code, and many more to give them access to comprehensive financial data.
+> **About This Repository**
+>
+> This repository is a fork of the [official Alpha Vantage MCP Server](https://github.com/alphavantage/alpha_vantage_mcp) with significant architectural enhancements and modifications. The codebase has diverged substantially from the upstream repository and is maintained independently.
+>
+> **Key Enhancements:**
+> - Unified tool architecture (Sprint 1-4 consolidation reducing 106+ individual endpoints to 15 unified tools)
+> - Enhanced context window optimization (~81.5% reduction in tool definitions)
+> - Comprehensive output management system with auto-save capabilities
+> - Advanced file organization and project management
+> - Improved error handling and response processing
+>
+> For the official Alpha Vantage MCP server, please visit: https://github.com/alphavantage/alpha_vantage_mcp
+
+This Alpha Vantage API MCP server enables LLMs and agentic workflows to seamlessly interact with real-time and historical stock market data through the Model Context Protocol (MCP). Add this server to your favorite apps such as Claude, Claude Code, Cursor, VS Code, and many more to give them access to comprehensive financial data.
 
 ## Quickstart
 
 To use the server, <a href="https://www.alphavantage.co/support/#api-key" onclick="gtag('event', 'mcp_getKey')">get your free Alpha Vantage API key</a>, copy it to your clipboard, then follow the instructions below for the agentic tool/platform of your interest.
 
-👉 Any questions? Please contact support@alphavantage.co
+👉 For API key support, contact support@alphavantage.co
 
-⭐ View MCP source code on [Github](https://github.com/alphavantage/alpha_vantage_mcp)
+⭐ View this fork's source code on [GitHub](https://github.com/cfdude/alpha_vantage_mcp)
 
 
 ### Connection Examples
