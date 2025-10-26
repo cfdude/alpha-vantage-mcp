@@ -5,6 +5,7 @@
 dev_docs
 .env.bak
 .env
+docs/implementation
 
 # AWS SAM build artifacts
 .aws-sam/
