@@ -83,7 +83,7 @@ def test_large_response_handling():
     tokens = estimate_tokens(large_data)
     print(f"  Large dataset token estimate: {tokens}")
 
-    MAX_TOKENS = 50000
+    MAX_TOKENS = 20000  # Updated to match new MCP limit (was 50000)
     if tokens > MAX_TOKENS:
         print(f"  Would trigger large response handling (>{MAX_TOKENS} tokens)")
         print("  Would generate preview with first 50 lines of response")

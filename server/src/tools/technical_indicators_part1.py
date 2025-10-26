@@ -10,6 +10,10 @@ def sma(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the simple moving average (SMA) values.
@@ -43,7 +47,7 @@ def sma(
     if month:
         params["month"] = month
 
-    return _make_api_request("SMA", params)
+    return _make_api_request("SMA", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -54,6 +58,10 @@ def ema(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the exponential moving average (EMA) values.
@@ -87,7 +95,7 @@ def ema(
     if month:
         params["month"] = month
 
-    return _make_api_request("EMA", params)
+    return _make_api_request("EMA", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -98,6 +106,10 @@ def wma(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the weighted moving average (WMA) values.
@@ -131,7 +143,7 @@ def wma(
     if month:
         params["month"] = month
 
-    return _make_api_request("WMA", params)
+    return _make_api_request("WMA", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -142,6 +154,10 @@ def dema(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the double exponential moving average (DEMA) values.
@@ -175,7 +191,7 @@ def dema(
     if month:
         params["month"] = month
 
-    return _make_api_request("DEMA", params)
+    return _make_api_request("DEMA", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -186,6 +202,10 @@ def tema(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the triple exponential moving average (TEMA) values.
@@ -219,7 +239,7 @@ def tema(
     if month:
         params["month"] = month
 
-    return _make_api_request("TEMA", params)
+    return _make_api_request("TEMA", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -230,6 +250,10 @@ def trima(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the triangular moving average (TRIMA) values.
@@ -263,7 +287,7 @@ def trima(
     if month:
         params["month"] = month
 
-    return _make_api_request("TRIMA", params)
+    return _make_api_request("TRIMA", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -274,6 +298,10 @@ def kama(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the Kaufman adaptive moving average (KAMA) values.
@@ -307,7 +335,7 @@ def kama(
     if month:
         params["month"] = month
 
-    return _make_api_request("KAMA", params)
+    return _make_api_request("KAMA", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -319,6 +347,10 @@ def mama(
     fastlimit: float = 0.01,
     slowlimit: float = 0.01,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the MESA adaptive moving average (MAMA) values.
@@ -355,12 +387,16 @@ def mama(
     if slowlimit != 0.01:
         params["slowlimit"] = str(slowlimit)
 
-    return _make_api_request("MAMA", params)
+    return _make_api_request("MAMA", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def vwap(
-    symbol: str, interval: str, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the volume weighted average price (VWAP) for intraday time series.
@@ -389,7 +425,7 @@ def vwap(
     if month:
         params["month"] = month
 
-    return _make_api_request("VWAP", params)
+    return _make_api_request("VWAP", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -400,6 +436,10 @@ def t3(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the triple exponential moving average (T3) values.
@@ -433,7 +473,7 @@ def t3(
     if month:
         params["month"] = month
 
-    return _make_api_request("T3", params)
+    return _make_api_request("T3", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -446,6 +486,10 @@ def macd(
     slowperiod: int = 26,
     signalperiod: int = 9,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the moving average convergence / divergence (MACD) values.
@@ -485,7 +529,7 @@ def macd(
     if signalperiod != 9:
         params["signalperiod"] = str(signalperiod)
 
-    return _make_api_request("MACD", params)
+    return _make_api_request("MACD", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -501,6 +545,10 @@ def macdext(
     slowmatype: int = 0,
     signalmatype: int = 0,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the moving average convergence / divergence values with controllable moving average type.
@@ -564,7 +612,7 @@ def macdext(
     if signalmatype != 0:
         params["signalmatype"] = str(signalmatype)
 
-    return _make_api_request("MACDEXT", params)
+    return _make_api_request("MACDEXT", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -578,6 +626,10 @@ def stoch(
     slowkmatype: int = 0,
     slowdmatype: int = 0,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the stochastic oscillator (STOCH) values.
@@ -631,7 +683,7 @@ def stoch(
     if slowdmatype != 0:
         params["slowdmatype"] = str(slowdmatype)
 
-    return _make_api_request("STOCH", params)
+    return _make_api_request("STOCH", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -643,6 +695,10 @@ def stochf(
     fastdperiod: int = 3,
     fastdmatype: int = 0,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     Returns the stochastic fast (STOCHF) values.
@@ -685,4 +741,4 @@ def stochf(
     if fastdmatype != 0:
         params["fastdmatype"] = str(fastdmatype)
 
-    return _make_api_request("STOCHF", params)
+    return _make_api_request("STOCHF", params, output=output, project=project, category=category, filename=filename)

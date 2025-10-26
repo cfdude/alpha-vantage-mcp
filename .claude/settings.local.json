@@ -3,6 +3,8 @@
     "alpaca",
     "alphavantage",
     "financial-datasets",
-    "context7"
-  ]
+    "context7",
+    "chat-openai"
+  ],
+  "enableAllProjectMcpServers": true
 }

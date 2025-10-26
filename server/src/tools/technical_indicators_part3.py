@@ -4,7 +4,11 @@ from src.tools.registry import tool
 
 @tool
 def mfi(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the money flow index (MFI) values.
 
@@ -34,7 +38,7 @@ def mfi(
     if month:
         params["month"] = month
 
-    return _make_api_request("MFI", params)
+    return _make_api_request("MFI", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -45,6 +49,10 @@ def trix(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the 1-day rate of change of a triple smooth exponential moving average (TRIX) values.
 
@@ -76,7 +84,7 @@ def trix(
     if month:
         params["month"] = month
 
-    return _make_api_request("TRIX", params)
+    return _make_api_request("TRIX", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -88,6 +96,10 @@ def ultosc(
     timeperiod3: int = 28,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the ultimate oscillator (ULTOSC) values.
 
@@ -121,12 +133,16 @@ def ultosc(
     if month:
         params["month"] = month
 
-    return _make_api_request("ULTOSC", params)
+    return _make_api_request("ULTOSC", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def dx(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the directional movement index (DX) values.
 
@@ -156,12 +172,16 @@ def dx(
     if month:
         params["month"] = month
 
-    return _make_api_request("DX", params)
+    return _make_api_request("DX", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def minus_di(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the minus directional indicator (MINUS_DI) values.
 
@@ -191,12 +211,16 @@ def minus_di(
     if month:
         params["month"] = month
 
-    return _make_api_request("MINUS_DI", params)
+    return _make_api_request("MINUS_DI", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def plus_di(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the plus directional indicator (PLUS_DI) values.
 
@@ -226,12 +250,16 @@ def plus_di(
     if month:
         params["month"] = month
 
-    return _make_api_request("PLUS_DI", params)
+    return _make_api_request("PLUS_DI", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def minus_dm(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the minus directional movement (MINUS_DM) values.
 
@@ -261,12 +289,16 @@ def minus_dm(
     if month:
         params["month"] = month
 
-    return _make_api_request("MINUS_DM", params)
+    return _make_api_request("MINUS_DM", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def plus_dm(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the plus directional movement (PLUS_DM) values.
 
@@ -296,7 +328,7 @@ def plus_dm(
     if month:
         params["month"] = month
 
-    return _make_api_request("PLUS_DM", params)
+    return _make_api_request("PLUS_DM", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -310,6 +342,10 @@ def bbands(
     matype: int = 0,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the Bollinger bands (BBANDS) values.
 
@@ -351,7 +387,7 @@ def bbands(
     if month:
         params["month"] = month
 
-    return _make_api_request("BBANDS", params)
+    return _make_api_request("BBANDS", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -362,6 +398,10 @@ def midpoint(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the midpoint (MIDPOINT) values. MIDPOINT = (highest value + lowest value)/2.
 
@@ -393,12 +433,16 @@ def midpoint(
     if month:
         params["month"] = month
 
-    return _make_api_request("MIDPOINT", params)
+    return _make_api_request("MIDPOINT", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def midprice(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the midpoint price (MIDPRICE) values. MIDPRICE = (highest high + lowest low)/2.
 
@@ -428,7 +472,7 @@ def midprice(
     if month:
         params["month"] = month
 
-    return _make_api_request("MIDPRICE", params)
+    return _make_api_request("MIDPRICE", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -439,6 +483,10 @@ def sar(
     maximum: float = 0.20,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the parabolic SAR (SAR) values.
 
@@ -470,12 +518,16 @@ def sar(
     if month:
         params["month"] = month
 
-    return _make_api_request("SAR", params)
+    return _make_api_request("SAR", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def trange(
-    symbol: str, interval: str, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the true range (TRANGE) values.
 
@@ -503,12 +555,16 @@ def trange(
     if month:
         params["month"] = month
 
-    return _make_api_request("TRANGE", params)
+    return _make_api_request("TRANGE", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def atr(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the average true range (ATR) values.
 
@@ -538,12 +594,16 @@ def atr(
     if month:
         params["month"] = month
 
-    return _make_api_request("ATR", params)
+    return _make_api_request("ATR", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def natr(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the normalized average true range (NATR) values.
 
@@ -573,4 +633,4 @@ def natr(
     if month:
         params["month"] = month
 
-    return _make_api_request("NATR", params)
+    return _make_api_request("NATR", params, output=output, project=project, category=category, filename=filename)

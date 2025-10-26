@@ -24,6 +24,7 @@ from loguru import logger
 from mcp.server.lowlevel import NotificationOptions, Server
 from mcp.server.models import InitializationOptions
 
+from .config import get_output_config
 from .context import set_api_key
 from .tools.registry import TOOL_MODULES, get_all_tools
 
@@ -39,6 +40,21 @@ class StdioMCPServer:
 
         # Set up the API key context
         set_api_key(api_key)
+
+        # Initialize and validate output configuration
+        config = get_output_config()
+        if config.is_configured:
+            try:
+                config.ensure_directories()
+                if verbose:
+                    logger.info(f"✅ Output directories initialized at: {config.base_path}")
+            except Exception as e:
+                logger.warning(f"⚠️  Failed to create output directories: {e}")
+                if verbose:
+                    logger.warning("File saving will be disabled. Check MCP_CLIENT_ROOT configuration.")
+        else:
+            if verbose:
+                logger.info("ℹ️  MCP_CLIENT_ROOT not configured. File saving disabled.")
 
         # Get all tools for the specified categories
         if categories:

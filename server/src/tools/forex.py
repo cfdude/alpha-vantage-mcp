@@ -12,6 +12,10 @@ def fx_intraday(
     interval: str,
     outputsize: str = "compact",
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     This API returns intraday time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime.
@@ -38,12 +42,16 @@ def fx_intraday(
         "datatype": datatype,
     }
 
-    return _make_api_request("FX_INTRADAY", params)
+    return _make_api_request("FX_INTRADAY", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def fx_daily(
-    from_symbol: str, to_symbol: str, outputsize: str = "compact", datatype: str = "csv"
+    from_symbol: str, to_symbol: str, outputsize: str = "compact", datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     This API returns the daily time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime.
@@ -68,11 +76,19 @@ def fx_daily(
         "datatype": datatype,
     }
 
-    return _make_api_request("FX_DAILY", params)
+    return _make_api_request("FX_DAILY", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def fx_weekly(from_symbol: str, to_symbol: str, datatype: str = "csv") -> dict[str, str] | str:
+def fx_weekly(
+    from_symbol: str,
+    to_symbol: str,
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the weekly time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime.
     The latest data point is the price information for the week (or partial week) containing the current trading day, updated realtime.
@@ -93,11 +109,19 @@ def fx_weekly(from_symbol: str, to_symbol: str, datatype: str = "csv") -> dict[s
         "datatype": datatype,
     }
 
-    return _make_api_request("FX_WEEKLY", params)
+    return _make_api_request("FX_WEEKLY", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def fx_monthly(from_symbol: str, to_symbol: str, datatype: str = "csv") -> dict[str, str] | str:
+def fx_monthly(
+    from_symbol: str,
+    to_symbol: str,
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the monthly time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime.
     The latest data point is the prices information for the month (or partial month) containing the current trading day, updated realtime.
@@ -118,4 +142,4 @@ def fx_monthly(from_symbol: str, to_symbol: str, datatype: str = "csv") -> dict[
         "datatype": datatype,
     }
 
-    return _make_api_request("FX_MONTHLY", params)
+    return _make_api_request("FX_MONTHLY", params, output=output, project=project, category=category, filename=filename)

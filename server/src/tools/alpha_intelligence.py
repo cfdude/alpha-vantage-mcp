@@ -9,11 +9,18 @@ def news_sentiment(
     time_from: str = None,
     time_to: str = None,
     sort: str = "LATEST",
-    limit: int = 50,
+    limit: int = 10,
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns live and historical market news & sentiment data from premier news outlets worldwide.
 
     Covers stocks, cryptocurrencies, forex, and topics like fiscal policy, mergers & acquisitions, IPOs.
+
+    ⚠️ WARNING: Each news article can be quite large. Default limit is 10 to prevent token overflow.
+    Use smaller limits (1-5) for initial queries, then increase if needed.
 
     Args:
         tickers: Stock/crypto/forex symbols to filter articles. Example: "IBM" or "COIN,CRYPTO:BTC,FOREX:USD".
@@ -21,10 +28,17 @@ def news_sentiment(
         time_from: Start time range in YYYYMMDDTHHMM format. Example: "20220410T0130".
         time_to: End time range in YYYYMMDDTHHMM format. Defaults to current time if time_from specified.
         sort: Sort order - "LATEST" (default), "EARLIEST", or "RELEVANCE".
-        limit: Number of results to return. Default 50, max 1000.
+        limit: Number of results to return. Default 10 (reduced from 50 to prevent token overflow). Max 1000.
+        output: Output mode for response handling:
+               - "auto": Automatically decide based on response size (default)
+               - "screen": Force return in response (may be truncated if large)
+               - "file": Always save to file (requires project parameter)
+        project: Project name for saving data. Creates project if it doesn't exist.
+        category: Optional category subdirectory within project.
+        filename: Optional custom filename. Auto-generated if not specified.
 
     Returns:
-        Dictionary containing news sentiment data or JSON string.
+        Dictionary containing news sentiment data, or file metadata if saved to disk.
     """
 
     params = {
@@ -40,7 +54,14 @@ def news_sentiment(
     if time_to:
         params["time_to"] = time_to
 
-    return _make_api_request("NEWS_SENTIMENT", params)
+    return _make_api_request(
+        "NEWS_SENTIMENT",
+        params,
+        output=output,
+        project=project,
+        category=category,
+        filename=filename,
+    )
 
 
 @tool
@@ -62,7 +83,7 @@ def earnings_call_transcript(symbol: str, quarter: str) -> dict[str, str] | str:
         "quarter": quarter,
     }
 
-    return _make_api_request("EARNINGS_CALL_TRANSCRIPT", params)
+    return _make_api_request("EARNINGS_CALL_TRANSCRIPT", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -78,7 +99,7 @@ def top_gainers_losers() -> dict[str, str] | str:
 
     params = {}
 
-    return _make_api_request("TOP_GAINERS_LOSERS", params)
+    return _make_api_request("TOP_GAINERS_LOSERS", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -98,7 +119,7 @@ def insider_transactions(symbol: str) -> dict[str, str] | str:
         "symbol": symbol,
     }
 
-    return _make_api_request("INSIDER_TRANSACTIONS", params)
+    return _make_api_request("INSIDER_TRANSACTIONS", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -128,7 +149,7 @@ def analytics_fixed_window(
         "OHLC": ohlc,
     }
 
-    return _make_api_request("ANALYTICS_FIXED_WINDOW", params)
+    return _make_api_request("ANALYTICS_FIXED_WINDOW", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -165,4 +186,4 @@ def analytics_sliding_window(
         "OHLC": ohlc,
     }
 
-    return _make_api_request("ANALYTICS_SLIDING_WINDOW", params)
+    return _make_api_request("ANALYTICS_SLIDING_WINDOW", params, output=output, project=project, category=category, filename=filename)

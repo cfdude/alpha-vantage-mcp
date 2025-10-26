@@ -3,7 +3,13 @@ from src.tools.registry import tool
 
 
 @tool
-def company_overview(symbol: str) -> dict[str, str] | str:
+def company_overview(
+    symbol: str,
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns company information, financial ratios, and key metrics for the specified equity.
 
     Data is generally refreshed on the same day a company reports its latest earnings and financials.
@@ -19,11 +25,17 @@ def company_overview(symbol: str) -> dict[str, str] | str:
         "symbol": symbol,
     }
 
-    return _make_api_request("OVERVIEW", params)
+    return _make_api_request("OVERVIEW", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def etf_profile(symbol: str) -> dict[str, str] | str:
+def etf_profile(
+    symbol: str,
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns key ETF metrics and holdings with allocation by asset types and sectors.
 
     Includes net assets, expense ratio, turnover, and corresponding ETF holdings/constituents.
@@ -39,11 +51,18 @@ def etf_profile(symbol: str) -> dict[str, str] | str:
         "symbol": symbol,
     }
 
-    return _make_api_request("ETF_PROFILE", params)
+    return _make_api_request("ETF_PROFILE", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def dividends(symbol: str, datatype: str = "csv") -> dict[str, str] | str:
+def dividends(
+    symbol: str,
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns historical and future (declared) dividend distributions.
 
     Args:
@@ -60,11 +79,18 @@ def dividends(symbol: str, datatype: str = "csv") -> dict[str, str] | str:
         "datatype": datatype,
     }
 
-    return _make_api_request("DIVIDENDS", params)
+    return _make_api_request("DIVIDENDS", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def splits(symbol: str, datatype: str = "csv") -> dict[str, str] | str:
+def splits(
+    symbol: str,
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns historical split events.
 
     Args:
@@ -81,15 +107,23 @@ def splits(symbol: str, datatype: str = "csv") -> dict[str, str] | str:
         "datatype": datatype,
     }
 
-    return _make_api_request("SPLITS", params)
+    return _make_api_request("SPLITS", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def income_statement(symbol: str) -> dict[str, str] | str:
+def income_statement(
+    symbol: str,
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns annual and quarterly income statements with normalized fields.
 
     Fields are mapped to GAAP and IFRS taxonomies of the SEC. Data is generally refreshed
     on the same day a company reports its latest earnings and financials.
+
+    ⚠️ WARNING: Financial statements can be large (many years of quarterly data). May be truncated if exceeds token limits.
 
     Args:
         symbol: The symbol of the ticker of your choice. For example: symbol=IBM.
@@ -102,15 +136,23 @@ def income_statement(symbol: str) -> dict[str, str] | str:
         "symbol": symbol,
     }
 
-    return _make_api_request("INCOME_STATEMENT", params)
+    return _make_api_request("INCOME_STATEMENT", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def balance_sheet(symbol: str) -> dict[str, str] | str:
+def balance_sheet(
+    symbol: str,
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns annual and quarterly balance sheets with normalized fields.
 
     Fields are mapped to GAAP and IFRS taxonomies of the SEC. Data is generally refreshed
     on the same day a company reports its latest earnings and financials.
+
+    ⚠️ WARNING: Financial statements can be large (many years of quarterly data). May be truncated if exceeds token limits.
 
     Args:
         symbol: The symbol of the ticker of your choice. For example: symbol=IBM.
@@ -123,15 +165,23 @@ def balance_sheet(symbol: str) -> dict[str, str] | str:
         "symbol": symbol,
     }
 
-    return _make_api_request("BALANCE_SHEET", params)
+    return _make_api_request("BALANCE_SHEET", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def cash_flow(symbol: str) -> dict[str, str] | str:
+def cash_flow(
+    symbol: str,
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns annual and quarterly cash flow with normalized fields.
 
     Fields are mapped to GAAP and IFRS taxonomies of the SEC. Data is generally refreshed
     on the same day a company reports its latest earnings and financials.
+
+    ⚠️ WARNING: Financial statements can be large (many years of quarterly data). May be truncated if exceeds token limits.
 
     Args:
         symbol: The symbol of the ticker of your choice. For example: symbol=IBM.
@@ -144,11 +194,17 @@ def cash_flow(symbol: str) -> dict[str, str] | str:
         "symbol": symbol,
     }
 
-    return _make_api_request("CASH_FLOW", params)
+    return _make_api_request("CASH_FLOW", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def earnings(symbol: str) -> dict[str, str] | str:
+def earnings(
+    symbol: str,
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns annual and quarterly earnings (EPS) for the company.
 
     Quarterly data also includes analyst estimates and surprise metrics.
@@ -164,11 +220,17 @@ def earnings(symbol: str) -> dict[str, str] | str:
         "symbol": symbol,
     }
 
-    return _make_api_request("EARNINGS", params)
+    return _make_api_request("EARNINGS", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def earnings_estimates(symbol: str) -> dict[str, str] | str:
+def earnings_estimates(
+    symbol: str,
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns annual and quarterly EPS and revenue estimates with analyst data.
 
     Includes analyst count and revision history.
@@ -184,11 +246,18 @@ def earnings_estimates(symbol: str) -> dict[str, str] | str:
         "symbol": symbol,
     }
 
-    return _make_api_request("EARNINGS_ESTIMATES", params)
+    return _make_api_request("EARNINGS_ESTIMATES", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def listing_status(date: str = None, state: str = "active") -> dict[str, str] | str:
+def listing_status(
+    date: str = None,
+    state: str = "active",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns a list of active or delisted US stocks and ETFs.
 
     Can return data as of the latest trading day or at a specific time in history.
@@ -211,11 +280,18 @@ def listing_status(date: str = None, state: str = "active") -> dict[str, str] | 
     if date:
         params["date"] = date
 
-    return _make_api_request("LISTING_STATUS", params)
+    return _make_api_request("LISTING_STATUS", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def earnings_calendar(symbol: str = None, horizon: str = "3month") -> dict[str, str] | str:
+def earnings_calendar(
+    symbol: str = None,
+    horizon: str = "3month",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns a list of company earnings expected in the next 3, 6, or 12 months.
 
     Args:
@@ -234,11 +310,16 @@ def earnings_calendar(symbol: str = None, horizon: str = "3month") -> dict[str, 
     if symbol:
         params["symbol"] = symbol
 
-    return _make_api_request("EARNINGS_CALENDAR", params)
+    return _make_api_request("EARNINGS_CALENDAR", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def ipo_calendar() -> dict[str, str] | str:
+def ipo_calendar(
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """Returns a list of IPOs expected in the next 3 months.
 
     Returns:
@@ -247,4 +328,4 @@ def ipo_calendar() -> dict[str, str] | str:
 
     params = {}
 
-    return _make_api_request("IPO_CALENDAR", params)
+    return _make_api_request("IPO_CALENDAR", params, output=output, project=project, category=category, filename=filename)

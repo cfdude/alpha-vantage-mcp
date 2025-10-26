@@ -3,7 +3,14 @@ from src.tools.registry import tool
 
 
 @tool
-def real_gdp(interval: str = "annual", datatype: str = "csv") -> dict[str, str] | str:
+def real_gdp(
+    interval: str = "annual",
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the annual and quarterly Real GDP of the United States.
 
@@ -21,11 +28,17 @@ def real_gdp(interval: str = "annual", datatype: str = "csv") -> dict[str, str] 
         "datatype": datatype,
     }
 
-    return _make_api_request("REAL_GDP", params)
+    return _make_api_request("REAL_GDP", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def real_gdp_per_capita(datatype: str = "csv") -> dict[str, str] | str:
+def real_gdp_per_capita(
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the quarterly Real GDP per Capita data of the United States.
 
@@ -41,12 +54,16 @@ def real_gdp_per_capita(datatype: str = "csv") -> dict[str, str] | str:
         "datatype": datatype,
     }
 
-    return _make_api_request("REAL_GDP_PER_CAPITA", params)
+    return _make_api_request("REAL_GDP_PER_CAPITA", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def treasury_yield(
-    interval: str = "monthly", maturity: str = "10year", datatype: str = "csv"
+    interval: str = "monthly", maturity: str = "10year", datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     This API returns the daily, weekly, and monthly US treasury yield of a given maturity timeline (e.g., 5 year, 30 year, etc).
@@ -67,11 +84,18 @@ def treasury_yield(
         "datatype": datatype,
     }
 
-    return _make_api_request("TREASURY_YIELD", params)
+    return _make_api_request("TREASURY_YIELD", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def federal_funds_rate(interval: str = "monthly", datatype: str = "csv") -> dict[str, str] | str:
+def federal_funds_rate(
+    interval: str = "monthly",
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the daily, weekly, and monthly federal funds rate (interest rate) of the United States.
 
@@ -89,11 +113,18 @@ def federal_funds_rate(interval: str = "monthly", datatype: str = "csv") -> dict
         "datatype": datatype,
     }
 
-    return _make_api_request("FEDERAL_FUNDS_RATE", params)
+    return _make_api_request("FEDERAL_FUNDS_RATE", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def cpi(interval: str = "monthly", datatype: str = "csv") -> dict[str, str] | str:
+def cpi(
+    interval: str = "monthly",
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the monthly and semiannual consumer price index (CPI) of the United States.
     CPI is widely regarded as the barometer of inflation levels in the broader economy.
@@ -112,11 +143,17 @@ def cpi(interval: str = "monthly", datatype: str = "csv") -> dict[str, str] | st
         "datatype": datatype,
     }
 
-    return _make_api_request("CPI", params)
+    return _make_api_request("CPI", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def inflation(datatype: str = "csv") -> dict[str, str] | str:
+def inflation(
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the annual inflation rates (consumer prices) of the United States.
 
@@ -132,11 +169,17 @@ def inflation(datatype: str = "csv") -> dict[str, str] | str:
         "datatype": datatype,
     }
 
-    return _make_api_request("INFLATION", params)
+    return _make_api_request("INFLATION", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def retail_sales(datatype: str = "csv") -> dict[str, str] | str:
+def retail_sales(
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the monthly Advance Retail Sales: Retail Trade data of the United States.
 
@@ -152,11 +195,17 @@ def retail_sales(datatype: str = "csv") -> dict[str, str] | str:
         "datatype": datatype,
     }
 
-    return _make_api_request("RETAIL_SALES", params)
+    return _make_api_request("RETAIL_SALES", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def durables(datatype: str = "csv") -> dict[str, str] | str:
+def durables(
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the monthly manufacturers' new orders of durable goods in the United States.
 
@@ -172,11 +221,17 @@ def durables(datatype: str = "csv") -> dict[str, str] | str:
         "datatype": datatype,
     }
 
-    return _make_api_request("DURABLES", params)
+    return _make_api_request("DURABLES", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def unemployment(datatype: str = "csv") -> dict[str, str] | str:
+def unemployment(
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the monthly unemployment data of the United States. The unemployment rate represents the number of
     unemployed as a percentage of the labor force. Labor force data are restricted to people 16 years of age and older,
@@ -195,11 +250,17 @@ def unemployment(datatype: str = "csv") -> dict[str, str] | str:
         "datatype": datatype,
     }
 
-    return _make_api_request("UNEMPLOYMENT", params)
+    return _make_api_request("UNEMPLOYMENT", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def nonfarm_payroll(datatype: str = "csv") -> dict[str, str] | str:
+def nonfarm_payroll(
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the monthly US All Employees: Total Nonfarm (commonly known as Total Nonfarm Payroll),
     a measure of the number of U.S. workers in the economy that excludes proprietors, private household employees,
@@ -217,4 +278,4 @@ def nonfarm_payroll(datatype: str = "csv") -> dict[str, str] | str:
         "datatype": datatype,
     }
 
-    return _make_api_request("NONFARM_PAYROLL", params)
+    return _make_api_request("NONFARM_PAYROLL", params, output=output, project=project, category=category, filename=filename)

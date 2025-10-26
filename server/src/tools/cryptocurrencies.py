@@ -4,7 +4,11 @@ from src.tools.registry import tool
 
 @tool
 def currency_exchange_rate(
-    from_currency: str, to_currency: str, datatype: str = "csv"
+    from_currency: str, to_currency: str, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     This API returns the realtime exchange rate for any pair of digital currency (e.g., Bitcoin) or physical currency (e.g., USD).
@@ -24,12 +28,16 @@ def currency_exchange_rate(
         "datatype": datatype,
     }
 
-    return _make_api_request("CURRENCY_EXCHANGE_RATE", params)
+    return _make_api_request("CURRENCY_EXCHANGE_RATE", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def crypto_intraday(
-    symbol: str, market: str, interval: str, outputsize: str = "compact", datatype: str = "csv"
+    symbol: str, market: str, interval: str, outputsize: str = "compact", datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     This API returns intraday time series (timestamp, open, high, low, close, volume) of the cryptocurrency specified, updated realtime.
@@ -53,11 +61,19 @@ def crypto_intraday(
         "datatype": datatype,
     }
 
-    return _make_api_request("CRYPTO_INTRADAY", params)
+    return _make_api_request("CRYPTO_INTRADAY", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
-def digital_currency_daily(symbol: str, market: str, datatype: str = "csv") -> dict[str, str] | str:
+def digital_currency_daily(
+    symbol: str,
+    market: str,
+    datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
+) -> dict[str, str] | str:
     """
     This API returns the daily historical time series for a digital currency (e.g., BTC) traded on a specific market (e.g., EUR/Euro), refreshed daily at midnight (UTC). Prices and volumes are quoted in both the market-specific currency and USD.
 
@@ -76,12 +92,16 @@ def digital_currency_daily(symbol: str, market: str, datatype: str = "csv") -> d
         "datatype": datatype,
     }
 
-    return _make_api_request("DIGITAL_CURRENCY_DAILY", params)
+    return _make_api_request("DIGITAL_CURRENCY_DAILY", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def digital_currency_weekly(
-    symbol: str, market: str, datatype: str = "csv"
+    symbol: str, market: str, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     This API returns the weekly historical time series for a digital currency (e.g., BTC) traded on a specific market (e.g., EUR/Euro), refreshed daily at midnight (UTC). Prices and volumes are quoted in both the market-specific currency and USD.
@@ -101,12 +121,16 @@ def digital_currency_weekly(
         "datatype": datatype,
     }
 
-    return _make_api_request("DIGITAL_CURRENCY_WEEKLY", params)
+    return _make_api_request("DIGITAL_CURRENCY_WEEKLY", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def digital_currency_monthly(
-    symbol: str, market: str, datatype: str = "csv"
+    symbol: str, market: str, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """
     This API returns the monthly historical time series for a digital currency (e.g., BTC) traded on a specific market (e.g., EUR/Euro), refreshed daily at midnight (UTC). Prices and volumes are quoted in both the market-specific currency and USD.
@@ -126,4 +150,4 @@ def digital_currency_monthly(
         "datatype": datatype,
     }
 
-    return _make_api_request("DIGITAL_CURRENCY_MONTHLY", params)
+    return _make_api_request("DIGITAL_CURRENCY_MONTHLY", params, output=output, project=project, category=category, filename=filename)

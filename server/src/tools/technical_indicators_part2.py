@@ -10,6 +10,10 @@ def rsi(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the relative strength index (RSI) values.
 
@@ -40,7 +44,7 @@ def rsi(
     if month:
         params["month"] = month
 
-    return _make_api_request("RSI", params)
+    return _make_api_request("RSI", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -54,6 +58,10 @@ def stochrsi(
     fastdperiod: int = None,
     fastdmatype: int = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the stochastic relative strength index (STOCHRSI) values.
 
@@ -98,12 +106,16 @@ def stochrsi(
     if fastdmatype is not None:
         params["fastdmatype"] = str(fastdmatype)
 
-    return _make_api_request("STOCHRSI", params)
+    return _make_api_request("STOCHRSI", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def willr(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the Williams' %R (WILLR) values.
 
@@ -132,12 +144,16 @@ def willr(
     if month:
         params["month"] = month
 
-    return _make_api_request("WILLR", params)
+    return _make_api_request("WILLR", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def adx(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the average directional movement index (ADX) values.
 
@@ -166,12 +182,16 @@ def adx(
     if month:
         params["month"] = month
 
-    return _make_api_request("ADX", params)
+    return _make_api_request("ADX", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def adxr(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the average directional movement index rating (ADXR) values.
 
@@ -200,7 +220,7 @@ def adxr(
     if month:
         params["month"] = month
 
-    return _make_api_request("ADXR", params)
+    return _make_api_request("ADXR", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -213,6 +233,10 @@ def apo(
     slowperiod: int = None,
     matype: int = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the absolute price oscillator (APO) values.
 
@@ -254,7 +278,7 @@ def apo(
     if matype is not None:
         params["matype"] = str(matype)
 
-    return _make_api_request("APO", params)
+    return _make_api_request("APO", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -267,6 +291,10 @@ def ppo(
     slowperiod: int = None,
     matype: int = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the percentage price oscillator (PPO) values.
 
@@ -308,7 +336,7 @@ def ppo(
     if matype is not None:
         params["matype"] = str(matype)
 
-    return _make_api_request("PPO", params)
+    return _make_api_request("PPO", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -319,6 +347,10 @@ def mom(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the momentum (MOM) values.
 
@@ -349,12 +381,16 @@ def mom(
     if month:
         params["month"] = month
 
-    return _make_api_request("MOM", params)
+    return _make_api_request("MOM", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def bop(
-    symbol: str, interval: str, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the balance of power (BOP) values.
 
@@ -381,12 +417,16 @@ def bop(
     if month:
         params["month"] = month
 
-    return _make_api_request("BOP", params)
+    return _make_api_request("BOP", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def cci(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the commodity channel index (CCI) values.
 
@@ -415,7 +455,7 @@ def cci(
     if month:
         params["month"] = month
 
-    return _make_api_request("CCI", params)
+    return _make_api_request("CCI", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -426,6 +466,10 @@ def cmo(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the Chande momentum oscillator (CMO) values.
 
@@ -456,7 +500,7 @@ def cmo(
     if month:
         params["month"] = month
 
-    return _make_api_request("CMO", params)
+    return _make_api_request("CMO", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -467,6 +511,10 @@ def roc(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the rate of change (ROC) values.
 
@@ -497,7 +545,7 @@ def roc(
     if month:
         params["month"] = month
 
-    return _make_api_request("ROC", params)
+    return _make_api_request("ROC", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
@@ -508,6 +556,10 @@ def rocr(
     series_type: str,
     month: str = None,
     datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the rate of change ratio (ROCR) values.
 
@@ -538,12 +590,16 @@ def rocr(
     if month:
         params["month"] = month
 
-    return _make_api_request("ROCR", params)
+    return _make_api_request("ROCR", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def aroon(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the Aroon (AROON) values.
 
@@ -572,12 +628,16 @@ def aroon(
     if month:
         params["month"] = month
 
-    return _make_api_request("AROON", params)
+    return _make_api_request("AROON", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def aroonosc(
-    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv"
+    symbol: str, interval: str, time_period: int, month: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the Aroon oscillator (AROONOSC) values.
 
@@ -606,4 +666,4 @@ def aroonosc(
     if month:
         params["month"] = month
 
-    return _make_api_request("AROONOSC", params)
+    return _make_api_request("AROONOSC", params, output=output, project=project, category=category, filename=filename)

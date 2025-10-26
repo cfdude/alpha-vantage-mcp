@@ -406,6 +406,123 @@ If no categories are specified, all tools will be available.
 
 &nbsp;
 
+## Output Parameters & File Management
+
+All tool endpoints now support universal output parameters for managing large responses and organizing data locally. This is particularly useful when working with large historical datasets that may exceed token limits.
+
+### Output Modes
+
+Every tool accepts an `output` parameter with the following modes:
+
+- **`"auto"` (default)**: Automatically detects response size and saves to file if it exceeds the auto-save threshold (15,000 tokens estimated). Otherwise returns data inline.
+- **`"screen"`**: Forces data to be returned inline in the response, even if large. Use with caution for large queries as this may exceed LLM token limits.
+- **`"file"`**: Always saves the response to a file and returns only file metadata (path, size, location). Never returns inline data.
+
+### File Organization with Projects
+
+Use the optional `project` parameter to organize your downloaded data:
+
+```
+my_project/
+├── time_series/
+│   ├── AAPL_daily_20241020.csv
+│   └── GOOGL_weekly_20241020.csv
+├── technical_indicators/
+│   ├── SMA_AAPL_20241020.csv
+│   └── RSI_MSFT_20241020.csv
+└── fundamentals/
+    └── AAPL_earnings_20241020.json
+```
+
+**Parameters:**
+- `project` (optional): Project name for organizing data. Auto-creates if it doesn't exist. If not specified and `output="file"`, auto-creates `auto_{function_name}_{date}` project.
+- `category` (optional): Subdirectory within project (e.g., "time_series", "technical_indicators", "fundamentals"). Defaults to API category.
+- `filename` (optional): Custom filename. Auto-generates if not specified.
+
+### Usage Examples
+
+#### Example 1: Automatic File Saving for Large Responses
+```python
+# Get 20+ years of historical daily data
+# Response is ~30,000 tokens → automatically saves to file
+result = await client.call_tool("TIME_SERIES_DAILY", {
+    "symbol": "AAPL",
+    "outputsize": "full",  # full history (large response)
+})
+# Returns: {"status": "saved", "path": "auto_time_series_daily_20241020/time_series/AAPL_daily.csv"}
+```
+
+#### Example 2: Force File Output with Custom Project
+```python
+# Explicitly save to file with organized project structure
+result = await client.call_tool("SMA", {
+    "symbol": "AAPL",
+    "interval": "daily",
+    "time_period": 200,
+    "series_type": "close",
+    "output": "file",
+    "project": "my_trading_indicators",
+    "category": "sma_analysis",
+    "filename": "AAPL_SMA200_analysis.csv"
+})
+# Returns: {"status": "saved", "path": "my_trading_indicators/sma_analysis/AAPL_SMA200_analysis.csv"}
+```
+
+#### Example 3: Get Inline Data Only
+```python
+# Force inline return (use for small queries)
+result = await client.call_tool("GLOBAL_QUOTE", {
+    "symbol": "AAPL",
+    "output": "screen"  # Always return inline
+})
+# Returns: {"symbol": "AAPL", "price": "230.45", "volume": "12345678", ...}
+```
+
+#### Example 4: News Sentiment with Auto Organization
+```python
+# Query with auto-save to organized project
+result = await client.call_tool("NEWS_SENTIMENT", {
+    "tickers": "AAPL,MSFT",
+    "limit": 50,
+    "output": "auto",  # Auto-save if > 15K tokens
+    "project": "market_analysis_2024",
+    "category": "sentiment"
+})
+# If response > 15K tokens → saves and returns file path
+# If response < 15K tokens → returns inline
+```
+
+### Auto-Save Thresholds
+
+The MCP protocol has a hard limit of 25,000 tokens. The server uses the following thresholds:
+
+- **`MAX_RESPONSE_TOKENS`**: 20,000 tokens (safety buffer below MCP's 25,000 limit)
+  - Any response exceeding this is **always** auto-saved to file, regardless of `output` mode
+  - This prevents MCP protocol errors
+
+- **`auto_save_threshold`**: 15,000 tokens (configurable in `output_config.json`)
+  - When `output="auto"`, responses exceeding this threshold are saved to file
+  - Responses below this are returned inline
+
+### Configuration
+
+The output system can be configured via `server/config/output_config.json`:
+
+```json
+{
+  "base_project_path": "~/alphavantage_data",
+  "auto_save_threshold": 15000,
+  "project_structure": {
+    "time_series": "Historical time series data",
+    "technical_indicators": "Technical analysis indicators",
+    "fundamentals": "Company fundamentals and financials",
+    "sentiment": "News and sentiment data"
+  }
+}
+```
+
+&nbsp;
+
 ## Tools Reference
 
 | Category | Tools |

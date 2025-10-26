@@ -20,6 +20,7 @@ TOOL_MODULES = {
     ],
     "ping": "src.tools.ping",
     "openai": "src.tools.openai",
+    "project_management": "src.tools.project_management",
 }
 
 # Categories that should have entitlement parameter added

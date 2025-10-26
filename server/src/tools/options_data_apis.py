@@ -4,7 +4,11 @@ from src.tools.registry import tool
 
 @tool
 def realtime_options(
-    symbol: str, require_greeks: bool = False, contract: str = None, datatype: str = "csv"
+    symbol: str, require_greeks: bool = False, contract: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns realtime US options data with full market coverage.
 
@@ -33,12 +37,16 @@ def realtime_options(
     if contract:
         params["contract"] = contract
 
-    return _make_api_request("REALTIME_OPTIONS", params)
+    return _make_api_request("REALTIME_OPTIONS", params, output=output, project=project, category=category, filename=filename)
 
 
 @tool
 def historical_options(
-    symbol: str, date: str = None, datatype: str = "csv"
+    symbol: str, date: str = None, datatype: str = "csv",
+    output: str = "auto",
+    project: str = None,
+    category: str = None,
+    filename: str = None,
 ) -> dict[str, str] | str:
     """Returns the full historical options chain for a specific symbol on a specific date.
 
@@ -64,4 +72,4 @@ def historical_options(
     if date:
         params["date"] = date
 
-    return _make_api_request("HISTORICAL_OPTIONS", params)
+    return _make_api_request("HISTORICAL_OPTIONS", params, output=output, project=project, category=category, filename=filename)
