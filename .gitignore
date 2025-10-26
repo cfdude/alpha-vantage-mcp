@@ -5,6 +5,7 @@
 dev_docs
 .env.bak
 .env
+.mcp.json
 docs/implementation
 
 # AWS SAM build artifacts
