@@ -66,8 +66,8 @@ class LambdaRequestHandler(BaseHTTPRequestHandler):
 
             # Set headers - sanitize values to prevent HTTP response splitting
             for header_name, header_value in headers.items():
-                safe_name = str(header_name).replace('\r', '').replace('\n', '')
-                safe_value = str(header_value).replace('\r', '').replace('\n', '')
+                safe_name = str(header_name).replace("\r", "").replace("\n", "")
+                safe_value = str(header_value).replace("\r", "").replace("\n", "")
                 self.send_header(safe_name, safe_value)
 
             self.end_headers()
