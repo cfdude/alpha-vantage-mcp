@@ -12,9 +12,6 @@ permissions:
 jobs:
   quality-checks:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./server
 
     steps:
       - uses: actions/checkout@v4
@@ -31,16 +28,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv sync --dev
+          uv sync --directory server --dev
 
       - name: Run Ruff linting
         run: |
-          uv run ruff check .
+          uv run --directory server ruff check .
 
       - name: Run Black formatting check
         run: |
-          uv run black --check .
+          uv run --directory server black --check .
 
       - name: Run pytest
         run: |
-          uv run pytest -v
+          uv run --directory server pytest -v
